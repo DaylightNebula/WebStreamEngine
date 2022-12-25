@@ -85,4 +85,11 @@ object MeshLoader {
         return Mesh(vao, indices.size)
     }
 }
-class Mesh(val vao: Int, val vertexCount: Int)
+class Mesh(val vao: Int, val vertexCount: Int) {
+    var texture = 0
+
+    fun addTexture(path: String): Mesh {
+        texture = Texture.loadTexture(path)
+        return this
+    }
+}

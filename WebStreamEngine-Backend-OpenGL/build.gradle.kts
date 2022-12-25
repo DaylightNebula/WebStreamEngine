@@ -26,6 +26,8 @@ dependencies {
     runtimeOnly("org.lwjgl:lwjgl-glfw::natives-windows")
     runtimeOnly("org.lwjgl:lwjgl-opengl::natives-windows")
     runtimeOnly("org.lwjgl:lwjgl-stb::natives-windows")
+
+    implementation(project(":WebStreamEngine-Core"))
 }
 
 tasks.getByName<Test>("test") {

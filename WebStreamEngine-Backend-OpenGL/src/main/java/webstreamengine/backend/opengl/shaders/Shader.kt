@@ -1,8 +1,10 @@
-package webstreamengine.backend.opengl
+package webstreamengine.backend.opengl.shaders
 
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
+import webstreamengine.core.math.Matrix4f
+import webstreamengine.core.math.Vector3f
 
 abstract class Shader(vertexSource: String, fragSource: String) {
     val matrix = BufferUtils.createFloatBuffer(16)
@@ -69,7 +71,7 @@ abstract class Shader(vertexSource: String, fragSource: String) {
     protected open fun loadMatrix(location: Int, value: Matrix4f) {
         value.store(matrix)
         matrix.flip()
-        GL20.glUniformMatrix4(location, false, matrix)
+        GL20.glUniformMatrix4fv(location, false, matrix)
     }
 
     protected abstract fun bindAttributes()

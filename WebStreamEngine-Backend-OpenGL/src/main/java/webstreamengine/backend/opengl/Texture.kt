@@ -27,6 +27,9 @@ object Texture {
             val buffer = STBImage.stbi_load(file.absolutePath, pWidth, pHeight, pChannels, 4)
                 ?: throw Exception("Could not load file ${file.absolutePath} with reason ${STBImage.stbi_failure_reason()}")
 
+            val width = pWidth.get()
+            val height = pHeight.get()
+
             // generate texture
             val textureID = GL11.glGenTextures()
             idMap.put(path, textureID)
@@ -36,7 +39,7 @@ object Texture {
             GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1)
 
             // load texture
-            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, pWidth.get(0), pHeight.get(0), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer)
+            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer)
 
             // generate mip maps
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D)

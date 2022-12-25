@@ -3,20 +3,20 @@ package webstreamengine.backend.opengl
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
-import org.lwjgl.opengl.GL
-import org.lwjgl.opengl.GL11
-import org.lwjgl.opengl.GL20
-import org.lwjgl.opengl.GL30
+import org.lwjgl.opengl.*
 import org.lwjgl.system.MemoryStack.stackPush
 import org.lwjgl.system.MemoryUtil.NULL
+import webstreamengine.backend.opengl.shaders.BasicTexturedShader
 import kotlin.properties.Delegates
 
 
 class WSEBackendOpenGL {
 
     val vertices = floatArrayOf(-0.5f, -0.5f, 0f, 0.5f, -0.5f, 0f, 0f, 0.5f, 0f)
+    val uvs = floatArrayOf(0f, 0f, 1f, 0f, 0.5f, 1f)
     val indices = intArrayOf(0, 1, 2)
-    lateinit var mesh: Mesh
+    lateinit var testmesh: Mesh
+    lateinit var shader: BasicTexturedShader
 
     var window by Delegates.notNull<Long>()
 
@@ -85,14 +85,19 @@ class WSEBackendOpenGL {
         // dunno what this does, but it is needed before the game loop starts
         GL.createCapabilities()
 
-        mesh = MeshLoader.createMesh(vertices, indices)
+        shader = BasicTexturedShader()
+        testmesh = MeshLoader.createMesh(vertices, uvs, indices).addTexture("assets/cobble.jpg")
 
         // loop while the window is not set to close
         while (!glfwWindowShouldClose(window)) {
             // clear the screen
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
 
-            render()
+            shader.start()
+
+            render(testmesh)
+
+            shader.stop()
 
             // swap the windows buffers
             glfwSwapBuffers(window)
@@ -102,18 +107,23 @@ class WSEBackendOpenGL {
         }
     }
 
-    fun render() {
+    fun render(mesh: Mesh) {
         // bind mesh that is to be rendered
         GL30.glBindVertexArray(mesh.vao)
 
         // enable the first vertex array
         GL20.glEnableVertexAttribArray(0)
+        GL20.glEnableVertexAttribArray(1)
+
+        GL13.glActiveTexture(GL13.GL_TEXTURE0)
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mesh.texture)
 
         // draw the elements in the mesh
         GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount, GL11.GL_UNSIGNED_INT, 0)
 
         // unbind all
         GL20.glDisableVertexAttribArray(0)
+        GL20.glDisableVertexAttribArray(1)
         GL30.glBindVertexArray(0)
     }
 }
