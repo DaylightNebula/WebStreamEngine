@@ -15,7 +15,7 @@ class WSEBackendOpenGL {
     val vertices = floatArrayOf(-0.5f, -0.5f, 0f, 0.5f, -0.5f, 0f, 0f, 0.5f, 0f)
     val uvs = floatArrayOf(0f, 0f, 1f, 0f, 0.5f, 1f)
     val indices = intArrayOf(0, 1, 2)
-    lateinit var testmesh: Mesh
+    lateinit var testmesh: OpenGLMesh
     lateinit var shader: BasicTexturedShader
 
     var window by Delegates.notNull<Long>()
@@ -86,7 +86,8 @@ class WSEBackendOpenGL {
         GL.createCapabilities()
 
         shader = BasicTexturedShader()
-        testmesh = MeshLoader.createMesh(vertices, uvs, indices).addTexture("assets/cobble.jpg")
+        testmesh = OpenGLMeshLoader.createMesh(vertices, uvs, indices)
+        val texture = OpenGLTextureUtils.loadTexture("assets/cobble.jpg")
 
         // loop while the window is not set to close
         while (!glfwWindowShouldClose(window)) {
@@ -95,7 +96,7 @@ class WSEBackendOpenGL {
 
             shader.start()
 
-            render(testmesh)
+            render(testmesh, texture)
 
             shader.stop()
 
@@ -107,7 +108,7 @@ class WSEBackendOpenGL {
         }
     }
 
-    fun render(mesh: Mesh) {
+    fun render(mesh: OpenGLMesh, texture: Int) {
         // bind mesh that is to be rendered
         GL30.glBindVertexArray(mesh.vao)
 
@@ -116,7 +117,7 @@ class WSEBackendOpenGL {
         GL20.glEnableVertexAttribArray(1)
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0)
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mesh.texture)
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture)
 
         // draw the elements in the mesh
         GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount, GL11.GL_UNSIGNED_INT, 0)

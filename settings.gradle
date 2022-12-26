@@ -1,3 +1,4 @@
 include 'WebStreamEngine-Core'
 include 'WebStreamEngine-Backend-OpenGL'
+include 'WebStreamEngine-Client'
 

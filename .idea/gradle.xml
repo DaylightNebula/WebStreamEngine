@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Backend-OpenGL" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-Client" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Core" />
           </set>
         </option>

@@ -6,7 +6,7 @@ import org.lwjgl.stb.STBImage
 import org.lwjgl.system.MemoryStack
 import java.io.File
 
-object Texture {
+object OpenGLTextureUtils {
     val idMap = hashMapOf<String, Int>()
 
     fun loadTexture(path: String): Int {

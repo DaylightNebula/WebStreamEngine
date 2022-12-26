@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL30
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-object MeshLoader {
+object OpenGLMeshLoader {
     val vaos = mutableListOf<Int>()
     val vbos = mutableListOf<Int>()
 
@@ -65,7 +65,7 @@ object MeshLoader {
         return vao
     }
 
-    fun createMesh(positions: FloatArray, UVs: FloatArray, indices: IntArray): Mesh {
+    fun createMesh(positions: FloatArray, UVs: FloatArray, indices: IntArray): OpenGLMesh {
         // generate a vertex array object (an array of buffer objects)
         val vao = genVAO()
 
@@ -82,14 +82,7 @@ object MeshLoader {
         GL30.glBindVertexArray(0)
 
         // return new mesh
-        return Mesh(vao, indices.size)
+        return OpenGLMesh(vao, indices.size)
     }
 }
-class Mesh(val vao: Int, val vertexCount: Int) {
-    var texture = 0
-
-    fun addTexture(path: String): Mesh {
-        texture = Texture.loadTexture(path)
-        return this
-    }
-}
+class OpenGLMesh(val vao: Int, val vertexCount: Int)
