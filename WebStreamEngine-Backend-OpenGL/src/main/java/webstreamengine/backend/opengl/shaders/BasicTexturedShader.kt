@@ -6,8 +6,8 @@ import kotlin.properties.Delegates
 
 class BasicTexturedShader: Shader(FileUtil.readTextFile("shaders/BasicTextured.vs"), FileUtil.readTextFile("shaders/BasicTextured.fs")) {
 
-    var projectionMatrixLocation = 0
-    var viewMatrixLocation = 0
+    var locationProjection = 0
+    var locationView = 0
 
     override fun bindAttributes() {
         super.bindAttribute(0, "position")
@@ -15,16 +15,15 @@ class BasicTexturedShader: Shader(FileUtil.readTextFile("shaders/BasicTextured.v
     }
 
     override fun getAllUniformLocations() {
-        projectionMatrixLocation = getUniformLocation("projectionMatrix")
-        viewMatrixLocation = getUniformLocation("viewMatrix")
+        locationProjection = getUniformLocation("projection")
+        locationView = getUniformLocation("view")
     }
 
-    fun setProjectionMatrix(matrix: Matrix4f) {
-        super.loadMatrix(projectionMatrixLocation, matrix)
-        println("New Projection Matrix: \n$matrix===================")
+    fun setProjection(matrix: Matrix4f) {
+        super.loadMatrix(locationProjection, matrix)
     }
 
-    fun setViewMatrix(matrix: Matrix4f) {
-        super.loadMatrix(viewMatrixLocation, matrix)
+    fun setView(matrix: Matrix4f) {
+        super.loadMatrix(locationView, matrix)
     }
 }

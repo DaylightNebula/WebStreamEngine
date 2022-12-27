@@ -27,74 +27,18 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
     private var doneLoading = false
 
     // rendering stuffs
-    private var window: Long = -1L
-    private lateinit var shader: BasicTexturedShader
-    private var cameraInfo = CameraInfo(Vector3f(0f, 0f, 10f), Vector3f(0f, 0f, 0f))
-    private lateinit var viewMatrix: Matrix4f
+    lateinit var window: OpenGLWindow
+    lateinit var renderer: OpenGLRenderer
+    private var cameraInfo = CameraInfo(Vector3f(0f, 0f, 0f), Vector3f(0f, 0f, 0f), 75f, .1f, 100f)
 
     override fun run() {
         super.run()
 
-        // set error callback for GLFW, so it has something to print too
-        GLFWErrorCallback.createPrint(System.err).set()
-
-        // initialize GLFW, error if glfw fails
-        if (!GLFW.glfwInit()) throw IllegalStateException("Unable to initialize GLFW")
-
-        // set window options
-        GLFW.glfwDefaultWindowHints()
-        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE)
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE)
-
-        // create window
-        window = GLFW.glfwCreateWindow(info.winDimensions.first, info.winDimensions.second, info.winName, MemoryUtil.NULL, MemoryUtil.NULL)
-        if (window == MemoryUtil.NULL) throw IllegalStateException("Unable to create GLFW window")
-
-        // set key callback
-        val keyCallback: (window: Long, key: Int, scancode: Int, action: Int, mods: Int) -> Unit = { window, key, scancode, action, mods ->
-            println("Window press $window $key $scancode $action $mods")
-        }
-        GLFW.glfwSetKeyCallback(window, keyCallback)
-
-        // get a usable stack temporarily
-        MemoryStack.stackPush().use { stack ->
-            // create pointers for width and height
-            val pWidth = stack.mallocInt(1)
-            val pHeight = stack.mallocInt(1)
-
-            // get current window set and assign the values to the previously created pointers
-            GLFW.glfwGetWindowSize(window, pWidth, pHeight)
-
-            // get video mode for the primary monitor
-            val vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor()) ?: throw NullPointerException("Failed to get video mode")
-
-            // set window location
-            GLFW.glfwSetWindowPos(
-                window,
-                (vidmode.width() - pWidth.get(0)) / 2,
-                (vidmode.height() - pHeight.get(0)) / 2
-            )
-        }
-
-        // set the opengl context to the window
-        GLFW.glfwMakeContextCurrent(window)
-
-        // set the swap interval of the window
-        GLFW.glfwSwapInterval(1)
-
-        // show the window
-        GLFW.glfwShowWindow(window)
-
-        // create opengl capabilities on this thread
-        GL.createCapabilities()
+        window = OpenGLWindow(info.winName, info.winDimensions.first, info.winDimensions.second)
+        renderer = OpenGLRenderer()
 
         // we are done loading
         doneLoading = true
-
-        // create shader
-        shader = BasicTexturedShader()
-
-        //shader.setProjectionMatrix(MathUtils.generatePerspectiveMatrix(info.winDimensions, 75f, .1f, 100f))
 
         while(running) {
             // run final load on mesh
@@ -108,53 +52,20 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
                 textureLoadQueue.forEach { finalLoadTexture(it.first, it.second) }
                 textureLoadQueue.clear()
             }
-            shader.setProjectionMatrix(MatrixUtils.getOrthoProjection(info.winDimensions))
 
-            // clear the old frame
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
-
-            // start the current shader
-            shader.start()
+            renderer.startRender(window.getProjectionMatrix(cameraInfo))
 
             entityDescriptors.forEach { id, desc ->
-                render(desc)
+                if (desc.mesh != null && desc.texture != null)
+                    renderer.render(desc, cameraInfo, meshMap[desc.mesh!!] ?: return@forEach, textureMap[desc.texture!!] ?: return@forEach)
             }
 
-            // stop the current shader
-            shader.stop()
+            renderer.stopRender()
 
-            // swap the window buffers
-            GLFW.glfwSwapBuffers(window)
-
-            // poll all events (like input and such)
-            GLFW.glfwPollEvents()
+            window.update()
         }
-    }
 
-    fun render(descriptor: EntityDescriptor) {
-        if (descriptor.mesh == null || descriptor.texture == null) return
-        val mesh = meshMap[descriptor.mesh] ?: return
-        val texture = textureMap[descriptor.texture] ?: return
-
-        //shader.setViewMatrix(MathUtils.generateViewMatrix(descriptor.position, descriptor.rotation, descriptor.scale, cameraInfo))
-
-        // bind mesh that is to be rendered
-        GL30.glBindVertexArray(mesh.vao)
-
-        // enable the first vertex array
-        GL20.glEnableVertexAttribArray(0)
-        GL20.glEnableVertexAttribArray(1)
-
-        GL13.glActiveTexture(GL13.GL_TEXTURE0)
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture)
-
-        // draw the elements in the mesh
-        GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount, GL11.GL_UNSIGNED_INT, 0)
-
-        // unbind all
-        GL20.glDisableVertexAttribArray(0)
-        GL20.glDisableVertexAttribArray(1)
-        GL30.glBindVertexArray(0)
+        window.close()
     }
 
     override fun close() {
@@ -207,11 +118,7 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
     }
 
     override fun shouldClose(): Boolean {
-        // if window has not been initialized, return false
-        if (window == -1L) return false
-
-        // check if the windows state says we should close
-        return GLFW.glfwWindowShouldClose(window)
+        return window.shouldClose()
     }
 
     override fun isLoadingComplete(): Boolean {

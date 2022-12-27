@@ -35,6 +35,9 @@ data class EntityDescriptor(
 data class CameraInfo(
     val position: Vector3f,
     val rotation: Vector3f,
+    val fov: Float,
+    val near: Float,
+    val far: Float
 )
 data class MeshInfo(
     val vertices: FloatArray,

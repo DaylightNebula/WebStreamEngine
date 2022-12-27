@@ -5,6 +5,7 @@ import webstreamengine.core.EntityDescriptor
 import webstreamengine.core.MeshInfo
 import webstreamengine.core.RenderBackendInfo
 import org.joml.Vector3f
+import webstreamengine.core.CameraInfo
 
 //val vertices = floatArrayOf(-0.5f, -0.5f, 0f, 0.5f, -0.5f, 0f, 0f, 0.5f, 0f)
 //val uvs = floatArrayOf(0f, 0f, 1f, 0f, 0.5f, 1f)
@@ -38,7 +39,7 @@ fun main() {
 
     // create a basic entity
     val entityDesc = EntityDescriptor(
-        Vector3f(-10f, 0f, 0f),
+        Vector3f(0f, 0f, -1000f),
         Vector3f(0f, 0f, 0f),
         Vector3f(1f, 1f, 1f),
         mesh, texture
@@ -46,6 +47,14 @@ fun main() {
 
     // add entity to backend
     backend.addOrUpdateEntityDescriptor(0, entityDesc)
+
+    val camera = CameraInfo(
+        Vector3f(0f, 0f, 0f),
+        Vector3f(0f, 0f, 0f),
+        75f, .1f, 100000f
+    )
+
+    backend.updateCameraInfo(camera)
 
     // loop while the backend says we should not close (sleep is necessary, otherwise it runs to fast for should close)
     while (!backend.shouldClose()) { Thread.sleep(1) }
