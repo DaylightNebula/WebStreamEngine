@@ -1,7 +1,6 @@
 package webstreamengine.core
 
-import webstreamengine.core.math.ReadableVector3f
-import webstreamengine.core.math.Vector3f
+import org.joml.Vector3f
 
 abstract class RenderBackend(val info: RenderBackendInfo): Thread() {
     // general management stuffs (no start since run is start in a thread)

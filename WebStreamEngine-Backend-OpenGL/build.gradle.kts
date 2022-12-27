@@ -10,12 +10,15 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     implementation(kotlin("stdlib-jdk8"))
+
+    implementation("org.joml:joml:1.5.0")
 
     implementation("org.lwjgl:lwjgl:3.3.1")
     implementation("org.lwjgl:lwjgl-glfw:3.3.1")

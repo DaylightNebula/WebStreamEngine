@@ -1,5 +1,7 @@
 package webstreamengine.backend.opengl
 
+import org.joml.Matrix4f
+import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.*
@@ -7,9 +9,6 @@ import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
 import webstreamengine.backend.opengl.shaders.BasicTexturedShader
 import webstreamengine.core.*
-import webstreamengine.core.math.MathUtils
-import webstreamengine.core.math.Matrix4f
-import webstreamengine.core.math.Vector3f
 
 class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
 
@@ -95,6 +94,8 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
         // create shader
         shader = BasicTexturedShader()
 
+        //shader.setProjectionMatrix(MathUtils.generatePerspectiveMatrix(info.winDimensions, 75f, .1f, 100f))
+
         while(running) {
             // run final load on mesh
             if (meshLoadQueue.size > 0) {
@@ -107,6 +108,7 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
                 textureLoadQueue.forEach { finalLoadTexture(it.first, it.second) }
                 textureLoadQueue.clear()
             }
+            shader.setProjectionMatrix(MatrixUtils.getOrthoProjection(info.winDimensions))
 
             // clear the old frame
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
@@ -133,6 +135,8 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
         if (descriptor.mesh == null || descriptor.texture == null) return
         val mesh = meshMap[descriptor.mesh] ?: return
         val texture = textureMap[descriptor.texture] ?: return
+
+        //shader.setViewMatrix(MathUtils.generateViewMatrix(descriptor.position, descriptor.rotation, descriptor.scale, cameraInfo))
 
         // bind mesh that is to be rendered
         GL30.glBindVertexArray(mesh.vao)
@@ -216,6 +220,6 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
 
     override fun updateCameraInfo(info: CameraInfo) {
         cameraInfo = info
-        viewMatrix = MathUtils.generateViewMatrix(info.position, info.rotation)
+        //viewMatrix = MathUtils.generateViewMatrix(info.position, info.rotation)
     }
 }

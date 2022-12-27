@@ -1,7 +1,7 @@
 package webstreamengine.backend.opengl.shaders
 
 import webstreamengine.core.FileUtil
-import webstreamengine.core.math.Matrix4f
+import org.joml.Matrix4f
 import kotlin.properties.Delegates
 
 class BasicTexturedShader: Shader(FileUtil.readTextFile("shaders/BasicTextured.vs"), FileUtil.readTextFile("shaders/BasicTextured.fs")) {
@@ -21,6 +21,7 @@ class BasicTexturedShader: Shader(FileUtil.readTextFile("shaders/BasicTextured.v
 
     fun setProjectionMatrix(matrix: Matrix4f) {
         super.loadMatrix(projectionMatrixLocation, matrix)
+        println("New Projection Matrix: \n$matrix===================")
     }
 
     fun setViewMatrix(matrix: Matrix4f) {

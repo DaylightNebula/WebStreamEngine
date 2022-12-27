@@ -4,12 +4,15 @@ import webstreamengine.backend.opengl.OpenGLRenderBackend
 import webstreamengine.core.EntityDescriptor
 import webstreamengine.core.MeshInfo
 import webstreamengine.core.RenderBackendInfo
-import webstreamengine.core.math.ReadableVector3f
-import webstreamengine.core.math.Vector3f
+import org.joml.Vector3f
 
-val vertices = floatArrayOf(-0.5f, -0.5f, 0f, 0.5f, -0.5f, 0f, 0f, 0.5f, 0f)
-val uvs = floatArrayOf(0f, 0f, 1f, 0f, 0.5f, 1f)
-val indices = intArrayOf(0, 1, 2)
+//val vertices = floatArrayOf(-0.5f, -0.5f, 0f, 0.5f, -0.5f, 0f, 0f, 0.5f, 0f)
+//val uvs = floatArrayOf(0f, 0f, 1f, 0f, 0.5f, 1f)
+//val indices = intArrayOf(0, 1, 2)
+
+val vertices = floatArrayOf(-50f, -50f, 0f, 50f, -50f, 0f, -50f, 50f, 0f, 50f, 50f, 0f)
+val uvs = floatArrayOf(0f, 1f, 1f, 1f, 0f, 0f, 1f, 0f)
+val indices = intArrayOf(0, 1, 2, 1, 2, 3)
 
 fun main() {
     // build info for the current render backend
@@ -35,7 +38,7 @@ fun main() {
 
     // create a basic entity
     val entityDesc = EntityDescriptor(
-        Vector3f(0f, 0f, 10f),
+        Vector3f(-10f, 0f, 0f),
         Vector3f(0f, 0f, 0f),
         Vector3f(1f, 1f, 1f),
         mesh, texture
