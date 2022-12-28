@@ -1,17 +1,15 @@
 package webstreamengine.client
 
 import webstreamengine.backend.opengl.OpenGLRenderBackend
-import webstreamengine.core.RenderBackendInfo
 import org.joml.Vector3f
-import webstreamengine.core.ByteUtils
-import webstreamengine.core.CameraInfo
-import webstreamengine.core.Connection
+import webstreamengine.core.*
 import java.io.InputStream
 import java.io.OutputStream
 import java.lang.Exception
 import java.net.Socket
 
 lateinit var conn: Connection
+lateinit var backend: RenderBackend
 
 val serveraddr = "localhost"
 val serverport = 33215
@@ -28,7 +26,7 @@ fun main() {
     )
 
     // create a backend to use
-    val backend = OpenGLRenderBackend(backendInfo)
+    backend = OpenGLRenderBackend(backendInfo)
 
     // start the backend
     backend.start()
@@ -45,22 +43,24 @@ fun main() {
     // load mesh
 //    val mesh = backend.loadMesh(MeshInfo(vertices, uvs, indices))
 //
-//    // load texture
-//    val texture = backend.loadLocalTexture("assets/cobble.jpg")
-//
-//    // create a basic entity
-//    val entityDesc = EntityDescriptor(
-//        Vector3f(0f, 0f, -200f),
-//        Vector3f(0f, 0f, 0f),
-//        Vector3f(1f, 1f, 1f),
-//        mesh, texture
-//    )
-//
-//    // add entity to backend
-//    backend.addOrUpdateEntityDescriptor(0, entityDesc)
+    // load texture
+    val texture = backend.loadLocalTexture("assets/blue.png")
+
+    // create a basic entity
+    val entityDesc = EntityDescriptor(
+        Vector3f(0f, 0f, 0f),
+        Vector3f(0f, 0f, 0f),
+        Vector3f(1f, 1f, 1f),
+        null, texture
+    )
+
+    // add entity to backend
+    backend.addOrUpdateEntityDescriptor(0, entityDesc)
+
+    ClientMeshHandler.applyMeshToEntity(entityDesc, conn, "barracks")
 
     val camera = CameraInfo(
-        Vector3f(0f, 0f, 0f),
+        Vector3f(0f, 0f, 4f),
         Vector3f(0f, 0f, 0f),
         75f, .1f, 100000f
     )
@@ -79,5 +79,5 @@ fun main() {
 }
 
 fun updateSocket() {
-    if (conn.isDataAvailable()) ClientPacketHandler.handlePacket(conn.getDataPacket())
+    if (conn.isDataAvailable()) ClientPacketHandler.handlePacket(backend, conn.getDataPacket())
 }

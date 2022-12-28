@@ -18,6 +18,8 @@ fun main() {
     }
     acceptor.start()
 
+    ServerMeshHandler.init()
+
     while(true) {
         // track the start time of the tick
         val tickStartTime = System.currentTimeMillis()
@@ -42,6 +44,6 @@ fun updateConnections() {
 fun updateConnection(conn: Connection) {
     if (conn.isDataAvailable()) {
         val data = conn.getDataPacket()
-        ServerPacketHandler.handlePacket(data)
+        ServerPacketHandler.handlePacket(conn, data)
     }
 }

@@ -29,8 +29,8 @@ data class EntityDescriptor(
     val position: Vector3f,
     val rotation: Vector3f,
     val scale: Vector3f,
-    val mesh: Int? = null,
-    val texture: Int? = null
+    var mesh: Int? = null,
+    var texture: Int? = null
 )
 data class CameraInfo(
     val position: Vector3f,
@@ -42,8 +42,20 @@ data class CameraInfo(
 data class MeshInfo(
     val vertices: FloatArray,
     val uvs: FloatArray,
+    val normals: FloatArray,
     val indices: IntArray
 ) {
+
+    fun convertToByteArray(): ByteArray {
+        val byteList = mutableListOf<ByteArray>()
+        byteList.add(ByteUtils.convertIntToBytes(hashCode()))
+        byteList.add(ByteUtils.convertFloatArrayToByteArray(vertices))
+        byteList.add(ByteUtils.convertFloatArrayToByteArray(uvs))
+        byteList.add(ByteUtils.convertFloatArrayToByteArray(normals))
+        byteList.add(ByteUtils.convertIntArrayToByteArray(indices))
+        return ByteUtils.flattenListOfByteArrays(byteList)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -41,7 +41,6 @@ class Connection(val socket: Socket) {
     }
 
     fun sendPacket(bytes: ByteArray) {
-        println("Trying to send packet of size ${bytes.size}")
         outputstream.write(bytes)
     }
 }

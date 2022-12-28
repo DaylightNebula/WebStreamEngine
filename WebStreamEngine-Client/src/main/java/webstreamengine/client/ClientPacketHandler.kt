@@ -2,9 +2,10 @@ package webstreamengine.client
 
 import webstreamengine.core.ByteReader
 import webstreamengine.core.PacketType
+import webstreamengine.core.RenderBackend
 
 object ClientPacketHandler {
-    fun handlePacket(data: ByteArray) {
+    fun handlePacket(backend: RenderBackend, data: ByteArray) {
         // set up a byte reader for the data
         val reader = ByteReader(data)
 
@@ -14,10 +15,10 @@ object ClientPacketHandler {
 
         // run a when operation on each possible packet type
         when (type) {
-            PacketType.PING -> { println("Ping from server") }
+            PacketType.PING -> { }
             PacketType.REQUEST_MESH -> { println("WARN - Client should not be getting request mesh packet") }
             PacketType.REQUEST_TEXTURE -> { println("WARN - Client should not be getting request texture packet") }
-            PacketType.DELIVER_MESH -> { println("TODO Handle Deliver Mesh") }
+            PacketType.DELIVER_MESH -> { ClientMeshHandler.handleMeshDelivery(backend, reader) }
             PacketType.DELIVER_TEXTURE -> { println("TODO Handle Deliver Texture") }
         }
     }
