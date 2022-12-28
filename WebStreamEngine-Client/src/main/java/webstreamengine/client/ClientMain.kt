@@ -1,15 +1,17 @@
 package webstreamengine.client
 
 import webstreamengine.backend.opengl.OpenGLRenderBackend
-import webstreamengine.core.EntityDescriptor
-import webstreamengine.core.MeshInfo
 import webstreamengine.core.RenderBackendInfo
 import org.joml.Vector3f
+import webstreamengine.core.ByteUtils
 import webstreamengine.core.CameraInfo
+import webstreamengine.core.Connection
+import java.io.InputStream
+import java.io.OutputStream
 import java.lang.Exception
 import java.net.Socket
 
-lateinit var socket: Socket
+lateinit var conn: Connection
 
 val serveraddr = "localhost"
 val serverport = 33215
@@ -32,13 +34,13 @@ fun main() {
     backend.start()
 
     try {
-        socket = Socket(serveraddr, serverport)
+        conn = Connection(Socket(serveraddr, serverport))
     } catch (ex: Exception) {
         System.err.println("Unable to connect to server! ${ex.message}")
     }
 
     // wait until the backend is done loading
-    while (!backend.isLoadingComplete()) { Thread.sleep(1) }
+    while (!backend.isLoadingComplete()) { Thread.sleep(100) }
 
     // load mesh
 //    val mesh = backend.loadMesh(MeshInfo(vertices, uvs, indices))
@@ -66,8 +68,16 @@ fun main() {
     backend.updateCameraInfo(camera)
 
     // loop while the backend says we should not close (sleep is necessary, otherwise it runs to fast for should close)
-    while (!backend.shouldClose()) { Thread.sleep(1) }
+    while (!backend.shouldClose()) {
+        updateSocket()
+
+        Thread.sleep(10)
+    }
 
     // close the backend
     backend.close()
+}
+
+fun updateSocket() {
+    if (conn.isDataAvailable()) ClientPacketHandler.handlePacket(conn.getDataPacket())
 }

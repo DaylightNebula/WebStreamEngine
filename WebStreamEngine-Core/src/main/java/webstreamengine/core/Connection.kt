@@ -1,6 +1,10 @@
-package webstreamengine.server
+package webstreamengine.core
 
 import webstreamengine.core.ByteUtils
+import webstreamengine.core.PacketType
+import webstreamengine.core.PacketUtils
+import java.io.DataOutputStream
+import java.io.ObjectOutputStream
 import java.net.Socket
 import java.net.SocketException
 
@@ -16,8 +20,9 @@ class Connection(val socket: Socket) {
     fun isDataAvailable(): Boolean {
         // every test interval, try to send a test ping to the server, if it errors out, the connection has been closed
         if (System.currentTimeMillis() - lastTestTime > testIntervalMS) {
+            lastTestTime = System.currentTimeMillis()
             try {
-                outputstream.write(byteArrayOf(*ByteUtils.convertIntToBytes(0), *ByteUtils.convertIntToBytes(0)))
+                sendPacket(PacketUtils.generatePacket(PacketType.PING, byteArrayOf()))
             } catch (ex: SocketException) {
                 isClosed = true
             }
@@ -31,7 +36,12 @@ class Connection(val socket: Socket) {
         // read the packet size
         val packetSize = ByteUtils.convertBytesToInt(inputstream.readNBytes(4), 0)
 
-        //
+        // return packet
         return inputstream.readNBytes(packetSize)
+    }
+
+    fun sendPacket(bytes: ByteArray) {
+        println("Trying to send packet of size ${bytes.size}")
+        outputstream.write(bytes)
     }
 }

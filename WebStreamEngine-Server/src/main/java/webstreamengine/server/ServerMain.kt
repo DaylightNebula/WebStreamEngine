@@ -1,5 +1,6 @@
 package webstreamengine.server
 
+import webstreamengine.core.Connection
 import java.net.ServerSocket
 import kotlin.math.absoluteValue
 

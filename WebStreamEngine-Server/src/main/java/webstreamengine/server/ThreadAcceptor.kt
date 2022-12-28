@@ -1,5 +1,6 @@
 package webstreamengine.server
 
+import webstreamengine.core.Connection
 import java.net.ServerSocket
 
 class ThreadAcceptor(val server: ServerSocket, val connectCallback: (conn: Connection) -> Unit): Thread() {

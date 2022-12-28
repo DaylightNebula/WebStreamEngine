@@ -14,7 +14,7 @@ object ServerPacketHandler {
 
         // run a when operation on each possible packet type
         when (type) {
-            PacketType.PING -> {}
+            PacketType.PING -> { println("Ping from client") }
             PacketType.REQUEST_MESH -> { println("TODO Handle Request Mesh") }
             PacketType.REQUEST_TEXTURE -> { println("TODO Handle Request Texture") }
             PacketType.DELIVER_MESH -> { println("WARN - Server should not be getting deliver mesh packet") }
