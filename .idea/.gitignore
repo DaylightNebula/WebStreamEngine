@@ -1,3 +1,9 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+\.gradle\
+\.idea\
+\gradle\
+gradlew
+gradlew.bat
+WebStreamEngine.iml
