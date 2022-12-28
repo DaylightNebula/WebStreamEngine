@@ -1,7 +1,6 @@
 package webstreamengine.backend.opengl
 
 import org.joml.Matrix4f
-import org.joml.Quaternionf
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20
@@ -9,7 +8,6 @@ import org.lwjgl.opengl.GL30
 import webstreamengine.backend.opengl.shaders.BasicTexturedShader
 import webstreamengine.core.CameraInfo
 import webstreamengine.core.EntityDescriptor
-import webstreamengine.core.MatrixUtils
 
 class OpenGLRenderer() {
     val shader = BasicTexturedShader()

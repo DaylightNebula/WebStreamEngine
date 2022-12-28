@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/WebStreamEngine-Backend-OpenGL" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Client" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Core" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-Server" />
           </set>
         </option>
       </GradleProjectSettings>

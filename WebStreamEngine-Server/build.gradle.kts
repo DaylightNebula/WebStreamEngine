@@ -5,12 +5,11 @@ plugins {
     kotlin("jvm") version "1.8.0-RC2"
 }
 
-group = "webstreamengine.client"
+group = "webstreamengine.server"
 version = "0.0.1"
 
 repositories {
     mavenCentral()
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -18,13 +17,12 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("org.joml:joml:1.5.0")
-
-    // all necessary submodules
     implementation(project(":WebStreamEngine-Core"))
-    implementation(project(":WebStreamEngine-Backend-OpenGL")) // TODO switch to plugin based backends
 }
 
+tasks.getByName<Test>("test") {
+    useJUnitPlatform()
+}
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
