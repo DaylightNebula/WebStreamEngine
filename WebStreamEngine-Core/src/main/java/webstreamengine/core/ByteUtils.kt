@@ -128,6 +128,13 @@ class ByteUtils {
             }
             return bytes
         }
+
+        fun convertByteArrayToByteArray(bytes: ByteArray): ByteArray {
+            return byteArrayOf(
+                *convertIntToBytes(bytes.size),
+                *bytes
+            )
+        }
     }
 }
 class ByteReader(val byteArray: ByteArray, var counter: Int = 0) {
@@ -170,7 +177,6 @@ class ByteReader(val byteArray: ByteArray, var counter: Int = 0) {
         var i = 0
         while (i < arrayLength) {
             array[i] = nextFloat()
-            println("New float ${array[i]}")
             i++
         }
 
@@ -185,6 +191,20 @@ class ByteReader(val byteArray: ByteArray, var counter: Int = 0) {
         var i = 0
         while (i < arrayLength) {
             array[i] = nextInt()
+            i++
+        }
+
+        return array
+    }
+
+    fun nextByteArray(): ByteArray {
+        val arrayLength = ByteUtils.convertBytesToInt(byteArray, counter)
+        counter += 4
+
+        val array = ByteArray(arrayLength)
+        var i = 0
+        while (i < arrayLength) {
+            array[i] = nextByte()
             i++
         }
 
