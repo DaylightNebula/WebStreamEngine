@@ -22,7 +22,6 @@ dependencies {
 
     // all necessary submodules
     implementation(project(":WebStreamEngine-Core"))
-    implementation(project(":WebStreamEngine-Backend-OpenGL")) // TODO switch to plugin based backends
 }
 
 tasks.getByName<Test>("test") {

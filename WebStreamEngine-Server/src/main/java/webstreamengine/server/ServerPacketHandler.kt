@@ -12,25 +12,11 @@ object ServerPacketHandler {
 
         // get the packet type of this packet
         val typeOrdinal = reader.nextInt()
-        val type = PacketType.values()[typeOrdinal]
 
         // run a when operation on each possible packet type
-        when (type) {
+        when (val type = PacketType.values()[typeOrdinal]) {
             PacketType.PING -> { }
-            PacketType.REQUEST_MESH -> {
-                val meshID = reader.nextString()
-                val bytes = ServerMeshHandler.requestMesh(meshID)
-
-                if (bytes == null) {
-                    println("WARN - Client ${connection.name} asked for a mesh with ID $meshID that did not exist")
-                    return
-                }
-
-                connection.sendPacket(PacketUtils.generatePacket(PacketType.DELIVER_MESH, bytes))
-            }
-            PacketType.REQUEST_TEXTURE -> { println("TODO Handle Request Texture") }
-            PacketType.DELIVER_MESH -> { println("WARN - Server should not be getting deliver mesh packet") }
-            PacketType.DELIVER_TEXTURE -> { println("WARN - Server should not be getting deliver texture packet") }
+            else -> { println("Unknown packet type $type") }
         }
     }
 }
