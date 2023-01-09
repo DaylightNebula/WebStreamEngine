@@ -29,8 +29,7 @@ data class EntityDescriptor(
     val position: Vector3f,
     val rotation: Vector3f,
     val scale: Vector3f,
-    var mesh: Int? = null,
-    var texture: Int? = null
+    var mesh: Int? = null
 )
 data class CameraInfo(
     val position: Vector3f,

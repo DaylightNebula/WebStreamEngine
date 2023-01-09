@@ -56,8 +56,8 @@ class OpenGLRenderBackend(info: RenderBackendInfo): RenderBackend(info) {
             renderer.startRender(window.getProjectionMatrix(cameraInfo))
 
             entityDescriptors.forEach { id, desc ->
-                if (desc.mesh != null && desc.texture != null)
-                    renderer.render(desc, cameraInfo, meshMap[desc.mesh!!] ?: return@forEach, textureMap[desc.texture!!] ?: return@forEach)
+                if (desc.mesh != null)
+                    renderer.render(desc, cameraInfo, meshMap[desc.mesh!!] ?: return@forEach)
             }
 
             renderer.stopRender()

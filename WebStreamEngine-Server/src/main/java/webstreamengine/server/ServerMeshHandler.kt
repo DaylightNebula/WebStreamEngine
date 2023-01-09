@@ -63,15 +63,13 @@ object ServerMeshHandler {
             }
         }
 
-        println("Num vertices ${vertices.size}, first ${vertices.first()}")
-
         val meshinfo = MeshInfo(vertices.toFloatArray(), uvs.toFloatArray(), normals.toFloatArray(), indices.toIntArray())
         meshes[meshID] = byteArrayOf(
             *ByteUtils.convertStringToByteArray(meshID),
             *meshinfo.convertToByteArray()
         )
 
-        println("Loaded mesh ${meshID} with a hash of ${meshinfo.hashCode()}")
+        println("Loaded mesh $meshID from ${file.absolutePath}")
     }
 
     fun requestMesh(meshID: String): ByteArray? {

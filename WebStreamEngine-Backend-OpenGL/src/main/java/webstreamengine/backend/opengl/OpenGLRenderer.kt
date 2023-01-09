@@ -1,6 +1,7 @@
 package webstreamengine.backend.opengl
 
 import org.joml.Matrix4f
+import org.joml.Vector4f
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20
@@ -22,7 +23,7 @@ class OpenGLRenderer() {
         shader.stop()
     }
 
-    fun render(descriptor: EntityDescriptor, camera: CameraInfo, mesh: OpenGLMesh, texture: Int) {
+    fun render(descriptor: EntityDescriptor, camera: CameraInfo, mesh: OpenGLMesh) {
         // setup view matrix
         val matrix = Matrix4f()
         matrix.identity()
@@ -34,10 +35,10 @@ class OpenGLRenderer() {
         shader.setView(matrix)
 
         // render
-        render(mesh, texture)
+        render(mesh)
     }
 
-    fun render(mesh: OpenGLMesh, texture: Int) {
+    fun render(mesh: OpenGLMesh) {
         // bind mesh that is to be rendered
         GL30.glBindVertexArray(mesh.vao)
 
@@ -45,8 +46,7 @@ class OpenGLRenderer() {
         GL20.glEnableVertexAttribArray(0)
         GL20.glEnableVertexAttribArray(1)
 
-        GL13.glActiveTexture(GL13.GL_TEXTURE0)
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture)
+        shader.setColor(Vector4f(1f, 0f, 0f, 1f))
 
         // draw the elements in the mesh
         GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount, GL11.GL_UNSIGNED_INT, 0)

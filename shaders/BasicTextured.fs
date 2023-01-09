@@ -4,8 +4,8 @@ in vec2 pass_uvs;
 
 out vec4 out_Color;
 
-uniform sampler2D textureSampler;
+uniform vec4 color;
 
 void main(){
-	out_Color = texture(textureSampler,pass_uvs);
+	out_Color = color;
 }

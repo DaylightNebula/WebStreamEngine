@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
 import org.joml.Matrix4f
 import org.joml.Vector3f
+import org.joml.Vector4f
 
 abstract class Shader(vertexSource: String, fragSource: String) {
     val matrix = BufferUtils.createFloatBuffer(16)
@@ -58,6 +59,10 @@ abstract class Shader(vertexSource: String, fragSource: String) {
 
     protected open fun loadVector(location: Int, vector: Vector3f) {
         GL20.glUniform3f(location, vector.x, vector.y, vector.z)
+    }
+
+    protected open fun loadVector4(location: Int, vector: Vector4f) {
+        GL20.glUniform4f(location, vector.x, vector.y, vector.z, vector.w)
     }
 
     protected open fun loadBoolean(location: Int, value: Boolean) {

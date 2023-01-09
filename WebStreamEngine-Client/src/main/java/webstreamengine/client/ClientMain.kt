@@ -40,18 +40,12 @@ fun main() {
     // wait until the backend is done loading
     while (!backend.isLoadingComplete()) { Thread.sleep(100) }
 
-    // load mesh
-//    val mesh = backend.loadMesh(MeshInfo(vertices, uvs, indices))
-//
-    // load texture
-    val texture = backend.loadLocalTexture("assets/blue.png")
-
     // create a basic entity
     val entityDesc = EntityDescriptor(
         Vector3f(0f, 0f, 0f),
         Vector3f(0f, 0f, 0f),
         Vector3f(1f, 1f, 1f),
-        null, texture
+        null
     )
 
     // add entity to backend

@@ -30,12 +30,11 @@ class WSEBackendOpenGL {
     fun loop() {
         val renderer = OpenGLRenderer()
         val testmesh = OpenGLMeshLoader.createMesh(vertices, uvs, indices)
-        val texture = OpenGLTextureUtils.loadTexture("assets/cobble.jpg")
 
         // loop while the window is not set to close
         while (!window.shouldClose()) {
             renderer.startRender(window.getProjectionMatrix(camera))
-            renderer.render(testmesh, texture)
+            renderer.render(testmesh)
             renderer.stopRender()
             window.update()
         }
