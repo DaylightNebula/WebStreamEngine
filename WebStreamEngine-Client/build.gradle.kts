@@ -11,17 +11,25 @@ version = "0.0.1"
 repositories {
     mavenCentral()
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     implementation(kotlin("stdlib-jdk8"))
-
-    implementation("org.joml:joml:1.5.0")
 
     // all necessary submodules
     implementation(project(":WebStreamEngine-Core"))
+
+    // libgdx stuffs
+    implementation("com.badlogicgames.gdx:gdx:1.11.0")
+    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.11.0")
+    implementation("com.badlogicgames.gdx:gdx-platform:1.11.0:natives-desktop")
+
+    // GLTF/GLB file loader stuffs
+    implementation("com.github.mgsx-dev.gdx-gltf:gltf:2.1.0")
+    implementation("com.github.mgsx-dev.gdx-gltf:gltf:2.1.0:sources")
 }
 
 tasks.getByName<Test>("test") {

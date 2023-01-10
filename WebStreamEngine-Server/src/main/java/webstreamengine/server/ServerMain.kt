@@ -11,6 +11,8 @@ val msPerTick = 10
 val connections = mutableListOf<Connection>()
 
 fun main() {
+    FileHandler.init()
+
     // start acceptor to get connections while not freezing this thread
     val acceptor = ThreadAcceptor(socket) {
         println("Got connection ${it.name}")

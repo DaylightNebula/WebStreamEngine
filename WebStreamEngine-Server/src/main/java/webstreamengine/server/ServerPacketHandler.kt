@@ -16,6 +16,21 @@ object ServerPacketHandler {
         // run a when operation on each possible packet type
         when (val type = PacketType.values()[typeOrdinal]) {
             PacketType.PING -> { }
+            PacketType.REQUEST_MODEL -> {
+                val modelID = reader.nextString()
+                val fileBytes = FileHandler.modelFiles[modelID]
+                if (fileBytes == null) {
+                    println("ERROR model $modelID was not found but requested")
+                    return
+                }
+
+                connection.sendPacket(
+                    PacketUtils.generatePacket(
+                        PacketType.DELIVER_MODEL,
+                        fileBytes
+                    )
+                )
+            }
             else -> { println("Unknown packet type $type") }
         }
     }

@@ -15,8 +15,6 @@ object PacketUtils {
 }
 enum class PacketType {
     PING,
-    REQUEST_MESH,
-    REQUEST_TEXTURE,
-    DELIVER_MESH,
-    DELIVER_TEXTURE
+    REQUEST_MODEL,
+    DELIVER_MODEL
 }
