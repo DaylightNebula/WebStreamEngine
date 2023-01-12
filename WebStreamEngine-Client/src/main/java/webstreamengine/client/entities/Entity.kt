@@ -1,4 +1,4 @@
-package webstreamengine.client
+package webstreamengine.client.entities
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
@@ -10,21 +10,41 @@ class Entity(
     private var rotation: Vector3 = Vector3(0f, 0f, 0f),
     private var scale: Vector3 = Vector3(1f, 1f, 1f)
 ) {
-    private lateinit var instance: ModelInstance
+    private val components = mutableListOf<EntityComponent>()
+    val transformChangeCallbacks = mutableListOf<(entity: Entity) -> Unit>()
 
-    fun setModelInstance(instance: ModelInstance) {
-        this.instance = instance
+    fun setModelInstance() {
         updateInstanceTransform()
     }
 
+    fun addComponent(component: EntityComponent) {
+        components.add(component)
+        component.start()
+    }
+
+    fun getComponents(): List<EntityComponent> {
+        return components
+    }
+
+    fun removeComponent(component: EntityComponent) {
+        components.remove(component)
+        component.stop()
+    }
+
+    fun update() {
+        components.forEach { it.update() }
+    }
+
     fun render(batch: ModelBatch) {
-        if (this::instance.isInitialized)
-            batch.render(instance)
+        components.forEach { it.render(batch) }
+    }
+
+    fun dispose() {
+        components.forEach { it.stop() }
     }
 
     fun updateInstanceTransform() {
-        if (this::instance.isInitialized)
-            instance.transform.set(position, Quaternion().setEulerAngles(rotation.x, rotation.y, rotation.z), scale)
+        transformChangeCallbacks.forEach { it(this) }
     }
 
     fun getPosition(): Vector3 { return position }

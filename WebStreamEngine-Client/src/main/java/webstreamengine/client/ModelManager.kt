@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.g3d.Model
 import com.badlogic.gdx.graphics.g3d.ModelInstance
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.JsonReader
+import webstreamengine.client.entities.Entity
+import webstreamengine.client.entities.ModelComponent
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
@@ -50,7 +51,7 @@ object ModelManager {
     fun applyModelToEntity(entity: Entity, id: String) {
         // if we already have a model with the given id, just pass it along
         if (modelMap.containsKey(id)) {
-            entity.setModelInstance(createModelInstance(id)!!)
+            entity.addComponent(ModelComponent(entity, createModelInstance(id)!!))
             return
         }
 
@@ -88,7 +89,7 @@ object ModelManager {
 
         // update all entities waiting for this mesh
         val model = modelMap[id]!!
-        waitingForModel[id]?.forEach { it.setModelInstance(ModelInstance(model)) }
+        waitingForModel[id]?.forEach { it.addComponent(ModelComponent(it, ModelInstance(model))) }
         waitingForModel.clear()
     }
 

@@ -4,14 +4,11 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.graphics.g3d.ModelBatch
-import com.badlogic.gdx.graphics.g3d.ModelInstance
-import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.entities.Entity
 import webstreamengine.core.*
-import java.io.File
 import java.net.Socket
 
 lateinit var conn: Connection
@@ -31,7 +28,7 @@ object ClientMain: ApplicationAdapter() {
     lateinit var cam: PerspectiveCamera
     lateinit var modelbatch: ModelBatch
 
-    val testentity = Entity()
+    val entities = mutableListOf<Entity>()
 
     override fun create() {
         // create connection to server
@@ -53,9 +50,17 @@ object ClientMain: ApplicationAdapter() {
         cam.update()
 
         // setup some test stuffs
-        //ModelManager.loadLocal("test", File(System.getProperty("user.dir"), "assets/barracks").absolutePath)
-        //testentity.setModelInstance(ModelManager.createModelInstance("test")!!)
+        val testentity = Entity()
         ModelManager.applyModelToEntity(testentity, "barracks")
+        addEntity(testentity)
+    }
+
+    fun addEntity(entity: Entity) {
+        entities.add(entity)
+    }
+
+    fun removeEntity(entity: Entity) {
+        entities.remove(entity)
     }
 
     override fun render() {
@@ -70,13 +75,15 @@ object ClientMain: ApplicationAdapter() {
         modelbatch.begin(cam)
 
         // draw entities
-        testentity.render(modelbatch)
+        entities.forEach { it.render(modelbatch) }
 
         // end 3d draw
         modelbatch.end()
     }
 
     override fun dispose() {
+        entities.forEach { it.dispose() }
+
         // close socket
         conn.socket.close()
 
