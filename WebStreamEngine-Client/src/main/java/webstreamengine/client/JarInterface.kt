@@ -45,12 +45,15 @@ object JarInterface {
             // set current application
             currentApp = initApp
 
+            // start current app
+            currentApp!!.start()
+
             // log
             println("Loaded WebStreamApplication from jar file ${file.path}")
         } catch (ex: Exception) { ex.printStackTrace() }
     }
 
-    fun getApp(): WebStreamApplication {
-        return currentApp ?: throw NullPointerException("No current WebStreamApplication jar loaded")
+    fun getApp(): WebStreamApplication? {
+        return currentApp
     }
 }

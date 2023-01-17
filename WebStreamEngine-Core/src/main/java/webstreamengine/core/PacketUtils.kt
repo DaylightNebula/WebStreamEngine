@@ -16,5 +16,7 @@ object PacketUtils {
 enum class PacketType {
     PING,
     REQUEST_MODEL,
-    DELIVER_MODEL
+    DELIVER_MODEL,
+    REQUEST_JAR,
+    DELIVER_JAR
 }

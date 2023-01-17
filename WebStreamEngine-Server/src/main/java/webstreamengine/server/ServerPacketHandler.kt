@@ -31,6 +31,14 @@ object ServerPacketHandler {
                     )
                 )
             }
+            PacketType.REQUEST_JAR -> {
+                connection.sendPacket(
+                    PacketUtils.generatePacket(
+                        PacketType.DELIVER_JAR,
+                        FileHandler.jarFile
+                    )
+                )
+            }
             else -> { println("Unknown packet type $type") }
         }
     }

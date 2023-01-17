@@ -38,5 +38,5 @@ compileTestKotlin.kotlinOptions {
 }
 
 tasks.getByName<Jar>("jar") {
-    destinationDirectory.set(file("$rootDir"))
+    destinationDirectory.set(file("$rootDir\\assets"))
 }
