@@ -5,7 +5,7 @@ import webstreamengine.client.application.WebStreamApplication
 import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.entities.Entity
 
-object Tester : WebStreamApplication() {
+public class Tester : WebStreamApplication() {
     override fun start() {
         // setup some test stuffs
         val testentity = Entity()

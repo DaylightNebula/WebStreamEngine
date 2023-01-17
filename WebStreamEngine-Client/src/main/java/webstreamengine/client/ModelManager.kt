@@ -55,6 +55,14 @@ object ModelManager {
             return
         }
 
+        // check if the cache has a file for the given id, if so load that
+        val modelFile = File(System.getProperty("user.dir"), "cache/$id.g3dj")
+        if (modelFile.exists()) {
+            loadLocal(id, modelFile.absolutePath)
+            entity.addComponent(ModelComponent(entity, createModelInstance(id)!!))
+            return
+        }
+
         // add to waiting list
         var list = waitingForModel[id]
         if (list == null) {
@@ -77,12 +85,12 @@ object ModelManager {
 
     fun handleModelDelivery(id: String, bytes: ByteArray) {
         // write file bytes to a temporary file
-        val file = File(System.getProperty("user.dir"), "tmp/$id.g3dj")
+        val file = File(System.getProperty("user.dir"), "cache/$id.g3dj")
+        file.parentFile.mkdirs()
         file.writeBytes(bytes)
 
         // load file
         loadLocal(id, file.absolutePath)
-        file.delete()
 
         // remove requested id
         requestedIDs.remove(id)

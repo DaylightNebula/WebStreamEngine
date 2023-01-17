@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.core.*
+import java.io.File
+import java.lang.NullPointerException
 import java.net.Socket
 
 lateinit var conn: Connection
@@ -37,6 +39,12 @@ object ClientMain: ApplicationAdapter() {
             System.err.println("Unable to connect to server! ${ex.message}")
         }
 
+        // todo load from server
+        JarInterface.init(
+            File(System.getProperty("user.dir")).listFiles()?.first { it.extension == "jar" }
+                ?: throw NullPointerException("No jar in root directory found")
+        )
+
         // setup model batch for rendering
         modelbatch = ModelBatch()
 
@@ -47,11 +55,17 @@ object ClientMain: ApplicationAdapter() {
         cam.near = .1f
         cam.far = 1000f
         cam.update()
+
+        // start app
+        JarInterface.getApp().start()
     }
 
     override fun render() {
         // handle incoming pockets
         if (conn.isDataAvailable()) ClientPacketHandler.handlePacket(conn.getDataPacket())
+
+        // update app
+        JarInterface.getApp().update()
 
         // clear screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.width, Gdx.graphics.height)
@@ -68,6 +82,10 @@ object ClientMain: ApplicationAdapter() {
     }
 
     override fun dispose() {
+        // stop app
+        JarInterface.getApp().stop()
+
+        // dispose of all entities
         WebStreamInfo.entities.forEach { it.dispose() }
 
         // close socket
