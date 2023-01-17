@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.JsonReader
 import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.ModelComponent
+import webstreamengine.client.entities.components.ModelComponent
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
