@@ -16,8 +16,20 @@ object JarInterface {
             this.javaClass.classLoader
         )
 
-        // get target class and its constructor todo dynamically load main class
-        val initAppClass = Class.forName("webstreamengine.test.Tester", true, loader)
+        // load options from loadconfig.txt
+        println("Loading config options")
+        val configtext = File(System.getProperty("user.dir"), "loadconfig.txt")
+        val configlines = configtext.readLines()
+        val configoptions = hashMapOf<String, String>()
+        configlines.forEach { line ->
+            val tokens = line.split("=", limit = 2)
+            configoptions[tokens[0]] = tokens[1]
+            println("Option ${tokens[0]} set to ${tokens[1]}")
+        }
+        println("Finished loading config options")
+
+        // get target class and its constructor
+        val initAppClass = Class.forName(configoptions["MAIN_CLASS"], true, loader)
         val initAppConstructor = initAppClass.getDeclaredConstructor()
 
         // try to set accessible
