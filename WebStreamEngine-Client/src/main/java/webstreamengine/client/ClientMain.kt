@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.graphics.g3d.ModelBatch
+import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.core.*
 import java.net.Socket
@@ -28,8 +29,6 @@ object ClientMain: ApplicationAdapter() {
     lateinit var cam: PerspectiveCamera
     lateinit var modelbatch: ModelBatch
 
-    val entities = mutableListOf<Entity>()
-
     override fun create() {
         // create connection to server
         try {
@@ -48,19 +47,6 @@ object ClientMain: ApplicationAdapter() {
         cam.near = .1f
         cam.far = 1000f
         cam.update()
-
-        // setup some test stuffs
-        val testentity = Entity()
-        ModelManager.applyModelToEntity(testentity, "barracks")
-        addEntity(testentity)
-    }
-
-    fun addEntity(entity: Entity) {
-        entities.add(entity)
-    }
-
-    fun removeEntity(entity: Entity) {
-        entities.remove(entity)
     }
 
     override fun render() {
@@ -75,14 +61,14 @@ object ClientMain: ApplicationAdapter() {
         modelbatch.begin(cam)
 
         // draw entities
-        entities.forEach { it.render(modelbatch) }
+        WebStreamInfo.entities.forEach { it.render(modelbatch) }
 
         // end 3d draw
         modelbatch.end()
     }
 
     override fun dispose() {
-        entities.forEach { it.dispose() }
+        WebStreamInfo.entities.forEach { it.dispose() }
 
         // close socket
         conn.socket.close()

@@ -4,3 +4,7 @@
 gradlew
 gradlew.bat
 WebStreamEngine.iml
+/WebStreamEngine-Test/build/
+/WebStreamEngine-Server/build/
+/WebStreamEngine-Core/build/
+/WebStreamEngine-Client/build/
