@@ -36,3 +36,7 @@ val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
+
+tasks.getByName<Jar>("jar") {
+    destinationDirectory.set(file("$rootDir"))
+}
