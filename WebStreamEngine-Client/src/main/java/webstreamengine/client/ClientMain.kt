@@ -55,16 +55,6 @@ object ClientMain: ApplicationAdapter() {
         // initialize ui handler
         UIHandler.init()
 
-        // test ui
-        val testbutton = UIImageButton(
-            "play_button",
-            0.1f, 0.1f,
-            0.27f, 0.27f
-        ) {
-            println("Button click $it")
-        }
-        UIHandler.addUIElement(testbutton)
-
         // send request for jar file
         conn.sendPacket(PacketUtils.generatePacket(PacketType.REQUEST_JAR, byteArrayOf()))
     }

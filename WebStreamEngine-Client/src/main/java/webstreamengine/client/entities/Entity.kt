@@ -1,9 +1,8 @@
 package webstreamengine.client.entities
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch
-import com.badlogic.gdx.graphics.g3d.ModelInstance
-import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.managers.ModelManager
 
 class Entity(
     private var position: Vector3 = Vector3(0f, 0f, 0f),
@@ -12,6 +11,10 @@ class Entity(
 ) {
     private val components = mutableListOf<EntityComponent>()
     val transformChangeCallbacks = mutableListOf<(entity: Entity) -> Unit>()
+
+    fun addModelComponent(modelID: String) {
+        ModelManager.applyModelToEntity(this, modelID)
+    }
 
     fun setModelInstance() {
         updateInstanceTransform()
