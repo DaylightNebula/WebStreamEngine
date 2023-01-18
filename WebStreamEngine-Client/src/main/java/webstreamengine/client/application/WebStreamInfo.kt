@@ -13,8 +13,13 @@ object WebStreamInfo {
     val entities = mutableListOf<Entity>()
 
     fun initCamera() {
+        // create basic camera
         cam = PerspectiveCamera(67f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        cam.position.set(10f, 10f, 10f)
+        cam.position.set(0f, 0f, 0f)
+        cam.lookAt(0f, 0f, 10f)
+        cam.near = .1f
+        cam.far = 1000f
+        cam.update()
     }
 
     fun addEntity(entity: Entity) {

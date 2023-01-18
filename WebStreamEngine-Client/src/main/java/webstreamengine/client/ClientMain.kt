@@ -30,7 +30,6 @@ fun main() {
 
 object ClientMain: ApplicationAdapter() {
 
-    lateinit var cam: PerspectiveCamera
     lateinit var modelbatch: ModelBatch
 
     override fun create() {
@@ -41,16 +40,10 @@ object ClientMain: ApplicationAdapter() {
             System.err.println("Unable to connect to server! ${ex.message}")
         }
 
+        WebStreamInfo.initCamera()
+
         // setup model batch for rendering
         modelbatch = ModelBatch()
-
-        // setup camera
-        cam = PerspectiveCamera(67f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        cam.position.set(10f, 10f, 10f)
-        cam.lookAt(0f, 0f, 0f)
-        cam.near = .1f
-        cam.far = 1000f
-        cam.update()
 
         // send request for jar file
         conn.sendPacket(PacketUtils.generatePacket(PacketType.REQUEST_JAR, byteArrayOf()))
@@ -68,7 +61,7 @@ object ClientMain: ApplicationAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
         // start 3d draw
-        modelbatch.begin(cam)
+        modelbatch.begin(WebStreamInfo.cam)
 
         // draw entities
         WebStreamInfo.entities.forEach { it.render(modelbatch) }
