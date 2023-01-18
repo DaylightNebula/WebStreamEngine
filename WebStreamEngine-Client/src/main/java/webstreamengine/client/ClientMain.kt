@@ -4,15 +4,14 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.PerspectiveCamera
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
-import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.WebStreamInfo
-import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.components.DirectionalLightComponent
-import webstreamengine.client.entities.components.PointLightComponent
+import webstreamengine.client.ui.elements.UIImageButton
 import webstreamengine.core.*
 import java.net.Socket
 
@@ -31,6 +30,10 @@ fun main() {
 object ClientMain: ApplicationAdapter() {
 
     lateinit var modelbatch: ModelBatch
+    lateinit var spritebatch: SpriteBatch
+    lateinit var stage: Stage
+
+    lateinit var testtexture: TextureRegionDrawable
 
     override fun create() {
         // create connection to server
@@ -40,10 +43,25 @@ object ClientMain: ApplicationAdapter() {
             System.err.println("Unable to connect to server! ${ex.message}")
         }
 
+        // setup batches for rendering
+        modelbatch = ModelBatch()
+        spritebatch = SpriteBatch()
+
+        // setup camera
         WebStreamInfo.initCamera()
 
-        // setup model batch for rendering
-        modelbatch = ModelBatch()
+        // initialize ui handler
+        UIHandler.init()
+
+        // test ui
+        val testbutton = UIImageButton(
+            "play_button",
+            0.1f, 0.1f,
+            0.27f, 0.27f
+        ) {
+            println("Button click $it")
+        }
+        UIHandler.addUIElement(testbutton)
 
         // send request for jar file
         conn.sendPacket(PacketUtils.generatePacket(PacketType.REQUEST_JAR, byteArrayOf()))
@@ -68,11 +86,19 @@ object ClientMain: ApplicationAdapter() {
 
         // end 3d draw
         modelbatch.end()
+
+        // draw test ui
+        spritebatch.begin()
+        UIHandler.renderUI()
+        spritebatch.end()
     }
 
     override fun dispose() {
         // stop app
         JarInterface.getApp()?.stop()
+
+        // dispose UI
+        UIHandler.dispose()
 
         // dispose of all entities
         WebStreamInfo.entities.forEach { it.dispose() }
@@ -82,6 +108,7 @@ object ClientMain: ApplicationAdapter() {
 
         // close batches
         modelbatch.dispose()
+        spritebatch.dispose()
 
         // tell managers to dispose
         ModelManager.dispose()
