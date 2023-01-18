@@ -9,3 +9,4 @@ gradlew.bat
 WebStreamEngine.iml
 WebStreamEngine-Test-0.0.1.jar
 *.jar
+/cache/
