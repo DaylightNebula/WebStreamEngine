@@ -30,6 +30,10 @@ dependencies {
     // GLTF/GLB file loader stuffs
     implementation("com.github.mgsx-dev.gdx-gltf:gltf:2.1.0")
     implementation("com.github.mgsx-dev.gdx-gltf:gltf:2.1.0:sources")
+
+    // bullet stuffs
+    implementation("com.badlogicgames.gdx:gdx-bullet:1.11.0")
+    implementation("com.badlogicgames.gdx:gdx-bullet-platform:1.11.0:natives-desktop")
 }
 
 tasks.getByName<Test>("test") {

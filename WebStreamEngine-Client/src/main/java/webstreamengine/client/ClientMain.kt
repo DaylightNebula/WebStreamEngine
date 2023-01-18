@@ -2,6 +2,8 @@ package webstreamengine.client
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.graphics.GL20
@@ -9,9 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.WebStreamInfo
+import webstreamengine.client.managers.InputProcessorManager
 import webstreamengine.client.managers.ModelManager
+import webstreamengine.client.managers.PhysicsManager
 import webstreamengine.client.managers.TextureManager
 import webstreamengine.client.ui.elements.UIImageButton
 import webstreamengine.core.*
@@ -45,6 +51,12 @@ object ClientMain: ApplicationAdapter() {
             System.err.println("Unable to connect to server! ${ex.message}")
         }
 
+        // setup input
+        InputProcessorManager.init()
+
+        // setup physics
+        PhysicsManager.init()
+
         // setup batches for rendering
         modelbatch = ModelBatch()
         spritebatch = SpriteBatch()
@@ -57,6 +69,17 @@ object ClientMain: ApplicationAdapter() {
 
         // send request for jar file
         conn.sendPacket(PacketUtils.generatePacket(PacketType.REQUEST_JAR, byteArrayOf()))
+
+        // test ray cast thing
+        InputProcessorManager.addProcessor(object : InputAdapter() {
+            override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+                val pickRay = WebStreamInfo.cam.getPickRay(screenX.toFloat(), screenY.toFloat())
+                val hit = PhysicsManager.rayCast(pickRay)
+                println("Ray Cast hit $hit")
+
+                return true
+            }
+        })
     }
 
     override fun render() {

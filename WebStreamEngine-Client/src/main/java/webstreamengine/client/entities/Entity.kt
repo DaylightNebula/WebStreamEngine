@@ -1,6 +1,8 @@
 package webstreamengine.client.entities
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch
+import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.managers.ModelManager
 
@@ -14,6 +16,15 @@ class Entity(
 
     fun addModelComponent(modelID: String) {
         ModelManager.applyModelToEntity(this, modelID)
+    }
+
+    fun generateTransformationMatrix(offset: Vector3 = Vector3(0f, 0f, 0f)): Matrix4 {
+        val matrix = Matrix4()
+        matrix.idt()
+        matrix.scale(scale.x, scale.y, scale.z)
+        matrix.rotate(Quaternion().setEulerAngles(rotation.x, rotation.y, rotation.z))
+        matrix.translate(position.x + offset.x, position.y + offset.y, position.z + offset.z)
+        return matrix
     }
 
     fun setModelInstance() {

@@ -7,16 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import webstreamengine.client.managers.InputProcessorManager
 
 object UIHandler {
     
-    private val stage = Stage()
+    val stage = Stage()
     private val elements = mutableListOf<UIElement>()
     private val waitingForActor = mutableListOf<UIElement>()
     
     fun init() {
         // set stage as an active input processor
-        Gdx.input.inputProcessor = stage
+        InputProcessorManager.addProcessor(stage)
     }
 
     fun addUIElement(element: UIElement) {

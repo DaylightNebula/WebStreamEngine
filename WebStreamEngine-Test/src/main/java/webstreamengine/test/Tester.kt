@@ -6,6 +6,7 @@ import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.application.WebStreamApplication
 import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.entities.Entity
+import webstreamengine.client.entities.components.SpherePhysicsComponent
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.ui.elements.UIImageButton
 
@@ -15,6 +16,7 @@ public class Tester : WebStreamApplication() {
         val testentity = Entity()
         testentity.addModelComponent("barracks")
         testentity.move(Vector3(0f, 0f, 10f))
+        testentity.addComponent(SpherePhysicsComponent(testentity, Vector3(0f, 0.5f, 0f), 1f))
         WebStreamInfo.addEntity(testentity)
 
         // test ui

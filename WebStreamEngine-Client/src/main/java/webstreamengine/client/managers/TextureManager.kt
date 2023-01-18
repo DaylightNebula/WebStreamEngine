@@ -78,7 +78,6 @@ object TextureManager {
     }
 
     private fun applyLoadedTextureToAny(any: Any, texture: Texture) {
-        println("Trying to apply texture to $any")
         if (any is UIImageButton)
             any.handleTextureAssign(texture)
         else
