@@ -69,17 +69,6 @@ object ClientMain: ApplicationAdapter() {
 
         // send request for jar file
         conn.sendPacket(PacketUtils.generatePacket(PacketType.REQUEST_JAR, byteArrayOf()))
-
-        // test ray cast thing
-        InputProcessorManager.addProcessor(object : InputAdapter() {
-            override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-                val pickRay = WebStreamInfo.cam.getPickRay(screenX.toFloat(), screenY.toFloat())
-                val hit = PhysicsManager.rayCast(pickRay)
-                println("Ray Cast hit $hit")
-
-                return true
-            }
-        })
     }
 
     override fun render() {
