@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 object UIHandler {
     
     private val stage = Stage()
+    private val elements = mutableListOf<UIElement>()
+    private val waitingForActor = mutableListOf<UIElement>()
     
     fun init() {
         // set stage as an active input processor
@@ -18,18 +20,32 @@ object UIHandler {
     }
 
     fun addUIElement(element: UIElement) {
-        stage.addActor(element.actor)
+        waitingForActor.add(element)
     }
 
     fun removeUIElement(element: UIElement) {
-        element.actor.remove()
+        elements.remove(element)
+        waitingForActor.remove(element)
+        element.actor?.remove()
     }
 
     fun clearUI() {
         stage.clear()
+        elements.clear()
+        waitingForActor.clear()
     }
     
     fun renderUI() {
+        // for each element that is waiting for an actor, check if it has an actor, if so, move it to the active elements list and add it to the active stage
+        waitingForActor.forEach { element ->
+            if (element.isReady()) {
+                elements.add(element)
+                stage.addActor(element.actor!!)
+            }
+        }
+        waitingForActor.removeIf { it.isReady() }
+
+        // draw stage
         stage.draw()
     }
     

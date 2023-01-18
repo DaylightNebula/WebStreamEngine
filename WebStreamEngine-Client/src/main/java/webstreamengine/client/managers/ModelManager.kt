@@ -1,4 +1,4 @@
-package webstreamengine.client
+package webstreamengine.client.managers
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.JsonReader
+import webstreamengine.client.conn
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.components.ModelComponent
 import webstreamengine.core.ByteUtils
@@ -84,7 +85,7 @@ object ModelManager {
     }
 
     fun handleModelDelivery(id: String, bytes: ByteArray) {
-        // write file bytes to a temporary file
+        // write file bytes to a cache file
         val file = File(System.getProperty("user.dir"), "cache/$id.g3dj")
         file.parentFile.mkdirs()
         file.writeBytes(bytes)

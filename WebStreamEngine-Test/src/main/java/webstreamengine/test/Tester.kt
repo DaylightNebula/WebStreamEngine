@@ -2,7 +2,7 @@ package webstreamengine.test
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector3
-import webstreamengine.client.ModelManager
+import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.application.WebStreamApplication
 import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.entities.Entity

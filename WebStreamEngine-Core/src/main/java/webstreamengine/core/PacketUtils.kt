@@ -18,5 +18,7 @@ enum class PacketType {
     REQUEST_MODEL,
     DELIVER_MODEL,
     REQUEST_JAR,
-    DELIVER_JAR
+    DELIVER_JAR,
+    REQUEST_IMAGE,
+    DELIVER_IMAGE
 }

@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.WebStreamInfo
+import webstreamengine.client.managers.ModelManager
+import webstreamengine.client.managers.TextureManager
 import webstreamengine.client.ui.elements.UIImageButton
 import webstreamengine.core.*
 import java.net.Socket

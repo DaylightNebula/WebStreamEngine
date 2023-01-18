@@ -12,13 +12,15 @@ class UITextButton(
     widthFraction: Float, heightFraction: Float,
     val clickCallback: (button: UITextButton) -> Unit
 ): UIBoundedElement(
-    TextButton(text, style),
     xFraction, yFraction, widthFraction, heightFraction
 ) {
     init {
+        // setup actor
+        actor = TextButton(text, style)
+
         // setup click callback
         val me = this
-        actor.addListener(object : ClickListener() {
+        actor!!.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 clickCallback(me)
             }

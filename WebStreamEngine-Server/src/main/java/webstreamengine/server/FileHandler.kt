@@ -6,6 +6,7 @@ import java.io.File
 object FileHandler {
 
     val modelFiles = hashMapOf<String, ByteArray>()
+    val imageFiles = hashMapOf<String, ByteArray>()
     lateinit var jarFile: ByteArray
 
     val rootDir = File(System.getProperty("user.dir"))
@@ -29,6 +30,8 @@ object FileHandler {
                 "g3dj" -> loadModel(it.nameWithoutExtension, it)
                 "fbx" -> loadModelWithFBXConversion(it.nameWithoutExtension, it)
                 "jar" -> loadJarFile(it)
+                "png" -> loadImage(it.nameWithoutExtension, it)
+                "jpg" -> loadImage(it.nameWithoutExtension, it)
             }
         }
     }
@@ -82,5 +85,14 @@ object FileHandler {
     fun loadJarFile(file: File) {
         jarFile = ByteUtils.convertByteArrayToByteArray(file.readBytes())
         println("Loaded jar file ${file.absolutePath}")
+    }
+
+    fun loadImage(id: String, file: File) {
+        if (imageFiles.containsKey(id)) return
+        imageFiles[id] = byteArrayOf(
+            *ByteUtils.convertStringToByteArray(id),
+            *ByteUtils.convertByteArrayToByteArray(file.readBytes())
+        )
+        println("Loaded image file ${file.absolutePath}")
     }
 }

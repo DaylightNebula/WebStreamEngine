@@ -17,13 +17,17 @@ object ServerPacketHandler {
         when (val type = PacketType.values()[typeOrdinal]) {
             PacketType.PING -> { }
             PacketType.REQUEST_MODEL -> {
+                // get model ID
                 val modelID = reader.nextString()
+
+                // try to get file bytes from the file handler by the given model ID
                 val fileBytes = FileHandler.modelFiles[modelID]
                 if (fileBytes == null) {
                     println("ERROR model $modelID was not found but requested")
                     return
                 }
 
+                // send back a model delivery packet
                 connection.sendPacket(
                     PacketUtils.generatePacket(
                         PacketType.DELIVER_MODEL,
@@ -32,10 +36,30 @@ object ServerPacketHandler {
                 )
             }
             PacketType.REQUEST_JAR -> {
+                // send back a jar delivery packet
                 connection.sendPacket(
                     PacketUtils.generatePacket(
                         PacketType.DELIVER_JAR,
                         FileHandler.jarFile
+                    )
+                )
+            }
+            PacketType.REQUEST_IMAGE -> {
+                // get image ID
+                val imageID = reader.nextString()
+
+                // try to get an image file byte by the id from the file handler
+                val fileBytes = FileHandler.imageFiles[imageID]
+                if (fileBytes == null) {
+                    println("ERROR image $imageID was not found but requested")
+                    return
+                }
+
+                // send back a image delivery packet
+                connection.sendPacket(
+                    PacketUtils.generatePacket(
+                        PacketType.DELIVER_IMAGE,
+                        fileBytes
                     )
                 )
             }
