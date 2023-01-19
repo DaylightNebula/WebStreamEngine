@@ -8,7 +8,7 @@ import kotlin.math.absoluteValue
 val port = 33215
 val socket = ServerSocket(port)
 
-val msPerTick = 10
+val msPerTick = 30
 val connections = mutableListOf<Connection>()
 
 var jarMainClass = ""
@@ -37,6 +37,8 @@ fun main() {
     }
     acceptor.start()
 
+    println("Created acceptor")
+
     while(true) {
         // track the start time of the tick
         val tickStartTime = System.currentTimeMillis()
@@ -44,12 +46,16 @@ fun main() {
         // update all connections
         updateConnections()
 
+        // update file handler
+        FileHandler.update()
+
         // make sure each tick has the appropriate timing
-        val timeToSleep = msPerTick - (System.currentTimeMillis() - tickStartTime)
+        val timeSinceStart = System.currentTimeMillis() - tickStartTime
+        val timeToSleep = msPerTick - timeSinceStart
         if (timeToSleep > 0)
             Thread.sleep(timeToSleep)
         else
-            println("WARN - Last tick took longer then the set milliseconds per tick ($msPerTick), it took ${timeToSleep.absoluteValue} MS to long")
+            println("WARN - Last tick took longer then the set milliseconds per tick ($msPerTick), it took ${timeToSleep.absoluteValue} MS to long, tick lasted $timeSinceStart MS")
     }
 }
 
