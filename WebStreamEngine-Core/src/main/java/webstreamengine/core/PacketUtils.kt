@@ -20,5 +20,9 @@ enum class PacketType {
     REQUEST_JAR,
     DELIVER_JAR,
     REQUEST_IMAGE,
-    DELIVER_IMAGE
+    DELIVER_IMAGE,
+    REQUEST_SOUND,
+    DELIVER_MP3,
+    DELIVER_WAV,
+    DELIVER_OGG
 }

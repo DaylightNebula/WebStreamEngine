@@ -15,14 +15,8 @@ object TextureManager {
     private val requestedIDs = mutableListOf<String>()
     private val waitingForTexture = hashMapOf<String, MutableList<Any>>()
 
-    lateinit var blankTexture: Texture
-
-    fun isIDInUse(id: String): Boolean {
-        return textureMap.containsKey(id) || requestedIDs.contains(id)
-    }
-
     fun loadLocal(id: String, path: String) {
-        textureMap[id] = Texture(Gdx.files.internal(path))
+        textureMap[id] = Texture(Gdx.files.absolute(path))
     }
 
     fun applyTextureToTarget(target: Any, id: String) {
@@ -37,6 +31,7 @@ object TextureManager {
         if (textureFile.exists()) {
             loadLocal(id, textureFile.absolutePath)
             applyLoadedTextureToAny(target, textureMap[id]!!)
+            return
         }
 
         // if we made it this far, add the given target to the waiting list
@@ -74,7 +69,7 @@ object TextureManager {
         // update all targets waiting for this texture
         val texture = textureMap[id]!!
         waitingForTexture[id]?.forEach { applyLoadedTextureToAny(it, texture) }
-        waitingForTexture.clear()
+        waitingForTexture[id]?.clear()
     }
 
     private fun applyLoadedTextureToAny(any: Any, texture: Texture) {

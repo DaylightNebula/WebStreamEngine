@@ -7,6 +7,9 @@ object FileHandler {
 
     val modelFiles = hashMapOf<String, ByteArray>()
     val imageFiles = hashMapOf<String, ByteArray>()
+    val mp3Files = hashMapOf<String, ByteArray>()
+    val wavFiles = hashMapOf<String, ByteArray>()
+    val oggFiles = hashMapOf<String, ByteArray>()
     lateinit var jarFile: ByteArray
 
     val rootDir = File(System.getProperty("user.dir"))
@@ -32,6 +35,9 @@ object FileHandler {
                 "jar" -> loadJarFile(it)
                 "png" -> loadImage(it.nameWithoutExtension, it)
                 "jpg" -> loadImage(it.nameWithoutExtension, it)
+                "mp3" -> loadMP3(it.nameWithoutExtension, it)
+                "wav" -> loadWav(it.nameWithoutExtension, it)
+                "ogg" -> loadOgg(it.nameWithoutExtension, it)
             }
         }
     }
@@ -94,5 +100,32 @@ object FileHandler {
             *ByteUtils.convertByteArrayToByteArray(file.readBytes())
         )
         println("Loaded image file ${file.absolutePath}")
+    }
+
+    fun loadMP3(id: String, file: File) {
+        if (mp3Files.containsKey(id)) return
+        mp3Files[id] = byteArrayOf(
+            *ByteUtils.convertStringToByteArray(id),
+            *ByteUtils.convertByteArrayToByteArray(file.readBytes())
+        )
+        println("Loaded mp3 file ${file.absolutePath}")
+    }
+
+    fun loadWav(id: String, file: File) {
+        if (wavFiles.containsKey(id)) return
+        wavFiles[id] = byteArrayOf(
+            *ByteUtils.convertStringToByteArray(id),
+            *ByteUtils.convertByteArrayToByteArray(file.readBytes())
+        )
+        println("Loaded mp3 file ${file.absolutePath}")
+    }
+
+    fun loadOgg(id: String, file: File) {
+        if (oggFiles.containsKey(id)) return
+        oggFiles[id] = byteArrayOf(
+            *ByteUtils.convertStringToByteArray(id),
+            *ByteUtils.convertByteArrayToByteArray(file.readBytes())
+        )
+        println("Loaded mp3 file ${file.absolutePath}")
     }
 }

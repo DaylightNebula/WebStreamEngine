@@ -1,6 +1,7 @@
 package webstreamengine.client
 
 import webstreamengine.client.managers.ModelManager
+import webstreamengine.client.managers.SoundManager
 import webstreamengine.client.managers.TextureManager
 import webstreamengine.core.ByteReader
 import webstreamengine.core.PacketType
@@ -49,6 +50,36 @@ object ClientPacketHandler {
 
                 // call handle delivery of the texture
                 TextureManager.handleTextureDelivery(id, bytes)
+            }
+            PacketType.DELIVER_MP3 -> {
+                // get sound id
+                val id = reader.nextString()
+
+                // get image bytes
+                val bytes = reader.nextByteArray()
+
+                // call handle delivery of the sound
+                SoundManager.handleMP3Delivery(id, bytes)
+            }
+            PacketType.DELIVER_OGG -> {
+                // get sound id
+                val id = reader.nextString()
+
+                // get image bytes
+                val bytes = reader.nextByteArray()
+
+                // call handle delivery of the sound
+                SoundManager.handleOggDelivery(id, bytes)
+            }
+            PacketType.DELIVER_WAV -> {
+                // get sound id
+                val id = reader.nextString()
+
+                // get image bytes
+                val bytes = reader.nextByteArray()
+
+                // call handle delivery of the sound
+                SoundManager.handleWavDelivery(id, bytes)
             }
             else -> { println("Unknown packet type $type") }
         }

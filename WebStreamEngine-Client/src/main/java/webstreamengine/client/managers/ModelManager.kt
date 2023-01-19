@@ -99,7 +99,7 @@ object ModelManager {
         // update all entities waiting for this mesh
         val model = modelMap[id]!!
         waitingForModel[id]?.forEach { it.addComponent(ModelComponent(it, ModelInstance(model))) }
-        waitingForModel.clear()
+        waitingForModel[id]?.clear()
     }
 
     fun createModelInstance(id: String): ModelInstance? {

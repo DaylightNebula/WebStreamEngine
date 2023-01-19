@@ -16,10 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.inputs.InputManager
-import webstreamengine.client.managers.InputProcessorManager
-import webstreamengine.client.managers.ModelManager
-import webstreamengine.client.managers.PhysicsManager
-import webstreamengine.client.managers.TextureManager
+import webstreamengine.client.managers.*
 import webstreamengine.client.ui.elements.UIImageButton
 import webstreamengine.core.*
 import java.net.Socket
@@ -122,5 +119,6 @@ object ClientMain: ApplicationAdapter() {
         // tell managers to dispose
         ModelManager.dispose()
         TextureManager.dispose()
+        SoundManager.dispose()
     }
 }

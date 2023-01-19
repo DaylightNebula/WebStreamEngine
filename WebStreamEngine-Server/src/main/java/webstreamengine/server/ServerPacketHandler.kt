@@ -63,6 +63,36 @@ object ServerPacketHandler {
                     )
                 )
             }
+            PacketType.REQUEST_SOUND -> {
+                // get sound id
+                val soundID = reader.nextString()
+
+                // try to get a sound file byte array by the id from the file handler
+                var type = PacketType.DELIVER_MP3
+                var fileBytes = FileHandler.mp3Files[soundID]
+                if (fileBytes == null) {
+                    fileBytes = FileHandler.wavFiles[soundID]
+                    type = PacketType.DELIVER_WAV
+
+                    if (fileBytes == null) {
+                        fileBytes = FileHandler.oggFiles[soundID]
+                        type = PacketType.DELIVER_OGG
+
+                        if (fileBytes == null) {
+                            println("ERROR sound $soundID was not found but requested")
+                            return
+                        }
+                    }
+                }
+
+                // send back a sound delivery packet
+                connection.sendPacket(
+                    PacketUtils.generatePacket(
+                        type,
+                        fileBytes
+                    )
+                )
+            }
             else -> { println("Unknown packet type $type") }
         }
     }
