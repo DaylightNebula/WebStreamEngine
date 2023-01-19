@@ -1,5 +1,6 @@
 package webstreamengine.test
 
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector3
@@ -8,6 +9,7 @@ import webstreamengine.client.application.WebStreamApplication
 import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.components.SpherePhysicsComponent
+import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.InputProcessorManager
 import webstreamengine.client.managers.PhysicsManager
 import webstreamengine.client.ui.UIHandler
@@ -34,21 +36,15 @@ public class Tester : WebStreamApplication() {
 
         // set ambient light
         WebStreamInfo.setAmbientLight(Color.WHITE)
-
-        // test ray cast thing
-        InputProcessorManager.addProcessor(object : InputAdapter() {
-            override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-                val pickRay = WebStreamInfo.cam.getPickRay(screenX.toFloat(), screenY.toFloat())
-                val hit = PhysicsManager.rayCast(pickRay)
-                println("Ray Cast hit $hit")
-
-                return true
-            }
-        })
     }
 
     override fun update() {
-
+        // test ray cast thing
+        if (InputManager.isMouseButtonUp(Input.Buttons.LEFT)) {
+            val pickRay = WebStreamInfo.cam.getPickRay(InputManager.mouseX.toFloat(), InputManager.mouseY.toFloat())
+            val hit = PhysicsManager.rayCast(pickRay)
+            println("Ray Cast hit $hit")
+        }
     }
 
     override fun stop() {

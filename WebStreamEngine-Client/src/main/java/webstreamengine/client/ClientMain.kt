@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.WebStreamInfo
+import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.InputProcessorManager
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.managers.PhysicsManager
@@ -53,6 +54,7 @@ object ClientMain: ApplicationAdapter() {
 
         // setup input
         InputProcessorManager.init()
+        InputManager.init()
 
         // setup physics
         PhysicsManager.init()
@@ -77,6 +79,9 @@ object ClientMain: ApplicationAdapter() {
 
         // update app
         JarInterface.getApp()?.update()
+
+        // update input
+        InputManager.update()
 
         // clear screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.width, Gdx.graphics.height)
