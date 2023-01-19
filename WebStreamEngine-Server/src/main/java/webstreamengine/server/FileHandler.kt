@@ -140,6 +140,8 @@ object FileHandler {
         // wait for the conversion process to end
         process.waitFor()
 
+        file.delete()
+
         // load final model
         loadModel(id, finalFile)
     }
