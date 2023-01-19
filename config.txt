@@ -1,0 +1,2 @@
+MAIN_CLASS=webstreamengine.test.Tester
+ALLOW_RELOAD=True

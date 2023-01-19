@@ -29,6 +29,9 @@ object ClientPacketHandler {
                 ModelManager.handleModelDelivery(id, fileBytes)
             }
             PacketType.DELIVER_JAR -> {
+                // get main class
+                val mainClass = reader.nextString()
+
                 // get file bytes
                 val fileBytes = reader.nextByteArray()
 
@@ -39,6 +42,7 @@ object ClientPacketHandler {
                 file.writeBytes(fileBytes)
 
                 // initialize jar interface with this file
+                JarInterface.mainClass = mainClass
                 JarInterface.init(file)
             }
             PacketType.DELIVER_IMAGE -> {

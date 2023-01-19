@@ -89,7 +89,10 @@ object FileHandler {
     }
 
     fun loadJarFile(file: File) {
-        jarFile = ByteUtils.convertByteArrayToByteArray(file.readBytes())
+        jarFile = byteArrayOf(
+            *ByteUtils.convertStringToByteArray(jarMainClass),
+            *ByteUtils.convertByteArrayToByteArray(file.readBytes())
+        )
         println("Loaded jar file ${file.absolutePath}")
     }
 
