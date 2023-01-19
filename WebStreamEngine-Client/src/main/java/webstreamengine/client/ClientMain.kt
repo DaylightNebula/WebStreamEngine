@@ -121,5 +121,6 @@ object ClientMain: ApplicationAdapter() {
 
         // tell managers to dispose
         ModelManager.dispose()
+        TextureManager.dispose()
     }
 }

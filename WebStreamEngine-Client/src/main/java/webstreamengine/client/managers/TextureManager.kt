@@ -83,4 +83,8 @@ object TextureManager {
         else
             System.err.println("No texture application methods created for target type ${any.javaClass}")
     }
+
+    fun dispose() {
+        textureMap.values.forEach { it.dispose() }
+    }
 }
