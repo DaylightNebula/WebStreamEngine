@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("java")
     kotlin("jvm") version "1.8.0-RC2"
+    id("com.github.johnrengelman.shadow") version "4.0.4"
 }
 
 group = "webstreamengine.client"
@@ -46,4 +47,20 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
+}
+
+tasks {
+    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+        archiveBaseName.set("WebStreamEngine-Client")
+        mergeServiceFiles()
+        manifest {
+            attributes(mapOf("Main-Class" to "webstreamengine.client.ClientMainKt"))
+        }
+    }
+}
+
+tasks {
+    build {
+        dependsOn(shadowJar)
+    }
 }
