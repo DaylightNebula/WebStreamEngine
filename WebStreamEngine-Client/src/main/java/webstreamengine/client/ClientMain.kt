@@ -77,6 +77,9 @@ object ClientMain: ApplicationAdapter() {
         // update app
         JarInterface.getApp()?.update()
 
+        // update entities
+        WebStreamInfo.entities.forEach { it.update() }
+
         // update input
         InputManager.update()
 
