@@ -48,7 +48,6 @@ class UIText(
         val label = Label(text, buildStyle(font))
         label.setBounds(x, y, width, height)
         label.setAlignment(align)
-        label.debug = true
         actor = label
 
         // setup width
