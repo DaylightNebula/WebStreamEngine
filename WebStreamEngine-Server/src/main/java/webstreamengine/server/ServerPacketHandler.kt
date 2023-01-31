@@ -93,6 +93,21 @@ object ServerPacketHandler {
                     )
                 )
             }
+            PacketType.REQUEST_FONT -> {
+                val fontID = reader.nextString()
+                val fileBytes = FileHandler.fontFiles[fontID]
+                if (fileBytes == null) {
+                    println("ERROR font $fontID was not found but requested")
+                    return
+                }
+
+                connection.sendPacket(
+                    PacketUtils.generatePacket(
+                        PacketType.DELIVER_FONT,
+                        fileBytes
+                    )
+                )
+            }
             else -> { println("Unknown packet type $type") }
         }
     }

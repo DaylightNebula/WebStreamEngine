@@ -13,6 +13,7 @@ object FileHandler {
     val mp3Files = hashMapOf<String, ByteArray>()
     val wavFiles = hashMapOf<String, ByteArray>()
     val oggFiles = hashMapOf<String, ByteArray>()
+    val fontFiles = hashMapOf<String, ByteArray>()
     var jarFile = byteArrayOf()
 
     private val rootDir = File(System.getProperty("user.dir"))
@@ -70,6 +71,7 @@ object FileHandler {
             mp3Files.clear()
             wavFiles.clear()
             oggFiles.clear()
+            fontFiles.clear()
             beginLoad(false)
         }
     }
@@ -103,6 +105,7 @@ object FileHandler {
                 "mp3" -> loadMP3(it.nameWithoutExtension, it)
                 "wav" -> loadWav(it.nameWithoutExtension, it)
                 "ogg" -> loadOgg(it.nameWithoutExtension, it)
+                "ttf" -> loadFont(it.nameWithoutExtension, it)
             }
         }
     }
@@ -187,7 +190,7 @@ object FileHandler {
             *ByteUtils.convertStringToByteArray(id),
             *ByteUtils.convertByteArrayToByteArray(file.readBytes())
         )
-        println("Loaded mp3 file ${file.absolutePath}")
+        println("Loaded wav file ${file.absolutePath}")
     }
 
     private fun loadOgg(id: String, file: File) {
@@ -196,6 +199,15 @@ object FileHandler {
             *ByteUtils.convertStringToByteArray(id),
             *ByteUtils.convertByteArrayToByteArray(file.readBytes())
         )
-        println("Loaded mp3 file ${file.absolutePath}")
+        println("Loaded ogg file ${file.absolutePath}")
+    }
+
+    private fun loadFont(id: String, file: File) {
+        if (fontFiles.containsKey(id)) return
+        fontFiles[id] = byteArrayOf(
+            *ByteUtils.convertStringToByteArray(id),
+            *ByteUtils.convertByteArrayToByteArray(file.readBytes())
+        )
+        println("Loaded font file ${file.absolutePath}")
     }
 }

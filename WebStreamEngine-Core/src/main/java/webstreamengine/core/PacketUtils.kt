@@ -24,5 +24,7 @@ enum class PacketType {
     REQUEST_SOUND,
     DELIVER_MP3,
     DELIVER_WAV,
-    DELIVER_OGG
+    DELIVER_OGG,
+    REQUEST_FONT,
+    DELIVER_FONT
 }

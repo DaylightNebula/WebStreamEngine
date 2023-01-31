@@ -1,5 +1,6 @@
 package webstreamengine.client
 
+import webstreamengine.client.managers.FontManager
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.managers.SoundManager
 import webstreamengine.client.managers.TextureManager
@@ -84,6 +85,11 @@ object ClientPacketHandler {
 
                 // call handle delivery of the sound
                 SoundManager.handleWavDelivery(id, bytes)
+            }
+            PacketType.DELIVER_FONT -> {
+                val id = reader.nextString()
+                val bytes = reader.nextByteArray()
+                FontManager.handleFontDelivery(id, bytes)
             }
             else -> { println("Unknown packet type $type") }
         }

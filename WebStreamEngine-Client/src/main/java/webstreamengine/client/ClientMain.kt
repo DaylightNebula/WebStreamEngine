@@ -6,7 +6,9 @@ import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -18,6 +20,8 @@ import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.client.ui.elements.UIImageButton
+import webstreamengine.client.ui.elements.UIText
+import webstreamengine.client.ui.elements.UITextButton
 import webstreamengine.core.*
 import java.net.Socket
 

@@ -70,6 +70,7 @@ object TextureManager {
         val texture = textureMap[id]!!
         waitingForTexture[id]?.forEach { applyLoadedTextureToAny(it, texture) }
         waitingForTexture[id]?.clear()
+        waitingForTexture.remove(id)
     }
 
     private fun applyLoadedTextureToAny(any: Any, texture: Texture) {
