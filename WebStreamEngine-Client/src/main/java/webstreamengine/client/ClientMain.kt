@@ -19,6 +19,7 @@ import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.WebStreamInfo
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
+import webstreamengine.client.ui.elements.UIImage
 import webstreamengine.client.ui.elements.UIImageButton
 import webstreamengine.client.ui.elements.UIText
 import webstreamengine.client.ui.elements.UITextButton

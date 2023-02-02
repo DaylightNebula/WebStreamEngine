@@ -1,8 +1,10 @@
 package webstreamengine.client.managers
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import webstreamengine.client.conn
+import webstreamengine.client.ui.elements.UIImage
 import webstreamengine.client.ui.elements.UIImageButton
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
@@ -17,6 +19,24 @@ object TextureManager {
 
     fun loadLocal(id: String, path: String) {
         textureMap[id] = Texture(Gdx.files.absolute(path))
+    }
+
+    fun generateSimpleTexture(id: String, width: Int, height: Int, render: (pixmap: Pixmap) -> Unit) {
+        // make sure this is an empty id
+        if (textureMap.containsKey(id)) return
+
+        // generate the pix map
+        val pixmap = Pixmap(width, height, Pixmap.Format.RGBA8888)
+        render(pixmap)
+
+        // convert pix map to texture
+        val texture = Texture(pixmap)
+
+        // dispose of the pix map
+        pixmap.dispose()
+
+        // save texture
+        textureMap[id] = texture
     }
 
     fun applyTextureToTarget(target: Any, id: String) {
@@ -75,6 +95,8 @@ object TextureManager {
 
     private fun applyLoadedTextureToAny(any: Any, texture: Texture) {
         if (any is UIImageButton)
+            any.handleTextureAssign(texture)
+        else if (any is UIImage)
             any.handleTextureAssign(texture)
         else
             System.err.println("No texture application methods created for target type ${any.javaClass}")

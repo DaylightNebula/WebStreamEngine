@@ -3,18 +3,17 @@ package webstreamengine.client.ui.elements
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import webstreamengine.client.managers.TextureManager
-import webstreamengine.client.ui.UIBoundedElement
 import webstreamengine.client.ui.UIElement
 
-class UIImageButton(
+class UIImage (
     textureID: String,
     private val xFraction: Float, private val yFraction: Float,
-    private val widthFraction: Float, private val heightFraction: Float,
-    val clickCallback: (button: UIImageButton) -> Unit
+    private val widthFraction: Float, private val heightFraction: Float
 ): UIElement() {
     init {
         // ask texture manager for the given texture
@@ -31,16 +30,8 @@ class UIImageButton(
         // setup actor
         val texRegion = TextureRegionDrawable(texture)
         texRegion.setMinSize(width, height)
-        val button = ImageButton(texRegion)
-        button.setBounds(x, y, width, height)
-        actor = button
-
-        // add proper callback to the actor
-        val me = this
-        (actor as ImageButton).addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                clickCallback(me)
-            }
-        })
+        val image = Image(texRegion)
+        image.setBounds(x, y, width, height)
+        actor = image
     }
 }
