@@ -78,6 +78,9 @@ object ClientMain: ApplicationAdapter() {
         // handle incoming pockets
         if (conn.isDataAvailable()) ClientPacketHandler.handlePacket(conn.getDataPacket())
 
+        // update model manager
+        ModelManager.update()
+
         // update app
         JarInterface.getApp()?.update()
 

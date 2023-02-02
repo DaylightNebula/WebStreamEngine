@@ -24,6 +24,8 @@ object ModelManager {
     private val modelMap = hashMapOf<String, Model>() // Format: ID, Model
     private val requestedIDs = mutableListOf<String>()
     private val waitingForModel = hashMapOf<String, MutableList<Entity>>()
+    private val lowPrioQueue = mutableListOf<String>()
+    private val runOnDeliver = hashMapOf<String, MutableList<(key: String) -> Unit>>()
 
     // loaders
     val builder = ModelBuilder()
@@ -31,6 +33,45 @@ object ModelManager {
 
     fun isIDInUse(id: String): Boolean {
         return modelMap.containsKey(id) || requestedIDs.contains(id)
+    }
+
+    fun update() {
+        // if we are not waiting for any models and the low priority queue has something in it, ask for the next thing
+        if (requestedIDs.isEmpty() && lowPrioQueue.isNotEmpty())
+            askForDelivery(lowPrioQueue.first())
+    }
+
+    fun guaranteeModelForFunction(id: String, isHighPrio: Boolean, callback: (key: String) -> Unit) {
+        // if we already have the model, just run the callback
+        if (modelMap.containsKey(id)) {
+            callback(id)
+            return
+        }
+
+        // if we have a locally stored model for the id, load that and then run the callback
+        val modelFile = File(System.getProperty("user.dir"), "cache/$id.g3dj")
+        if (modelFile.exists()) {
+            loadLocal(id, modelFile.absolutePath)
+            callback(id)
+            return
+        }
+
+        // add to run on delivery list
+        var list = runOnDeliver[id]
+        if (list == null) {
+            list = mutableListOf()
+            runOnDeliver[id] = list
+        }
+        list.add(callback)
+
+        // if we made this far, check if we have not requested the id
+        if (!requestedIDs.contains(id)) {
+            // if high priority, ask now, otherwise add to the low prio queue
+            if (isHighPrio)
+                askForDelivery(id)
+            else
+                lowPrioQueue.add(id)
+        }
     }
 
     fun createTestBox(id: String, dimensions: Vector3, color: Color) {
@@ -74,14 +115,18 @@ object ModelManager {
 
         // if not in requested list, send a request to the server for the given model
         if (!requestedIDs.contains(id)) {
-            requestedIDs.add(id)
-            conn.sendPacket(
-                PacketUtils.generatePacket(
-                    PacketType.REQUEST_MODEL,
-                    ByteUtils.convertStringToByteArray(id)
-                )
-            )
+            askForDelivery(id)
         }
+    }
+
+    fun askForDelivery(id: String) {
+        requestedIDs.add(id)
+        conn.sendPacket(
+            PacketUtils.generatePacket(
+                PacketType.REQUEST_MODEL,
+                ByteUtils.convertStringToByteArray(id)
+            )
+        )
     }
 
     fun handleModelDelivery(id: String, bytes: ByteArray) {
