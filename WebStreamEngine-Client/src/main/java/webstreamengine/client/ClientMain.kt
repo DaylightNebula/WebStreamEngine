@@ -56,6 +56,7 @@ object ClientMain: ApplicationAdapter() {
 
         // setup input
         InputProcessorManager.init()
+        UIHandler.init()
         InputManager.init()
 
         // setup physics
@@ -67,9 +68,6 @@ object ClientMain: ApplicationAdapter() {
 
         // setup camera
         WebStreamInfo.initCamera()
-
-        // initialize ui handler
-        UIHandler.init()
 
         // send request for jar file
         conn.sendPacket(PacketUtils.generatePacket(PacketType.REQUEST_JAR, byteArrayOf()))

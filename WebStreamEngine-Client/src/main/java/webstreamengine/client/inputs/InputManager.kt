@@ -34,32 +34,32 @@ object InputManager: InputAdapter() {
         // update mouse trackers
         mouseX = screenX
         mouseY = screenY
-        return true
+        return false
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         // update mouse button state trackers
         mouseButtonsDown[button] = false
         mouseButtonsUp[button] = true
-        return true
+        return false
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         // update mouse down tracker
         mouseButtonsDown[button] = true
-        return true
+        return false
     }
 
     override fun keyUp(keycode: Int): Boolean {
         // update key button state trackers
         keysDown[keycode] = false
         keysUp[keycode] = true
-        return true
+        return false
     }
 
     override fun keyDown(keycode: Int): Boolean {
         // update key down tracker
         keysDown[keycode] = true
-        return true
+        return false
     }
 }
