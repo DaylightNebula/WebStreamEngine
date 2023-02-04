@@ -10,17 +10,20 @@ import webstreamengine.client.entities.EntityComponent
 class ModelComponent(entity: Entity, private val modelInstance: ModelInstance): EntityComponent(entity) {
 
     init {
-        entity.transformChangeCallbacks.add {
-            modelInstance.transform.set(
-                it.getPosition(),
-                Quaternion().setEulerAngles(
-                    it.getRotation().x,
-                    it.getRotation().y,
-                    it.getRotation().z
-                ),
-                it.getScale()
-            )
-        }
+        entity.transformChangeCallbacks.add { updateTransform() }
+        updateTransform()
+    }
+
+    fun updateTransform() {
+        modelInstance.transform.set(
+            entity.getPosition(),
+            Quaternion().setEulerAngles(
+                entity.getRotation().x,
+                entity.getRotation().y,
+                entity.getRotation().z
+            ),
+            entity.getScale()
+        )
     }
 
     override fun start() {}
