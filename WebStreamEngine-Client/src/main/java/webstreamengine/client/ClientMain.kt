@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import webstreamengine.client.ui.UIHandler
-import webstreamengine.client.application.WebStreamInfo
+import webstreamengine.client.application.GameInfo
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.core.*
@@ -57,7 +57,7 @@ object ClientMain: ApplicationAdapter() {
         spritebatch = SpriteBatch()
 
         // setup camera
-        WebStreamInfo.initCamera()
+        GameInfo.initCamera()
 
         // create connection to server
         if (networkenabled) {
@@ -85,7 +85,7 @@ object ClientMain: ApplicationAdapter() {
         JarInterface.getApp()?.update()
 
         // update entities
-        WebStreamInfo.entities.forEach { it.update() }
+        GameInfo.entities.forEach { it.update() }
 
         // update input
         InputManager.update()
@@ -95,10 +95,10 @@ object ClientMain: ApplicationAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
         // start 3d draw
-        modelbatch.begin(WebStreamInfo.cam)
+        modelbatch.begin(GameInfo.cam)
 
         // draw entities
-        WebStreamInfo.entities.forEach { it.render(modelbatch) }
+        GameInfo.entities.forEach { it.render(modelbatch) }
 
         // end 3d draw
         modelbatch.end()
@@ -117,7 +117,7 @@ object ClientMain: ApplicationAdapter() {
         UIHandler.dispose()
 
         // dispose of all entities
-        WebStreamInfo.entities.forEach { it.dispose() }
+        GameInfo.entities.forEach { it.dispose() }
 
         // close socket
         conn?.socket?.close()

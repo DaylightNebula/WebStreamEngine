@@ -9,15 +9,15 @@ Goals:
 - Simple particle system
 
 Todo list
-- [ ] Make client able to run without network
-- [ ] Entity Prioritized Task System
-  - [ ] A component that runs tasks based on those tasks priority
-  - [ ] Functions
-    - [ ] Get Priority (the current priority of the function)
-    - [ ] Is Complete (reports true when the task is complete)
-    - [ ] Can be interrupted (marks if this task can be interrupted by another task)
-    - [ ] Start stop and update functions (need I say more)
-- [ ] Function to get all nearby entities with components (with optional max range)
+- [x] Make client able to run without network
+- [x] Entity Prioritized Task System
+  - [x] A component that runs tasks based on those tasks priority
+  - [x] Functions
+    - [x] Get Priority (the current priority of the function)
+    - [x] Is Complete (reports true when the task is complete)
+    - [x] Can be interrupted (marks if this task can be interrupted by another task)
+    - [x] Start stop and update functions (need I say more)
+- [x] Function to get all nearby entities with components (with optional max range)
 - [ ] Player controller and camera controller
   - [ ] Must be given a root entity, otherwise, camera will root to default root (which itself defaults to origin)
   - [ ] Distance from root option
@@ -32,3 +32,5 @@ Todo list
   - [ ] Settings
     - [ ] Root entity movement speed (default 5 m/s)
     - [ ] Smooth root entity acceleration value (idk how this would work right now but should know when this is implemented)
+  - [ ] Standardized settings
+    - [ ] Mouse sensitivity

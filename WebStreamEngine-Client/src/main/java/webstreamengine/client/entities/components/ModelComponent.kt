@@ -3,7 +3,7 @@ package webstreamengine.client.entities.components
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
 import com.badlogic.gdx.math.Quaternion
-import webstreamengine.client.application.WebStreamInfo
+import webstreamengine.client.application.GameInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
 
@@ -28,6 +28,6 @@ class ModelComponent(entity: Entity, private val modelInstance: ModelInstance): 
 
     override fun start() {}
     override fun update() {}
-    override fun render(batch: ModelBatch) { batch.render(modelInstance, WebStreamInfo.environment) }
+    override fun render(batch: ModelBatch) { batch.render(modelInstance, GameInfo.environment) }
     override fun stop() {}
 }

@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.application.GameInfo
 import webstreamengine.client.managers.ModelManager
+import kotlin.math.pow
 
 class Entity(
     private var position: Vector3 = Vector3(0f, 0f, 0f),
@@ -93,5 +95,10 @@ class Entity(
     fun scale(scale: Vector3) {
         this.scale.add(scale)
         updateInstanceTransform()
+    }
+
+    inline fun <reified T: EntityComponent> getNearbyEntitiesWithComponent(maxRange: Float = Float.MAX_VALUE): List<Entity> {
+        val maxRangeSq = if (maxRange == Float.MAX_VALUE) Float.MAX_VALUE else maxRange.pow(2f)
+        return GameInfo.entities.filter { it.getComponents().any { comp -> comp is T } && it.getPosition().dst2(getPosition()) < maxRangeSq }
     }
 }

@@ -4,12 +4,9 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.environment.BaseLight
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight
 import com.badlogic.gdx.graphics.g3d.environment.PointLight
 import com.badlogic.gdx.graphics.g3d.environment.SpotLight
-import com.badlogic.gdx.math.Quaternion
-import com.badlogic.gdx.math.Vector3
-import webstreamengine.client.application.WebStreamInfo
+import webstreamengine.client.application.GameInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
 import kotlin.math.cos
@@ -19,7 +16,7 @@ open class LightComponent(entity: Entity, val light: BaseLight<*>): EntityCompon
 
     init {
         // add light to environment
-        WebStreamInfo.environment.add(light)
+        GameInfo.environment.add(light)
 
         // update light location when entity moves, as well as now
         updateLightTransform()
@@ -50,7 +47,7 @@ open class LightComponent(entity: Entity, val light: BaseLight<*>): EntityCompon
 
     override fun stop() {
         // remove light from environment
-        WebStreamInfo.environment.remove(light)
+        GameInfo.environment.remove(light)
     }
 
     override fun start() {}

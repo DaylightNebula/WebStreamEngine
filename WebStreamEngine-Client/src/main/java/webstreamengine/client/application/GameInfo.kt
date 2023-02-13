@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.graphics.g3d.Environment
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
 import webstreamengine.client.entities.Entity
+import webstreamengine.client.entities.EntityComponent
+import kotlin.math.pow
 
-object WebStreamInfo {
+object GameInfo {
     lateinit var cam: PerspectiveCamera
     val environment = Environment()
     val entities = mutableListOf<Entity>()
@@ -37,5 +39,9 @@ object WebStreamInfo {
                 color
             )
         )
+    }
+
+    inline fun <reified T: EntityComponent> getEntitiesWithComponent(): List<Entity> {
+        return entities.filter { it.getComponents().any { comp -> comp is T } }
     }
 }
