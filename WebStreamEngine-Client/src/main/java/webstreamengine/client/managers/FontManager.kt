@@ -3,6 +3,7 @@ package webstreamengine.client.managers
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import webstreamengine.client.conn
+import webstreamengine.client.networkenabled
 import webstreamengine.client.ui.UIElement
 import webstreamengine.client.ui.elements.UIText
 import webstreamengine.client.ui.elements.UITextButton
@@ -35,6 +36,9 @@ object FontManager {
             return
         }
 
+        // if we are not network enabled, return true
+        if (!networkenabled) return
+
         // if we made it this far, add the given target to the waiting list for the given font
         var list = waitingForFont[id]
         if (list == null) {
@@ -46,7 +50,7 @@ object FontManager {
         // if the given id is not in the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
             requestedIDs.add(id)
-            conn.sendPacket(
+            conn?.sendPacket(
                 PacketUtils.generatePacket(
                     PacketType.REQUEST_FONT,
                     ByteUtils.convertStringToByteArray(id)

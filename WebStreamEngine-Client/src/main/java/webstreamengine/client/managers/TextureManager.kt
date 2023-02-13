@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import webstreamengine.client.conn
+import webstreamengine.client.networkenabled
 import webstreamengine.client.ui.elements.UIImage
 import webstreamengine.client.ui.elements.UIImageButton
 import webstreamengine.core.ByteUtils
@@ -54,6 +55,9 @@ object TextureManager {
             return
         }
 
+        // if we are not network enabled, return true
+        if (!networkenabled) return
+
         // if we made it this far, add the given target to the waiting list
         var list = waitingForTexture[id]
         if (list == null) {
@@ -65,7 +69,7 @@ object TextureManager {
         // if the given id is not in the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
             requestedIDs.add(id)
-            conn.sendPacket(
+            conn?.sendPacket(
                 PacketUtils.generatePacket(
                     PacketType.REQUEST_IMAGE,
                     ByteUtils.convertStringToByteArray(id)

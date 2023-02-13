@@ -51,18 +51,18 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
-tasks {
-    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-        archiveBaseName.set("WebStreamEngine-Client")
-        mergeServiceFiles()
-        manifest {
-            attributes(mapOf("Main-Class" to "webstreamengine.client.ClientMainKt"))
-        }
-    }
-}
-
-tasks {
-    build {
-        dependsOn(shadowJar)
-    }
-}
+//tasks {
+//    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+//        archiveBaseName.set("WebStreamEngine-Client")
+//        mergeServiceFiles()
+//        manifest {
+//            attributes(mapOf("Main-Class" to "webstreamengine.client.ClientMainKt"))
+//        }
+//    }
+//}
+//
+//tasks {
+//    build {
+//        dependsOn(shadowJar)
+//    }
+//}

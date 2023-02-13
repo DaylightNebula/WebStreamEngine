@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.JsonReader
 import webstreamengine.client.conn
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.components.ModelComponent
+import webstreamengine.client.networkenabled
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
@@ -105,6 +106,9 @@ object ModelManager {
             return
         }
 
+        // if we are not network enabled, return true
+        if (!networkenabled) return
+
         // add to waiting list
         var list = waitingForModel[id]
         if (list == null) {
@@ -121,7 +125,7 @@ object ModelManager {
 
     fun askForDelivery(id: String) {
         requestedIDs.add(id)
-        conn.sendPacket(
+        conn?.sendPacket(
             PacketUtils.generatePacket(
                 PacketType.REQUEST_MODEL,
                 ByteUtils.convertStringToByteArray(id)

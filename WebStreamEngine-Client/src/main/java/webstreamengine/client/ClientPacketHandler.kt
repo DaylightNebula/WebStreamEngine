@@ -38,12 +38,12 @@ object ClientPacketHandler {
 
                 // get target file
                 val file = File(System.getProperty("user.dir"), "cache\\jar.jar")
+                file.parentFile.mkdirs()
 
                 // write file bytes
                 file.writeBytes(fileBytes)
 
                 // initialize jar interface with this file
-                JarInterface.mainClass = mainClass
                 JarInterface.init(file)
             }
             PacketType.DELIVER_IMAGE -> {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import webstreamengine.client.conn
 import webstreamengine.client.entities.components.SoundComponent
+import webstreamengine.client.networkenabled
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
@@ -15,7 +16,7 @@ object SoundManager {
     private val requestedIDs = mutableListOf<String>()
     private val waitingForSound = hashMapOf<String, MutableList<SoundComponent>>()
 
-    fun loadLocal(id: String, path: String) {
+    private fun loadLocal(id: String, path: String) {
         soundMap[id] = Gdx.audio.newSound(Gdx.files.absolute(path))
     }
 
@@ -31,6 +32,9 @@ object SoundManager {
         if (cacheCheck(id, player, "wav")) return
         if (cacheCheck(id, player, "ogg")) return
 
+        // if we are not network enabled, return true
+        if (!networkenabled) return
+
         // if we made it this far, add the given sound component to the waiting list
         var list = waitingForSound[id]
         if (list == null) {
@@ -42,7 +46,7 @@ object SoundManager {
         // if the given id is not the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
             requestedIDs.add(id)
-            conn.sendPacket(
+            conn?.sendPacket(
                 PacketUtils.generatePacket(
                     PacketType.REQUEST_SOUND,
                     ByteUtils.convertStringToByteArray(id)
@@ -52,9 +56,10 @@ object SoundManager {
         }
     }
 
-    fun cacheCheck(id: String, player: SoundComponent, extension: String): Boolean {
+    private fun cacheCheck(id: String, player: SoundComponent, extension: String): Boolean {
         val soundFile = File(System.getProperty("user.dir"), "cache/$id.$extension")
         if (soundFile.exists()) {
+            println("Found sound for id $id at ${soundFile.absolutePath}")
             loadLocal(id, soundFile.absolutePath)
             player.handleSound(id, soundMap[id]!!)
             return true
@@ -92,7 +97,7 @@ object SoundManager {
         handleSoundDelivery(id, file)
     }
 
-    fun handleSoundDelivery(id: String, file: File) {
+    private fun handleSoundDelivery(id: String, file: File) {
         // load file
         loadLocal(id, file.absolutePath)
 

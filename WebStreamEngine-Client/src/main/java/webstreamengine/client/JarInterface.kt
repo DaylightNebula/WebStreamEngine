@@ -2,12 +2,12 @@ package webstreamengine.client
 
 import webstreamengine.client.application.WebStreamApplication
 import java.io.File
+import java.lang.IllegalArgumentException
 import java.lang.NullPointerException
 import java.net.URLClassLoader
 
 object JarInterface {
 
-    var mainClass = ""
     var currentApp: WebStreamApplication? = null
 
     fun init(file: File) {
@@ -16,6 +16,9 @@ object JarInterface {
             arrayOf(file.toURI().toURL()),
             this.javaClass.classLoader
         )
+
+        val setup = loader.getResource("setup.config")?.readText()?.split("\n") ?: throw IllegalArgumentException("Jar file does not have a setup.config")
+        val mainClass = setup.firstOrNull { it.startsWith("MAIN_CLASS") }?.split("=")?.last() ?: throw IllegalArgumentException("setup.config does not specify a main class")
 
         // get target class and its constructor
         val initAppClass = Class.forName(mainClass, true, loader)
