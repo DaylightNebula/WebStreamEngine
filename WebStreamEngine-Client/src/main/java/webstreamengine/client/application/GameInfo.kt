@@ -5,14 +5,16 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.graphics.g3d.Environment
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
+import webstreamengine.client.controller.Controller
+import webstreamengine.client.controller.ControllerSettings
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
-import kotlin.math.pow
 
 object GameInfo {
     lateinit var cam: PerspectiveCamera
     val environment = Environment()
     val entities = mutableListOf<Entity>()
+    val controller = Controller(ControllerSettings.genStaticSettings())
 
     fun initCamera() {
         // create basic camera
@@ -39,6 +41,10 @@ object GameInfo {
                 color
             )
         )
+    }
+
+    fun update() {
+        controller.update()
     }
 
     inline fun <reified T: EntityComponent> getEntitiesWithComponent(): List<Entity> {

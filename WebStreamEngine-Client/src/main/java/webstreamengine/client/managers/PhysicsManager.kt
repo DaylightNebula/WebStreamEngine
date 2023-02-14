@@ -14,10 +14,12 @@ import webstreamengine.client.entities.components.PhysicsComponent
 object PhysicsManager {
 
     // physics world stuff
-    lateinit var collisionConfig: btDefaultCollisionConfiguration
-    lateinit var dispatcher: btCollisionDispatcher
-    lateinit var broadphase: btDbvtBroadphase
-    lateinit var world: btCollisionWorld
+    private lateinit var collisionConfig: btDefaultCollisionConfiguration
+    private lateinit var dispatcher: btCollisionDispatcher
+    private lateinit var broadphase: btDbvtBroadphase
+    private lateinit var world: btCollisionWorld
+
+    var gravity = -9.8f
 
     // component tracking stuff
     val components = mutableListOf<PhysicsComponent>()

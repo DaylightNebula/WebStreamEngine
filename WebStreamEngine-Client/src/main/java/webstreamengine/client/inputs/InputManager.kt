@@ -1,14 +1,14 @@
 package webstreamengine.client.inputs
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
-import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.math.Vector2
 import webstreamengine.client.managers.InputProcessorManager
 
 object InputManager: InputAdapter() {
     var mouseX: Int = Gdx.input.x
     var mouseY: Int = Gdx.input.y
+    var scroll = Vector2()
 
     val mouseButtonsDown = BooleanArray(5) { false }
     val mouseButtonsUp = BooleanArray(5) { false }
@@ -28,6 +28,7 @@ object InputManager: InputAdapter() {
         // update buttons up arrays
         mouseButtonsUp.forEachIndexed { index, b -> if (b) mouseButtonsUp[index] = false }
         keysUp.forEachIndexed { index, b -> if (b) keysUp[index] = false }
+        scroll.set(0f, 0f)
     }
 
     override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
@@ -41,6 +42,13 @@ object InputManager: InputAdapter() {
         // update mouse button state trackers
         mouseButtonsDown[button] = false
         mouseButtonsUp[button] = true
+        return false
+    }
+
+    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+        // update mouse trackers
+        mouseX = screenX
+        mouseY = screenY
         return false
     }
 
@@ -60,6 +68,11 @@ object InputManager: InputAdapter() {
     override fun keyDown(keycode: Int): Boolean {
         // update key down tracker
         keysDown[keycode] = true
+        return false
+    }
+
+    override fun scrolled(amountX: Float, amountY: Float): Boolean {
+        scroll.set(amountX, amountY)
         return false
     }
 }

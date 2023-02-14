@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.GameInfo
+import webstreamengine.client.controller.Controller
+import webstreamengine.client.controller.ControllerSettings
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.core.*
@@ -37,11 +39,8 @@ fun main(args: Array<String>) {
 
 object ClientMain: ApplicationAdapter() {
 
-    lateinit var modelbatch: ModelBatch
-    lateinit var spritebatch: SpriteBatch
-    lateinit var stage: Stage
-
-    lateinit var testtexture: TextureRegionDrawable
+    private lateinit var modelbatch: ModelBatch
+    private lateinit var spritebatch: SpriteBatch
 
     override fun create() {
         // setup input
@@ -77,6 +76,8 @@ object ClientMain: ApplicationAdapter() {
     override fun render() {
         // handle incoming pockets
         if (networkenabled && conn!!.isDataAvailable()) ClientPacketHandler.handlePacket(conn!!.getDataPacket())
+
+        GameInfo.update()
 
         // update model manager
         ModelManager.update()

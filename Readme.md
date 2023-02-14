@@ -7,6 +7,7 @@ Goals:
 - Simple model creation
 - Simple UI system
 - Simple particle system
+- Simple pathfinding
 
 Todo list
 - [x] Make client able to run without network
@@ -18,19 +19,66 @@ Todo list
     - [x] Can be interrupted (marks if this task can be interrupted by another task)
     - [x] Start stop and update functions (need I say more)
 - [x] Function to get all nearby entities with components (with optional max range)
-- [ ] Player controller and camera controller
-  - [ ] Must be given a root entity, otherwise, camera will root to default root (which itself defaults to origin)
-  - [ ] Distance from root option
-  - [ ] Function to set default root position
-  - [ ] Function to set rotation around root
-  - [ ] Flags
-    - [ ] Allow player to change rotation with their mouse (default to true)
-    - [ ] Allow player to move the root entity using WASD or Arrows or not at all (default to WASD)
-    - [ ] Player requested movement overrides tasks (default to true)
-    - [ ] Check physics when moving the root entity (default to true)
-    - [ ] Smooth root entity acceleration (default to true) (smooths starting and stopping movement from WASD or arrows)
+- [x] Player controller and camera controller
+  - [x] Must be given a root entity, otherwise, camera will root to default root (which itself defaults to origin)
+  - [x] Distance from root option
+  - [x] Function to set default root position
+  - [x] Function to set rotation around root
+  - [x] Flags
+    - [x] Allow player to change rotation with their mouse (default to true)
+    - [x] Allow player to move the root entity using WASD or Arrows or not at all (default to WASD)
+    - [x] Player requested movement overrides tasks (default to true)
+    - [x] Check physics when moving the root entity (default to true)
+    - [x] Smooth root entity acceleration (default to true) (smooths starting and stopping movement from WASD or arrows)
+  - [x] Settings
+    - [x] Root entity movement speed (default 5 m/s)
+    - [x] Smooth root entity acceleration value (idk how this would work right now but should know when this is implemented)
+- [ ] Make entities more efficient
+  - [ ] When an entity is created, they should be linked into chunks instead of a general array
+    - [ ] Link based on the bounding box and position of the entity
+    - [ ] Chunk linking should be updated whenever the position or rotation is updated
+    - [ ] Entities can be linked into multiple chunks
+    - [ ] Distance of entities from the player controls if they are to be rendered or not
+      - [ ] The size of entities should increase this distance (for example, a mountain should be rendered from far away but not a zombie)
+      - [ ] Entities should be able to be marked to ignore the render threshold when they are decided to render
   - [ ] Settings
-    - [ ] Root entity movement speed (default 5 m/s)
-    - [ ] Smooth root entity acceleration value (idk how this would work right now but should know when this is implemented)
-  - [ ] Standardized settings
-    - [ ] Mouse sensitivity
+    - [ ] Chunk size
+    - [ ] Update threshold (distance from the players entities location or the players root location in which entities are updated)
+    - [ ] Render threshold and size scale
+- [ ] Standardized settings
+  - [ ] Mouse sensitivity
+  - [ ] Antialiasing
+- [ ] Sound system updates
+  - [ ] Remove necessity for sounds to play from a component
+- [ ] Particle system
+  - [ ] Load particle effects from a json file
+  - [ ] Play effect at entity or location
+- [ ] New UI system
+  - [ ] Macro elements (such as grids and rows and columns) (these control size and position micro elements)
+    - [ ] Flags
+      - [ ] Scale elements passed max resolution
+  - [ ] Micro elements (such as images and text and spacers)
+    - [ ] Max scale (default 1.0 x 1.0)
+    - [ ] Min scale (default 0.0 x 0.0)
+  - [ ] General controls
+    - [ ] Width percent based on width of the window
+    - [ ] Height percent based on height of the window
+    - [ ] Min and max dimensions based on window dimensions
+- [ ] Better physics
+  - [ ] Simple components with simple shapes
+  - [ ] Ray casting
+    - [ ] Standard ray casting
+    - [ ] Get point on plane ray casting (efficient, like what is currently being used by the city builder)
+  - [ ] Method of setting components velocity
+  - [ ] Limit controller movement based on physics stuffs
+  - [ ] Settings
+    - [ ] Drag (how much velocity is slowed by) (should have a default)
+    - [ ] Weight (determines how much momentum is transferred when an object hits this object and tries to move it)
+  - [ ] Flags
+    - [ ] Is static (marks if an object is affected by forces put on it for example gravity or entities pushing on it)
+    - [ ] Is Ray Cast Only (marks if an object can only collide with ray casts)
+- [ ] Pathfinding
+  - [ ] Use an array of points to dictate where the entity should move
+  - [ ] Shoot a ray from the entity to the target
+    - [ ] Add points to move around the target
+  - [ ] Remove any points that make the pathfinding slower
