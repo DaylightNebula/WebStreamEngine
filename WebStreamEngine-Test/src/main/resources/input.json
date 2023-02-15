@@ -1,0 +1,32 @@
+[
+ {
+  "type": "Stick",
+  "name": "movement",
+  "targets": [
+   {
+    "type": "KEYBOARD",
+    "value": 29
+   },
+   {
+    "type": "KEYBOARD",
+    "value": 32
+   },
+   {
+    "type": "KEYBOARD",
+    "value": 51
+   },
+   {
+    "type": "KEYBOARD",
+    "value": 47
+   }
+  ]
+ },
+ {
+  "type": "ButtonUp",
+  "name": "click",
+  "targets": [{
+   "type": "MOUSE",
+   "value": 0
+  }]
+ }
+]

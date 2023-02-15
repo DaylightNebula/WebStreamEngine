@@ -69,21 +69,21 @@ public class Tester : Application() {
 
     override fun getSettings(): Array<SettingsElement<*>> { return arrayOf() }
 
-    override fun getInputs(): Array<InputElement<*>> {
-        return arrayOf(
-            StickInputElement("movement",
-                arrayOf(
-                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.A),
-                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.D),
-                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.W),
-                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.S),
-                )
-            ),
-            ButtonUpInputElement("click",
-                arrayOf(
-                    InputTarget(InputTargetType.MOUSE, Input.Buttons.LEFT)
-                )
-            )
-        )
-    }
+//    override fun getInputs(): Array<InputElement<*>> {
+//        return arrayOf(
+//            StickInputElement("movement",
+//                arrayOf(
+//                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.A),
+//                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.D),
+//                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.W),
+//                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.S),
+//                )
+//            ),
+//            ButtonUpInputElement("click",
+//                arrayOf(
+//                    InputTarget(InputTargetType.MOUSE, Input.Buttons.LEFT)
+//                )
+//            )
+//        )
+//    }
 }

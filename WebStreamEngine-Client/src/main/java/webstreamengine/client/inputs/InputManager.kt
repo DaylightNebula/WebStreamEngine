@@ -37,6 +37,36 @@ object InputManager: InputAdapter() {
             json = JSONObject(jsonFile.readText())
     }
 
+    fun loadInputDefaults(inputDefaults: String?) {
+        if (inputDefaults == null) return
+
+        // loop through all inputs in the file
+        val jsonArr = JSONArray(inputDefaults)
+        jsonArr.forEach {
+            // unpack the json object
+            val input = it as? JSONObject ?: return@forEach
+            val type = input.getString("type")
+            val name = input.getString("name")
+
+            // create target for each target json
+            val targetsJson = input.getJSONArray("targets")?.map { it as JSONObject } ?: return@forEach
+            val targets = Array(targetsJson.size) { idx ->
+                val targetJson = targetsJson[idx]
+                InputTarget(InputTargetType.valueOf(targetJson.getString("type")), targetJson.getInt("value"))
+            }
+
+            // init an input element for each
+            val element = when (type) {
+                "ButtonUp" -> ButtonUpInputElement(name, targets)
+                "ButtonDown" -> ButtonDownInputElement(name, targets)
+                "Axis" -> AxisInputElement(name, targets)
+                "Stick" -> StickInputElement(name, targets)
+                else -> { throw IllegalArgumentException("Unknown input type $type") }
+            }
+            addElement(element)
+        }
+    }
+
     fun update() {
         // update buttons up arrays
         mouseButtonsUp.forEachIndexed { index, b -> if (b) mouseButtonsUp[index] = false }
@@ -101,12 +131,9 @@ object InputManager: InputAdapter() {
     private fun addElement(element: InputElement<*>) {
         // load targets if necessary
         if (json != null && json!!.has(element.name))
-            element.loadJson(json!!.getJSONObject(element.name).getJSONArray("targets"))
+            element.loadJson(json!!.getJSONArray(element.name))
         elements.add(element)
-    }
-
-    fun addAllElements(vararg elements: InputElement<*>) {
-        elements.forEach { addElement(it) }
+        println("Added input element ${element.name}")
         isSaveDirty = true
     }
 }
@@ -143,16 +170,17 @@ abstract class InputElement<T: Any>(val name: String, private val defaultTargets
         }
     }
 
-    fun toJson(): JSONObject {
-        return JSONObject()
-            .put("name", name)
-            .put("targets", JSONArray().putAll(
-                targets.map { target ->
-                    JSONObject()
-                        .put("type", target.targetType.name)
-                        .put("value", target.targetValue)
-                }
-            ))
+    fun toJson(): JSONArray {
+        return JSONArray().putAll(
+            targets.map { target ->
+                JSONObject()
+                    .put("type", target.targetType.name)
+                    .put("value", target.targetValue)
+            }
+        )
+//            .put("type", javaClass.name.replace("InputElement", ""))
+//            .put("name", name)
+//            .put("targets", JSONArray())
     }
 
     abstract fun getValue(): T

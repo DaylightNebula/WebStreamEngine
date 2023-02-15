@@ -8,5 +8,4 @@ abstract class Application {
     abstract fun update()
     abstract fun stop()
     abstract fun getSettings(): Array<SettingsElement<*>>
-    abstract fun getInputs(): Array<InputElement<*>>
 }

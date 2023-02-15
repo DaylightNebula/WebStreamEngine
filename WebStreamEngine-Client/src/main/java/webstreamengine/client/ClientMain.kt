@@ -57,7 +57,7 @@ object ClientMain: ApplicationAdapter() {
         InputManager.init(
             File(
                 System.getProperty("user.dir"),
-                "gamedata/input.json"
+                "gamedata/current_input.json"
             )
         )
 

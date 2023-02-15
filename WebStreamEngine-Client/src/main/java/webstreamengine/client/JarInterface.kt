@@ -40,7 +40,7 @@ object JarInterface {
 
             // start current app
             SettingsManager.addAllElements(*currentApp!!.getSettings())
-            InputManager.addAllElements(*currentApp!!.getInputs())
+            InputManager.loadInputDefaults(loader.getResource("input.json")?.readText())
             currentApp!!.start()
 
             // log
