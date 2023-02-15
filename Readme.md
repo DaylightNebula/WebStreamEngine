@@ -53,17 +53,16 @@ Todo list
   - [ ] Windowed, Windowed Fullscreen, or Fullscreen
   - [ ] Target monitor options
   - [x] Savable
-- [ ] Assignable input system
-  - [ ] Each input is given a name and a default value
-  - [ ] All registered at startup
-  - [ ] Can be easily updated and changed without affecting gameplay
-  - [ ] Controller support
-  - [ ] Any and all changes saved locally
-  - [ ] Types
-    - [ ] Button (single button io A B X Y)
-    - [ ] Slider (pressed is 1, not pressed is 0, for example trigger)
-    - [ ] Axis (slider ie A is -1 and D is 1)
-    - [ ] Stick (2d slider with WASD or arrows for example)
+- [x] Assignable input system
+  - [x] Each input is given a name and a default value
+  - [x] All registered at startup
+  - [x] Can be easily updated and changed without affecting gameplay
+  - [x] Controller support
+  - [x] Any and all changes saved locally
+  - [x] Types
+    - [x] Scalar (pressed is 1, not pressed is 0, for example trigger)
+    - [x] Axis (slider ie A is -1 and D is 1)
+    - [x] Stick (2d slider with WASD or arrows for example)
 - [ ] Sound system updates
   - [ ] Remove necessity for sounds to play from a component
   - [ ] Add ability to play at a location

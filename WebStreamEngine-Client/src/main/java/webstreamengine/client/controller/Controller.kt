@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.inputs.InputManager
+import webstreamengine.client.inputs.StickInputElement
 import webstreamengine.client.managers.SettingsManager
 
 class Controller(
@@ -67,30 +68,7 @@ class Controller(
         direction.z *= settings.defaultDistanceFromRoot + pcOffsetRootDistance
 
         // update movement
-        var xChange = Gdx.graphics.deltaTime
-        var yChange = Gdx.graphics.deltaTime
-        when (settings.movementType) {
-            ControllerMovementType.NONE -> {
-                xChange *= 0f
-                yChange *= 0f
-            }
-            ControllerMovementType.WASD -> {
-                xChange *= if (InputManager.isKeyDown(Input.Keys.A)) -settings.movementSpeed else if (InputManager.isKeyDown(Input.Keys.D)) settings.movementSpeed else 0f
-                yChange *= if (InputManager.isKeyDown(Input.Keys.S)) settings.movementSpeed else if (InputManager.isKeyDown(Input.Keys.W)) -settings.movementSpeed else 0f
-            }
-            ControllerMovementType.ARROWS -> {
-                xChange *= if (InputManager.isKeyDown(Input.Keys.LEFT)) -settings.movementSpeed else if (InputManager.isKeyDown(Input.Keys.RIGHT)) settings.movementSpeed else 0f
-                yChange *= if (InputManager.isKeyDown(Input.Keys.BACK)) settings.movementSpeed else if (InputManager.isKeyDown(Input.Keys.UP)) -settings.movementSpeed else 0f
-            }
-        }
-        if (settings.rootEntity != null) {
-            val forward = Vector3(0f, 0f, 1f)
-            val right = Vector3(1f, 0f, 0f)
-            Quaternion().setEulerAngles(totalRotation.x, 0f, 0f).transform(forward).scl(yChange)
-            Quaternion().setEulerAngles(totalRotation.x, 0f, 0f).transform(right).scl(xChange)
-            settings.rootEntity!!.move(forward)
-            settings.rootEntity!!.move(right)
-        }
+        updateMovement(totalRotation)
 
         // set cameras location based of direction and position offsets
         val location = Vector3(root)
@@ -105,6 +83,22 @@ class Controller(
 
         // update the camera
         camera.update()
+    }
+
+    fun updateMovement(rotation: Vector3) {
+        // get stick
+        if (settings.movementStickInputName == null || settings.rootEntity == null) return
+        val stick = InputManager.getElement(settings.movementStickInputName!!) as? StickInputElement ?: return
+
+        // get total change scaled by the current delta time
+        val change = stick.getValue().scl(Gdx.graphics.deltaTime)
+
+        val forward = Vector3(0f, 0f, 1f)
+        val right = Vector3(1f, 0f, 0f)
+        Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(forward).scl(change.y)
+        Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(right).scl(change.x)
+        settings.rootEntity!!.move(forward)
+        settings.rootEntity!!.move(right)
     }
 
     fun changeSettings(settings: ControllerSettings, resetPlayerControlledOffsets: Boolean = true) {

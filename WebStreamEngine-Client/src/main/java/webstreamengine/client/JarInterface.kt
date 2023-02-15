@@ -1,6 +1,7 @@
 package webstreamengine.client
 
 import webstreamengine.client.application.Application
+import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.SettingsManager
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -39,6 +40,7 @@ object JarInterface {
 
             // start current app
             SettingsManager.addAllElements(*currentApp!!.getSettings())
+            InputManager.addAllElements(*currentApp!!.getInputs())
             currentApp!!.start()
 
             // log

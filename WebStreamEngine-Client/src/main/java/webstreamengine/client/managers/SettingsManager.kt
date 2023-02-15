@@ -14,6 +14,7 @@ object SettingsManager {
     fun update() {
         // make sure the settings are "dirty"
         if (!isDirty) return
+        isDirty = false
 
         // make sure json file exists
         if (!jsonFile.parentFile.exists())

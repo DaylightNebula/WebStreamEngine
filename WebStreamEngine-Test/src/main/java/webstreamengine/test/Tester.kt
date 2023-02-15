@@ -10,7 +10,7 @@ import webstreamengine.client.controller.ControllerSettings
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.components.SoundComponent
 import webstreamengine.client.entities.components.SpherePhysicsComponent
-import webstreamengine.client.inputs.InputManager
+import webstreamengine.client.inputs.*
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.managers.PhysicsManager
 import webstreamengine.client.managers.SettingsElement
@@ -54,8 +54,7 @@ public class Tester : Application() {
 
     var ticker = 0f
     override fun update() {
-        // test ray cast thing
-        if (InputManager.isMouseButtonUp(Input.Buttons.LEFT)) {
+        if (InputManager.getElement("click")?.getValue() == true) {
             val pickRay = GameInfo.cam.getPickRay(InputManager.mouseX.toFloat(), InputManager.mouseY.toFloat())
             val hit = PhysicsManager.rayCast(pickRay)
             println("Ray Cast hit $hit")
@@ -69,4 +68,22 @@ public class Tester : Application() {
     }
 
     override fun getSettings(): Array<SettingsElement<*>> { return arrayOf() }
+
+    override fun getInputs(): Array<InputElement<*>> {
+        return arrayOf(
+            StickInputElement("movement",
+                arrayOf(
+                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.A),
+                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.D),
+                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.W),
+                    InputTarget(InputTargetType.KEYBOARD, Input.Keys.S),
+                )
+            ),
+            ButtonUpInputElement("click",
+                arrayOf(
+                    InputTarget(InputTargetType.MOUSE, Input.Buttons.LEFT)
+                )
+            )
+        )
+    }
 }

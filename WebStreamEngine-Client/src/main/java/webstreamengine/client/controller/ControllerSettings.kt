@@ -10,7 +10,7 @@ data class ControllerSettings(
     val offsetFromRoot: Vector3,
 
     // movement info
-    val movementType: ControllerMovementType,
+    val movementStickInputName: String?,
     val movementSpeed: Float,
     val shouldMovementRespectPhysics: Boolean,
     // todo values to control player entity acceleration
@@ -31,7 +31,7 @@ data class ControllerSettings(
                 rootEntity = null,
                 backupRootLocation = Vector3(0f, 0f, 0f),
                 offsetFromRoot = Vector3(0f, 0f, 0f),
-                movementType = ControllerMovementType.NONE,
+                movementStickInputName = null,
                 movementSpeed = 0f,
                 shouldMovementRespectPhysics = false,
                 defaultDistanceFromRoot = 0f,
@@ -48,7 +48,7 @@ data class ControllerSettings(
                 rootEntity = entity,
                 backupRootLocation = Vector3(0f, 0f, 0f),
                 offsetFromRoot = Vector3(0f, 0f, 0f),
-                movementType = ControllerMovementType.WASD,
+                movementStickInputName = "movement",
                 movementSpeed = movespeed,
                 shouldMovementRespectPhysics = true,
                 defaultDistanceFromRoot = dstToRoot,
@@ -60,9 +60,4 @@ data class ControllerSettings(
             )
         }
     }
-}
-enum class ControllerMovementType {
-    WASD,
-    ARROWS,
-    NONE
 }

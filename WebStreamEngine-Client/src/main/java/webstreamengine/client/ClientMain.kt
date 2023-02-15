@@ -54,7 +54,12 @@ object ClientMain: ApplicationAdapter() {
         // setup input
         InputProcessorManager.init()
         UIHandler.init()
-        InputManager.init()
+        InputManager.init(
+            File(
+                System.getProperty("user.dir"),
+                "gamedata/input.json"
+            )
+        )
 
         // setup physics
         PhysicsManager.init()
