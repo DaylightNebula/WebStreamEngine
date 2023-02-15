@@ -72,9 +72,7 @@ abstract class SettingsElement<T : Any>(val name: String, private val default: T
     fun reset() { value = default }
 
     fun setValue(any: Any): Boolean {
-        println("Trying to set too $any with type ${any.javaClass}")
         if (!isValueValid(any)) return false
-        println("Passed value valid")
         value = any
         SettingsManager.markSettingsDirty()
         return true
