@@ -43,6 +43,14 @@ object ClientMain: ApplicationAdapter() {
     private lateinit var spritebatch: SpriteBatch
 
     override fun create() {
+        // setup settings
+        SettingsManager.init(
+            File(
+                System.getProperty("user.dir"),
+                "gamedata/settings.json"
+            )
+        )
+
         // setup input
         InputProcessorManager.init()
         UIHandler.init()
@@ -77,6 +85,10 @@ object ClientMain: ApplicationAdapter() {
         // handle incoming pockets
         if (networkenabled && conn!!.isDataAvailable()) ClientPacketHandler.handlePacket(conn!!.getDataPacket())
 
+        // update the settings manager
+        SettingsManager.update()
+
+        // update game info
         GameInfo.update()
 
         // update model manager

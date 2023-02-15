@@ -37,6 +37,8 @@ dependencies {
     // bullet stuffs
     implementation("com.badlogicgames.gdx:gdx-bullet:1.11.0")
     implementation("com.badlogicgames.gdx:gdx-bullet-platform:1.11.0:natives-desktop")
+
+    implementation("org.json:json:20220924")
 }
 
 tasks.getByName<Test>("test") {

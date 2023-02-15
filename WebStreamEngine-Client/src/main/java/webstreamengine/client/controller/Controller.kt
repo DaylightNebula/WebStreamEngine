@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.inputs.InputManager
+import webstreamengine.client.managers.SettingsManager
 
 class Controller(
     private var settings: ControllerSettings
@@ -18,13 +19,12 @@ class Controller(
     var pcOffsetRootDistance = 0f
 
     private var lastMouse: Vector2? = null
-    private val mouseSensitivity = 20f
-    private val scrollSensitivity = 20f
 
     fun update() {
         // if the settings have scroll wheel enabled, apply necessary updates
         if (settings.canPlayerChangeDistanceFromRoot) {
             // get the new distance by clamping the new value between the min and max adjusted by the default
+            val scrollSensitivity = SettingsManager.getElementValue("Zoom Rate") as Float
             pcOffsetRootDistance = clamp(
                 pcOffsetRootDistance + InputManager.scroll.y * Gdx.graphics.deltaTime * scrollSensitivity,
                 settings.distanceFromRootMinMax.first - settings.defaultDistanceFromRoot,
@@ -38,6 +38,7 @@ class Controller(
         // check if the settings allow for the user to rotate the camera, and we currently can rotate around the root
         if (settings.canPlayerChangeRotationAroundRoot && (settings.lockMouse || InputManager.isMouseButtonDown(Input.Buttons.LEFT))) {
             if (lastMouse != null) {
+                val mouseSensitivity = (SettingsManager.getElementValue("Look Rate") as Int).toFloat()
                 val diffX = InputManager.mouseX.toFloat() - lastMouse!!.x
                 val diffY = InputManager.mouseY.toFloat() - lastMouse!!.y
                 val newX = pcOffsetRotation.x + (-diffX * mouseSensitivity * Gdx.graphics.deltaTime)

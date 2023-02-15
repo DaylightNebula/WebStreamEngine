@@ -1,6 +1,7 @@
 package webstreamengine.client
 
 import webstreamengine.client.application.Application
+import webstreamengine.client.managers.SettingsManager
 import java.io.File
 import java.lang.IllegalArgumentException
 import java.net.URLClassLoader
@@ -37,6 +38,7 @@ object JarInterface {
             currentApp = initApp
 
             // start current app
+            SettingsManager.addAllElements(*currentApp!!.getSettings())
             currentApp!!.start()
 
             // log

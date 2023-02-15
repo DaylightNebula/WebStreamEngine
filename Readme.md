@@ -46,10 +46,29 @@ Todo list
     - [ ] Update threshold (distance from the players entities location or the players root location in which entities are updated)
     - [ ] Render threshold and size scale
 - [ ] Standardized settings
-  - [ ] Mouse sensitivity
-  - [ ] Antialiasing
+  - [x] Look sensitivity (degrees per second)
+  - [x] Scroll sensitivity (units per second)
+  - [-] VSync
+  - [-] Antialiasing
+  - [ ] Windowed, Windowed Fullscreen, or Fullscreen
+  - [ ] Target monitor options
+  - [x] Savable
+- [ ] Assignable input system
+  - [ ] Each input is given a name and a default value
+  - [ ] All registered at startup
+  - [ ] Can be easily updated and changed without affecting gameplay
+  - [ ] Controller support
+  - [ ] Any and all changes saved locally
+  - [ ] Types
+    - [ ] Button (single button io A B X Y)
+    - [ ] Slider (pressed is 1, not pressed is 0, for example trigger)
+    - [ ] Axis (slider ie A is -1 and D is 1)
+    - [ ] Stick (2d slider with WASD or arrows for example)
 - [ ] Sound system updates
   - [ ] Remove necessity for sounds to play from a component
+  - [ ] Add ability to play at a location
+  - [ ] Add ability to play at a static volume
+  - [ ] Pitch and speed controls (set every play)
 - [ ] Particle system
   - [ ] Load particle effects from a json file
   - [ ] Play effect at entity or location

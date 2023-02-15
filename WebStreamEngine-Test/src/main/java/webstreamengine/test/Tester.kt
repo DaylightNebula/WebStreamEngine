@@ -13,6 +13,7 @@ import webstreamengine.client.entities.components.SpherePhysicsComponent
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.managers.PhysicsManager
+import webstreamengine.client.managers.SettingsElement
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.ui.elements.UIImageButton
 
@@ -66,4 +67,6 @@ public class Tester : Application() {
     override fun stop() {
 
     }
+
+    override fun getSettings(): Array<SettingsElement<*>> { return arrayOf() }
 }
