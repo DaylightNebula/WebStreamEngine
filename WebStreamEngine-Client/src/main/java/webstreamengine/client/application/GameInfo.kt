@@ -13,7 +13,6 @@ import webstreamengine.client.entities.EntityComponent
 object GameInfo {
     lateinit var cam: PerspectiveCamera
     val environment = Environment()
-    val entities = mutableListOf<Entity>()
     val controller = Controller(ControllerSettings.genStaticSettings())
 
     fun initCamera() {
@@ -24,14 +23,6 @@ object GameInfo {
         cam.near = .1f
         cam.far = 1000f
         cam.update()
-    }
-
-    fun addEntity(entity: Entity) {
-        entities.add(entity)
-    }
-
-    fun removeEntity(entity: Entity) {
-        entities.remove(entity)
     }
 
     fun setAmbientLight(color: Color) {
@@ -45,9 +36,5 @@ object GameInfo {
 
     fun update() {
         controller.update()
-    }
-
-    inline fun <reified T: EntityComponent> getEntitiesWithComponent(): List<Entity> {
-        return entities.filter { it.getComponents().any { comp -> comp is T } }
     }
 }

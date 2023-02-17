@@ -1,4 +1,4 @@
-package webstreamengine.client.managers
+package webstreamengine.client.physics
 
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.math.collision.Ray
@@ -8,8 +8,6 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher
 import com.badlogic.gdx.physics.bullet.collision.btCollisionWorld
 import com.badlogic.gdx.physics.bullet.collision.btDbvtBroadphase
 import com.badlogic.gdx.physics.bullet.collision.btDefaultCollisionConfiguration
-import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.components.PhysicsComponent
 
 object PhysicsManager {
 

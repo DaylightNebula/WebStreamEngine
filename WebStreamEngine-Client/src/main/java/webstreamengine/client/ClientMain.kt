@@ -4,17 +4,18 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.ui.UIHandler
 import webstreamengine.client.application.GameInfo
-import webstreamengine.client.controller.Controller
-import webstreamengine.client.controller.ControllerSettings
+import webstreamengine.client.entities.Entity
+import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
+import webstreamengine.client.physics.PhysicsManager
 import webstreamengine.core.*
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -41,6 +42,9 @@ object ClientMain: ApplicationAdapter() {
 
     private lateinit var modelbatch: ModelBatch
     private lateinit var spritebatch: SpriteBatch
+
+    private lateinit var testRed: Entity
+    private lateinit var testBlue: Entity
 
     override fun create() {
         // setup settings
@@ -102,11 +106,11 @@ object ClientMain: ApplicationAdapter() {
         // update app
         JarInterface.getApp()?.update()
 
-        // update entities
-        GameInfo.entities.forEach { it.update() }
-
         // update input
         InputManager.update()
+
+        // update entities
+        EntityChunks.updateEntities(GameInfo.cam.position)
 
         // clear screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.width, Gdx.graphics.height)
@@ -116,7 +120,7 @@ object ClientMain: ApplicationAdapter() {
         modelbatch.begin(GameInfo.cam)
 
         // draw entities
-        GameInfo.entities.forEach { it.render(modelbatch) }
+        EntityChunks.renderEntities(modelbatch, GameInfo.cam.position)
 
         // end 3d draw
         modelbatch.end()
@@ -135,7 +139,7 @@ object ClientMain: ApplicationAdapter() {
         UIHandler.dispose()
 
         // dispose of all entities
-        GameInfo.entities.forEach { it.dispose() }
+        EntityChunks.disposeAll()
 
         // close socket
         conn?.socket?.close()

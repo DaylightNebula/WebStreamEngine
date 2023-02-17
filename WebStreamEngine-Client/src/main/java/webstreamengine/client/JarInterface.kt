@@ -1,6 +1,8 @@
 package webstreamengine.client
 
+import org.json.JSONObject
 import webstreamengine.client.application.Application
+import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.SettingsManager
 import java.io.File
@@ -38,9 +40,12 @@ object JarInterface {
             // set current application
             currentApp = initApp
 
-            // start current app
+            // load built-in configs
             SettingsManager.addAllElements(*currentApp!!.getSettings())
             InputManager.loadInputDefaults(loader.getResource("input.json")?.readText())
+            loader.getResource("chunk_settings.json")?.let { EntityChunks.updateSettings(JSONObject(it.readText())) }
+
+            // start current app
             currentApp!!.start()
 
             // log

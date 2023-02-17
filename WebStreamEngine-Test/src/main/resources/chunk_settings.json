@@ -1,0 +1,7 @@
+{
+  "chunk_size": [10.0, 10.0, 10.0],
+  "large_entity_threshold": 100.0,
+  "large_render_threshold": 1000.0,
+  "small_render_threshold": 100.0,
+  "update_cutoff": 100.0
+}

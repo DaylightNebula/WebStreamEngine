@@ -6,15 +6,33 @@ import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.managers.ModelManager
+import webstreamengine.client.physics.SimpleBox
 import kotlin.math.pow
 
 class Entity(
     private var position: Vector3 = Vector3(0f, 0f, 0f),
     private var rotation: Vector3 = Vector3(0f, 0f, 0f),
-    private var scale: Vector3 = Vector3(1f, 1f, 1f)
+    private var scale: Vector3 = Vector3(1f, 1f, 1f),
+    private var registerAutomatically: Boolean = true
 ) {
     private val components = mutableListOf<EntityComponent>()
     val transformChangeCallbacks = mutableListOf<(entity: Entity) -> Unit>()
+    var box = SimpleBox(Vector3(), Vector3())
+    val chunks = mutableListOf<Chunk>()
+
+    constructor(
+        modelKey: String,
+        position: Vector3 = Vector3(0f, 0f, 0f),
+        rotation: Vector3 = Vector3(0f, 0f, 0f),
+        scale: Vector3 = Vector3(1f, 1f, 1f),
+        registerAutomatically: Boolean = true
+    ): this(position, rotation, scale, registerAutomatically) {
+        addModelComponent(modelKey)
+    }
+
+    init {
+        if (registerAutomatically) EntityChunks.addEntity(this)
+    }
 
     fun addModelComponent(modelID: String) {
         ModelManager.applyModelToEntity(this, modelID)
@@ -47,20 +65,27 @@ class Entity(
         component.stop()
     }
 
+    private var canRender = false
     fun update() {
         components.forEach { it.update() }
+        canRender = true
     }
 
     fun render(batch: ModelBatch) {
-        components.forEach { it.render(batch) }
+        // make sure we only render once per frame
+        if (canRender) {
+            components.forEach { it.render(batch) }
+            canRender = false
+        }
     }
 
     fun dispose() {
         components.forEach { it.stop() }
     }
 
-    fun updateInstanceTransform() {
+    private fun updateInstanceTransform() {
         transformChangeCallbacks.forEach { it(this) }
+        EntityChunks.updateEntity(this)
     }
 
     fun getPosition(): Vector3 { return position }
@@ -95,10 +120,5 @@ class Entity(
     fun scale(scale: Vector3) {
         this.scale.add(scale)
         updateInstanceTransform()
-    }
-
-    inline fun <reified T: EntityComponent> getNearbyEntitiesWithComponent(maxRange: Float = Float.MAX_VALUE): List<Entity> {
-        val maxRangeSq = if (maxRange == Float.MAX_VALUE) Float.MAX_VALUE else maxRange.pow(2f)
-        return GameInfo.entities.filter { it.getComponents().any { comp -> comp is T } && it.getPosition().dst2(getPosition()) < maxRangeSq }
     }
 }

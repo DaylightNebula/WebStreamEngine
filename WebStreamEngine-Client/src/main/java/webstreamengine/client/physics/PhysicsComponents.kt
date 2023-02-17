@@ -1,6 +1,5 @@
-package webstreamengine.client.entities.components
+package webstreamengine.client.physics
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.bullet.collision.btBoxShape
@@ -9,7 +8,6 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionShape
 import com.badlogic.gdx.physics.bullet.collision.btSphereShape
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
-import webstreamengine.client.managers.PhysicsManager
 
 open class PhysicsComponent(entity: Entity, shape: btCollisionShape, offset: Vector3): EntityComponent(entity) {
 
