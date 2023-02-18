@@ -24,7 +24,7 @@ object EntityChunks {
     private lateinit var frame: JFrame
 
     // chunks
-    val globalEntities = mutableListOf<Entity>()
+    private val globalEntities = mutableListOf<Entity>()
     val chunks = hashMapOf<Vector3, Chunk>()
 
     init {
@@ -89,9 +89,9 @@ object EntityChunks {
 
         // remove remaining old chunks that only have this as an entity
         oldChunks.forEach {
-            if (it.largeEntities.size + it.smallEntities.size < 1) {
+            if (it.largeEntities.size + it.smallEntities.size <= 1)
                 chunks.remove(it.chunkPosition)
-            } else {
+            else {
                 it.largeEntities.remove(entity)
                 it.smallEntities.remove(entity)
             }
@@ -124,23 +124,22 @@ object EntityChunks {
         }
     }
     
-    fun generateChunkPositionList(offset: Vector3, box: SimpleBox): MutableList<Vector3> {
+    private fun generateChunkPositionList(offset: Vector3, box: SimpleBox): MutableList<Vector3> {
         // min and max chunk position
         val min = convertVectorToChunkPosition(
             Vector3(offset)
                 .sub(Vector3(box.bounds)
                     .scl(0.5f)
-                    .sub(box.center)
+                    .add(box.center)
                 )
         )
         val max = convertVectorToChunkPosition(
             Vector3(offset)
                 .add(Vector3(box.bounds)
                     .scl(0.5f)
-                    .add(box.center)
+                    .sub(box.center)
                 )
         )
-        if (debug) println("Chunk min $min max $max offset $offset bounds ${box.bounds} center ${box.center}")
 
         // generate list of chunks between min and max
         val vecs = mutableListOf<Vector3>()
@@ -198,7 +197,8 @@ object EntityChunks {
     fun updateEntities(camPosition: Vector3) {
         globalEntities.forEach { it.update() }
         chunks.values.filter { chunk -> Vector3(chunk.chunkPosition).scl(chunkBounds).dst2(camPosition) < updateCutoff }.forEach { chunk ->
-            (chunk.largeEntities + chunk.smallEntities).forEach { it.update() }
+            chunk.largeEntities.forEach { it.update() }
+            chunk.smallEntities.forEach { it.update() }
         }
     }
 

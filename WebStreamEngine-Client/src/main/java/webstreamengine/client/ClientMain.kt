@@ -15,8 +15,7 @@ import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
-import webstreamengine.client.physics.ColliderComponent
-import webstreamengine.client.physics.SimpleBox
+import webstreamengine.client.physics.PhysicsManager
 import webstreamengine.core.*
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -46,7 +45,6 @@ object ClientMain: ApplicationAdapter() {
 
     private lateinit var testRed: Entity
     private lateinit var testBlue: Entity
-    private lateinit var testGreen: Entity
 
     override fun create() {
         // setup settings
@@ -66,6 +64,9 @@ object ClientMain: ApplicationAdapter() {
                 "gamedata/current_input.json"
             )
         )
+
+        // setup physics
+        PhysicsManager.init()
 
         // setup batches for rendering
         modelbatch = ModelBatch()

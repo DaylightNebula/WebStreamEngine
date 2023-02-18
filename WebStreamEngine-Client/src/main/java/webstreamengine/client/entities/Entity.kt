@@ -27,7 +27,7 @@ class Entity(
         rotation: Vector3 = Vector3(0f, 0f, 0f),
         scale: Vector3 = Vector3(1f, 1f, 1f),
         registerAutomatically: Boolean = true,
-        global: Boolean = false
+        global: Boolean = true
     ): this(position, rotation, scale, registerAutomatically, global) {
         addModelComponent(modelKey)
     }
@@ -122,9 +122,5 @@ class Entity(
     fun scale(scale: Vector3) {
         this.scale.add(scale)
         updateInstanceTransform()
-    }
-
-    inline fun <reified T: EntityComponent> getComponentOfType(): T? {
-        return getComponents().firstOrNull { it is T } as? T
     }
 }
