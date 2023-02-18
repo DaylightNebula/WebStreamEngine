@@ -83,18 +83,17 @@ Todo list
     - [ ] Height percent based on height of the window
     - [ ] Min and max dimensions based on window dimensions
 - [ ] Better physics
-  - [ ] Simple components with simple shapes
+  - [x] Simple components with simple shapes
   - [ ] Ray casting
     - [ ] Standard ray casting
     - [ ] Get point on plane ray casting (efficient, like what is currently being used by the city builder)
-  - [ ] Method of setting components velocity
+  - [x] Method of setting components velocity
   - [ ] Limit controller movement based on physics stuffs
-  - [ ] Settings
-    - [ ] Drag (how much velocity is slowed by) (should have a default)
-    - [ ] Weight (determines how much momentum is transferred when an object hits this object and tries to move it)
-  - [ ] Flags
-    - [ ] Is static (marks if an object is affected by forces put on it for example gravity or entities pushing on it)
-    - [ ] Is Ray Cast Only (marks if an object can only collide with ray casts)
+  - [x] Settings
+    - [x] Drag (how much velocity is slowed by) (should have a default)
+  - [x] Flags
+    - [x] Is static (marks if an object is affected by forces put on it for example gravity or entities pushing on it)
+    - [x] Is Ray Cast Only (marks if an object can only collide with ray casts)
 - [ ] Pathfinding
   - [ ] Use an array of points to dictate where the entity should move
   - [ ] Shoot a ray from the entity to the target
