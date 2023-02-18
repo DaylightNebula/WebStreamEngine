@@ -30,20 +30,7 @@ class ColliderComponent(
         // get a copy of box, expanded by velocities magnitude
         val velBox = SimpleBox(box.center, Vector3(box.bounds).scl(velocity.x * Gdx.graphics.deltaTime + 1f, velocity.y * Gdx.graphics.deltaTime + 1f, velocity.z * Gdx.graphics.deltaTime + 1f))
 
-        // get chunks to check for collisions
-        val chunks = EntityChunks.generateChunkPositionList(entity.getPosition(), velBox).mapNotNull { EntityChunks.chunks[it] }
-
-        // get all colliders we collided with, filtered by if we are moving towards them
-        val colliders = mutableListOf<ColliderComponent>()
-        chunks.forEach { chunk ->
-            (chunk.smallEntities + chunk.largeEntities)
-                .forEach { other ->
-                    if (other == entity) return@forEach
-                    val otherBox = (other.getComponentOfType<ColliderComponent>() ?: return@forEach)
-                    if (otherBox.box.isIntersectingWithOther(other.getPosition(), velBox, entity.getPosition()))
-                        colliders.add(otherBox)
-                }
-        }
+        val colliders = PhysicsController.getCollidersInBox(entity.getPosition(), velBox)
 
         // if we have colliders, limit velocity accordingly
         if (onGroundScore > 0) onGroundScore--

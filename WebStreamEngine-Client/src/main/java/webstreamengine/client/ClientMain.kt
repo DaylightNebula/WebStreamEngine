@@ -107,8 +107,8 @@ object ClientMain: ApplicationAdapter() {
         // todo remove
         if (InputManager.isMouseButtonUp(Input.Buttons.LEFT)) {
             val ray = GameInfo.cam.getPickRay(InputManager.mouseX.toFloat(), InputManager.mouseY.toFloat())
-            val result = PhysicsController.fakeCastToPlane(ray, FakeRayCastPlane.XZ_PLANE, 0f)
-            testRed.setPosition(result/*Vector3(result.z, result.y, result.x)*/)
+            val result = PhysicsController.rayCast(ray)
+            if (result != null) testRed.setPosition(result.second/*Vector3(result.z, result.y, result.x)*/)
             println("Result $result direction ${ray.direction}")
         }
 
