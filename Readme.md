@@ -82,13 +82,13 @@ Todo list
     - [ ] Width percent based on width of the window
     - [ ] Height percent based on height of the window
     - [ ] Min and max dimensions based on window dimensions
-- [ ] Better physics
+- [x] Better physics
   - [x] Simple components with simple shapes
   - [x] Ray casting
     - [x] Standard ray casting
     - [x] Get point on plane ray casting (efficient, like what is currently being used by the city builder)
   - [x] Method of setting components velocity
-  - [ ] Limit controller movement based on physics stuffs
+  - [x] Limit controller movement based on physics stuffs
   - [x] Settings
     - [x] Drag (how much velocity is slowed by) (should have a default)
   - [x] Flags
