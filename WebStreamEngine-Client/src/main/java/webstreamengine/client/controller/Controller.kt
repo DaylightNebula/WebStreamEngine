@@ -37,7 +37,7 @@ class Controller(
         Gdx.input.isCursorCatched = settings.lockMouse
 
         // check if the settings allow for the user to rotate the camera, and we currently can rotate around the root
-        if (settings.canPlayerChangeRotationAroundRoot && (settings.lockMouse || InputManager.isMouseButtonDown(Input.Buttons.LEFT))) {
+        if (settings.canPlayerChangeRotationAroundRoot && (settings.lockMouse || InputManager.isMouseButtonDown(Input.Buttons.RIGHT))) {
             if (lastMouse != null) {
                 val mouseSensitivity = (SettingsManager.getElementValue("Look Rate") as Int).toFloat()
                 val diffX = InputManager.mouseX.toFloat() - lastMouse!!.x

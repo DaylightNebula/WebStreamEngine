@@ -2,6 +2,7 @@ package webstreamengine.client
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.graphics.Color
@@ -16,6 +17,8 @@ import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.client.physics.ColliderComponent
+import webstreamengine.client.physics.FakeRayCastPlane
+import webstreamengine.client.physics.PhysicsController
 import webstreamengine.client.physics.SimpleBox
 import webstreamengine.core.*
 import java.io.File
@@ -87,9 +90,28 @@ object ClientMain: ApplicationAdapter() {
             val file = File("cache/").listFiles()?.firstOrNull { it.extension == "jar" } ?: throw IllegalArgumentException("Could not find a jar file in the cache.")
             if (file.exists()) JarInterface.init(file)
         }
+
+        // todo remove
+        ModelManager.createTestBox("test_blue", Vector3(1f, 1f, 1f), Color.BLUE)
+        ModelManager.createTestBox("test_red", Vector3(1f, 1f, 1f), Color.RED)
+        ModelManager.createTestBox("test_green", Vector3(10f, 0.1f, 10f), Color.GREEN)
+        testBlue = Entity("test_blue", Vector3(-4f, 2f, 0f))
+        testRed = Entity("test_red", Vector3(4f, 2f, 0f))
+        testGreen = Entity("test_green", Vector3(0f, 0f, 0f))
+        testBlue.addComponent(ColliderComponent(testBlue, SimpleBox(Vector3.Zero, Vector3(1f, 1f, 1f)), true))
+        testRed.addComponent(ColliderComponent(testRed, SimpleBox(Vector3.Zero, Vector3(1f, 1f, 1f)), false))
+        testGreen.addComponent(ColliderComponent(testGreen, SimpleBox(Vector3.Zero, Vector3(10f, 0.1f, 10f)), false))
     }
 
     override fun render() {
+        // todo remove
+        if (InputManager.isMouseButtonUp(Input.Buttons.LEFT)) {
+            val ray = GameInfo.cam.getPickRay(InputManager.mouseX.toFloat(), InputManager.mouseY.toFloat())
+            val result = PhysicsController.fakeCastToPlane(ray, FakeRayCastPlane.XZ_PLANE, 0f)
+            testRed.setPosition(result/*Vector3(result.z, result.y, result.x)*/)
+            println("Result $result direction ${ray.direction}")
+        }
+
         // handle incoming pockets
         if (networkenabled && conn!!.isDataAvailable()) ClientPacketHandler.handlePacket(conn!!.getDataPacket())
 

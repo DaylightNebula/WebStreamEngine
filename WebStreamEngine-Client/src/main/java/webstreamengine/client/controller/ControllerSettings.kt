@@ -56,7 +56,7 @@ data class ControllerSettings(
                 canPlayerChangeDistanceFromRoot = false,
                 defaultRotationAroundRoot = rotation,
                 canPlayerChangeRotationAroundRoot = true,
-                lockMouse = true
+                lockMouse = false
             )
         }
     }
