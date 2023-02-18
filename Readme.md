@@ -33,18 +33,18 @@ Todo list
   - [x] Settings
     - [x] Root entity movement speed (default 5 m/s)
     - [x] Smooth root entity acceleration value (idk how this would work right now but should know when this is implemented)
-- [ ] Make entities more efficient
-  - [ ] When an entity is created, they should be linked into chunks instead of a general array
-    - [ ] Link based on the bounding box and position of the entity
-    - [ ] Chunk linking should be updated whenever the position or rotation is updated
-    - [ ] Entities can be linked into multiple chunks
-    - [ ] Distance of entities from the player controls if they are to be rendered or not
-      - [ ] The size of entities should increase this distance (for example, a mountain should be rendered from far away but not a zombie)
-      - [ ] Entities should be able to be marked to ignore the render threshold when they are decided to render
-  - [ ] Settings
-    - [ ] Chunk size
-    - [ ] Update threshold (distance from the players entities location or the players root location in which entities are updated)
-    - [ ] Render threshold and size scale
+- [x] Make entities more efficient
+  - [x] When an entity is created, they should be linked into chunks instead of a general array
+    - [x] Link based on the bounding box and position of the entity
+    - [x] Chunk linking should be updated whenever the position or rotation is updated
+    - [x] Entities can be linked into multiple chunks
+    - [x] Distance of entities from the player controls if they are to be rendered or not
+      - [x] The size of entities should increase this distance (for example, a mountain should be rendered from far away but not a zombie)
+      - [x] Entities should be able to be marked to ignore the render threshold when they are decided to render
+  - [x] Settings
+    - [x] Chunk size
+    - [x] Update threshold (distance from the players entities location or the players root location in which entities are updated)
+    - [x] Render threshold and size scale
 - [ ] Standardized settings
   - [x] Look sensitivity (degrees per second)
   - [x] Scroll sensitivity (units per second)

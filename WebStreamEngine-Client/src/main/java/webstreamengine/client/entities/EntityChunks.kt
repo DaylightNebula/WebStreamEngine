@@ -24,6 +24,7 @@ object EntityChunks {
     private lateinit var frame: JFrame
 
     // chunks
+    private val globalEntities = mutableListOf<Entity>()
     val chunks = hashMapOf<Vector3, Chunk>()
 
     init {
@@ -63,13 +64,22 @@ object EntityChunks {
     }
 
     fun addEntity(entity: Entity) {
+        if (entity.global) {
+            globalEntities.add(entity)
+            return
+        }
         val chunkPositions = generateChunkPositionList(entity.getPosition(), entity.box)
         addEntityToChunkPositions(entity, chunkPositions, false)
     }
     
     fun updateEntity(entity: Entity) {
+        if (entity.global) return
+
         // get a list of chunk positions that the entity intersects
         val chunkPositions = generateChunkPositionList(entity.getPosition(), entity.box)
+
+        // if the list is unchanged, cancel
+        if (entity.chunks.all { chunkPositions.contains(it.chunkPosition) }) return
 
         // get old chunks
         val oldChunks = entity.chunks
@@ -152,6 +162,8 @@ object EntityChunks {
     }
 
     fun renderEntities(batch: ModelBatch, camPosition: Vector3) {
+        globalEntities.forEach { it.render(batch) }
+
         // get all chunks that are inside the large entity render threshold
         chunks.values.filter { chunk -> Vector3(chunk.chunkPosition).scl(chunkBounds).dst2(camPosition) < largeEntityRenderCutoff }.forEach { chunk ->
             // render large entities
@@ -183,6 +195,7 @@ object EntityChunks {
     }
 
     fun updateEntities(camPosition: Vector3) {
+        globalEntities.forEach { it.update() }
         chunks.values.filter { chunk -> Vector3(chunk.chunkPosition).scl(chunkBounds).dst2(camPosition) < updateCutoff }.forEach { chunk ->
             chunk.largeEntities.forEach { it.update() }
             chunk.smallEntities.forEach { it.update() }
@@ -199,4 +212,9 @@ object EntityChunks {
         chunks.clear()
     }
 }
-data class Chunk(val chunkPosition: Vector3, val largeEntities: MutableList<Entity> = mutableListOf(), val smallEntities: MutableList<Entity> = mutableListOf())
+data class Chunk(
+    val chunkPosition: Vector3,
+    val requiredEntities: MutableList<Entity> = mutableListOf(),
+    val largeEntities: MutableList<Entity> = mutableListOf(),
+    val smallEntities: MutableList<Entity> = mutableListOf()
+)

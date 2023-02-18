@@ -13,7 +13,8 @@ class Entity(
     private var position: Vector3 = Vector3(0f, 0f, 0f),
     private var rotation: Vector3 = Vector3(0f, 0f, 0f),
     private var scale: Vector3 = Vector3(1f, 1f, 1f),
-    private var registerAutomatically: Boolean = true
+    private var registerAutomatically: Boolean = true,
+    val global: Boolean = false
 ) {
     private val components = mutableListOf<EntityComponent>()
     val transformChangeCallbacks = mutableListOf<(entity: Entity) -> Unit>()
@@ -25,8 +26,9 @@ class Entity(
         position: Vector3 = Vector3(0f, 0f, 0f),
         rotation: Vector3 = Vector3(0f, 0f, 0f),
         scale: Vector3 = Vector3(1f, 1f, 1f),
-        registerAutomatically: Boolean = true
-    ): this(position, rotation, scale, registerAutomatically) {
+        registerAutomatically: Boolean = true,
+        global: Boolean = true
+    ): this(position, rotation, scale, registerAutomatically, global) {
         addModelComponent(modelKey)
     }
 
