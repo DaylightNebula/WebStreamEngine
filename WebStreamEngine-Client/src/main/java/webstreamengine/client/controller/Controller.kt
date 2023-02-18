@@ -10,6 +10,7 @@ import webstreamengine.client.application.GameInfo
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.inputs.StickInputElement
 import webstreamengine.client.managers.SettingsManager
+import webstreamengine.client.physics.ColliderComponent
 
 class Controller(
     private var settings: ControllerSettings
@@ -91,14 +92,19 @@ class Controller(
         val stick = InputManager.getElement(settings.movementStickInputName!!) as? StickInputElement ?: return
 
         // get total change scaled by the current delta time
-        val change = stick.getValue().scl(Gdx.graphics.deltaTime)
+        val change = stick.getValue()
 
-        val forward = Vector3(0f, 0f, 1f)
-        val right = Vector3(1f, 0f, 0f)
+        val collider = settings.rootEntity?.getComponentOfType<ColliderComponent>()
+
+        val forward = Vector3(0f, 0f, settings.movementSpeed)
+        val right = Vector3(settings.movementSpeed, 0f, 0f)
         Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(forward).scl(change.y)
         Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(right).scl(change.x)
-        settings.rootEntity!!.move(forward)
-        settings.rootEntity!!.move(right)
+        val move = Vector3(forward).add(right).scl(Gdx.graphics.deltaTime)
+
+        if (collider != null && !collider.isMoveValid(move)) return
+
+        settings.rootEntity!!.move(move)
     }
 
     fun changeSettings(settings: ControllerSettings, resetPlayerControlledOffsets: Boolean = true) {

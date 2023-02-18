@@ -16,7 +16,7 @@ class ColliderComponent(
     val rayCastOnly: Boolean = false
 ): EntityComponent(entity) {
 
-    private val velocity = Vector3(0f, 0f, 0f)
+    val velocity = Vector3(0f, 0f, 0f)
     private var onGroundScore = 0
 
     override fun update() {
@@ -84,7 +84,15 @@ class ColliderComponent(
         entity.move(Vector3(velocity).scl(Gdx.graphics.deltaTime))
     }
 
-    fun isOnGround() { onGroundScore > 0 }
+
+    fun isMoveValid(move: Vector3): Boolean {
+        val scl = Vector3(move.x, (move.y), (move.z))
+        val velBox = SimpleBox(Vector3(box.center).add(Vector3(scl).scl(0.5f)), Vector3(box.bounds).scl(abs(scl.x) + 1f, abs(scl.y) + 1f, abs(scl.z) + 1f))
+        val collisions = PhysicsController.getCollidersInBox(entity.getPosition(), velBox)
+        return if (onGroundScore < 3) collisions.size < 2 else collisions.isEmpty()
+    }
+
+    fun isOnGround(): Boolean { return onGroundScore > 0 }
 
     override fun start() {}
     override fun stop() {}

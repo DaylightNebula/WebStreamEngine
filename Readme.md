@@ -84,9 +84,9 @@ Todo list
     - [ ] Min and max dimensions based on window dimensions
 - [ ] Better physics
   - [x] Simple components with simple shapes
-  - [ ] Ray casting
-    - [ ] Standard ray casting
-    - [ ] Get point on plane ray casting (efficient, like what is currently being used by the city builder)
+  - [x] Ray casting
+    - [x] Standard ray casting
+    - [x] Get point on plane ray casting (efficient, like what is currently being used by the city builder)
   - [x] Method of setting components velocity
   - [ ] Limit controller movement based on physics stuffs
   - [x] Settings
