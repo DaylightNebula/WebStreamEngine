@@ -2,24 +2,24 @@ package webstreamengine.client
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
-import com.badlogic.gdx.math.Vector3
-import webstreamengine.client.ui.UIHandler
+import com.badlogic.gdx.math.Vector2
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
-import webstreamengine.client.physics.ColliderComponent
-import webstreamengine.client.physics.FakeRayCastPlane
-import webstreamengine.client.physics.PhysicsController
-import webstreamengine.client.physics.SimpleBox
+import webstreamengine.client.ui.HorizontalAlignment
+import webstreamengine.client.ui.UIManager
+import webstreamengine.client.ui.VerticalAlignment
+import webstreamengine.client.ui.macroelement.ColumnElement
+import webstreamengine.client.ui.macroelement.RowElement
+import webstreamengine.client.ui.microelements.SpacerElement
+import webstreamengine.client.ui.microelements.ImageElement
 import webstreamengine.core.*
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -62,7 +62,7 @@ object ClientMain: ApplicationAdapter() {
 
         // setup input
         InputProcessorManager.init()
-        UIHandler.init()
+//        UIHandler.init()
         InputManager.init(
             File(
                 System.getProperty("user.dir"),
@@ -91,27 +91,39 @@ object ClientMain: ApplicationAdapter() {
             if (file.exists()) JarInterface.init(file)
         }
 
-        // todo remove
-        ModelManager.createTestBox("test_blue", Vector3(1f, 1f, 1f), Color.BLUE)
-        ModelManager.createTestBox("test_red", Vector3(1f, 1f, 1f), Color.RED)
-        ModelManager.createTestBox("test_green", Vector3(10f, 0.1f, 10f), Color.GREEN)
-        testBlue = Entity("test_blue", Vector3(-4f, 2f, 0f))
-        testRed = Entity("test_red", Vector3(4f, 2f, 0f))
-        testGreen = Entity("test_green", Vector3(0f, 0f, 0f))
-        testBlue.addComponent(ColliderComponent(testBlue, SimpleBox(Vector3.Zero, Vector3(1f, 1f, 1f)), true))
-        testRed.addComponent(ColliderComponent(testRed, SimpleBox(Vector3.Zero, Vector3(1f, 1f, 1f)), false))
-        testGreen.addComponent(ColliderComponent(testGreen, SimpleBox(Vector3.Zero, Vector3(10f, 0.1f, 10f)), false))
+//        UIManager.addElement(ColumnElement(
+//            arrayOf(,
+//                SpacerElement(Vector2(0.1f, 0.1f), VerticalAlignment.CENTER, HorizontalAlignment.CENTER),
+//                ImageElement("play_button")
+//            ),
+//            VerticalAlignment.CENTER,
+//            HorizontalAlignment.CENTER
+//        ))
+        UIManager.addElement(
+            RowElement(
+                arrayOf(
+                    ImageElement("play_button"),
+                    ImageElement("play_button"),
+                    ImageElement("play_button"),
+                    ImageElement("play_button"),
+                    ColumnElement(
+                        arrayOf(
+                            ImageElement("play_button"),
+                            ImageElement("play_button"),
+                        ),
+                        VerticalAlignment.CENTER,
+                        HorizontalAlignment.CENTER
+                    ),
+                    //SpacerElement(Vector2(0.1f, 0.1f), VerticalAlignment.CENTER, HorizontalAlignment.CENTER),
+                    ImageElement("play_button", 0.5f, verticalAlignment = VerticalAlignment.CENTER)
+                ),
+                VerticalAlignment.TOP,
+                HorizontalAlignment.CENTER
+            )
+        )
     }
 
     override fun render() {
-        // todo remove
-        if (InputManager.isMouseButtonUp(Input.Buttons.LEFT)) {
-            val ray = GameInfo.cam.getPickRay(InputManager.mouseX.toFloat(), InputManager.mouseY.toFloat())
-            val result = PhysicsController.rayCast(ray)
-            if (result != null) testRed.setPosition(result.second/*Vector3(result.z, result.y, result.x)*/)
-            println("Result $result direction ${ray.direction}")
-        }
-
         // handle incoming pockets
         if (networkenabled && conn!!.isDataAvailable()) ClientPacketHandler.handlePacket(conn!!.getDataPacket())
 
@@ -129,6 +141,8 @@ object ClientMain: ApplicationAdapter() {
 
         // update input
         InputManager.update()
+
+        UIManager.update()
 
         // update entities
         EntityChunks.updateEntities(GameInfo.cam.position)
@@ -148,7 +162,7 @@ object ClientMain: ApplicationAdapter() {
 
         // draw test ui
         spritebatch.begin()
-        UIHandler.renderUI()
+        UIManager.render(spritebatch)
         spritebatch.end()
     }
 
@@ -157,7 +171,7 @@ object ClientMain: ApplicationAdapter() {
         JarInterface.getApp()?.stop()
 
         // dispose UI
-        UIHandler.dispose()
+        UIManager.dispose()
 
         // dispose of all entities
         EntityChunks.disposeAll()

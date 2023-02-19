@@ -21,7 +21,7 @@ public class Tester : Application() {
         testentity.addModelComponent("barracks")
         testentity.move(Vector3(0f, 0f, 0f))
         testentity.addComponent(soundComponent)
-        testentity.addComponent(ColliderComponent(testentity, SimpleBox(Vector3(0f, 0f, 0f), Vector3(1f, 1f, 1f)), true))
+        testentity.addComponent(ColliderComponent(testentity, SimpleBox(Vector3(0f, 0f, 0f), Vector3(1f, 1f, 1f)), false))
 
         // set ambient light
         GameInfo.setAmbientLight(Color.WHITE)

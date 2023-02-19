@@ -5,8 +5,6 @@ import com.badlogic.gdx.files.FileHandle
 import webstreamengine.client.conn
 import webstreamengine.client.networkenabled
 import webstreamengine.client.ui.UIElement
-import webstreamengine.client.ui.elements.UIText
-import webstreamengine.client.ui.elements.UITextButton
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
@@ -79,10 +77,10 @@ object FontManager {
     }
 
     private fun applyLoadedFontToTarget(target: UIElement, handle: FileHandle) {
-        if (target is UIText) {
+        /*TODO if (target is UIText) {
             target.setup(handle)
         } else if (target is UITextButton) {
             target.setup(handle)
-        }
+        }*/
     }
 }

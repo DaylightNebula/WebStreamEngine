@@ -72,16 +72,15 @@ Todo list
   - [ ] Load particle effects from a json file
   - [ ] Play effect at entity or location
 - [ ] New UI system
-  - [ ] Macro elements (such as grids and rows and columns) (these control size and position micro elements)
-    - [ ] Flags
-      - [ ] Scale elements passed max resolution
-  - [ ] Micro elements (such as images and text and spacers)
-    - [ ] Max scale (default 1.0 x 1.0)
-    - [ ] Min scale (default 0.0 x 0.0)
-  - [ ] General controls
-    - [ ] Width percent based on width of the window
-    - [ ] Height percent based on height of the window
-    - [ ] Min and max dimensions based on window dimensions
+  - [x] Macro elements (such as grids and rows and columns) (these control size and position micro elements)
+  - [x] Micro elements (such as images and text and spacers)
+  - [x] General controls
+    - [x] Width percent based on width of the window
+    - [x] Height percent based on height of the window
+    - [x] Min and max dimensions based on window dimensions
+  - [ ] Load from json files
+    - [ ] Every element should be able to be created
+    - [ ] Call kotlin functions when something changes
 - [x] Better physics
   - [x] Simple components with simple shapes
   - [x] Ray casting
@@ -99,3 +98,8 @@ Todo list
   - [ ] Shoot a ray from the entity to the target
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
+- [ ] State system
+  - [ ] Clear UI on state change
+  - [ ] Clear old entities
+  - [ ] Start, stop, and update (you know the drill at this point)
+  - [ ] Load entities and UIs from json file

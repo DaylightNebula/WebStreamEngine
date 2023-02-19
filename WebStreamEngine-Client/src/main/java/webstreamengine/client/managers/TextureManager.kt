@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import webstreamengine.client.conn
 import webstreamengine.client.networkenabled
-import webstreamengine.client.ui.elements.UIImage
-import webstreamengine.client.ui.elements.UIImageButton
+import webstreamengine.client.ui.microelements.ImageElement
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
@@ -98,9 +97,7 @@ object TextureManager {
     }
 
     private fun applyLoadedTextureToAny(any: Any, texture: Texture) {
-        if (any is UIImageButton)
-            any.handleTextureAssign(texture)
-        else if (any is UIImage)
+        if (any is ImageElement)
             any.handleTextureAssign(texture)
         else
             System.err.println("No texture application methods created for target type ${any.javaClass}")
