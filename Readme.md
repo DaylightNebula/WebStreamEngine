@@ -78,6 +78,9 @@ Todo list
     - [x] Width percent based on width of the window
     - [x] Height percent based on height of the window
     - [x] Min and max dimensions based on window dimensions
+  - [x] Text element
+  - [ ] Button elements
+  - [ ] Box element
   - [ ] Load from json files
     - [ ] Every element should be able to be created
     - [ ] Call kotlin functions when something changes

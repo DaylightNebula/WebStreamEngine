@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
@@ -18,8 +19,10 @@ import webstreamengine.client.ui.UIManager
 import webstreamengine.client.ui.VerticalAlignment
 import webstreamengine.client.ui.macroelement.ColumnElement
 import webstreamengine.client.ui.macroelement.RowElement
+import webstreamengine.client.ui.microelements.FontInfo
 import webstreamengine.client.ui.microelements.SpacerElement
 import webstreamengine.client.ui.microelements.ImageElement
+import webstreamengine.client.ui.microelements.TextElement
 import webstreamengine.core.*
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -103,17 +106,7 @@ object ClientMain: ApplicationAdapter() {
             RowElement(
                 arrayOf(
                     ImageElement("play_button"),
-                    ImageElement("play_button"),
-                    ImageElement("play_button"),
-                    ImageElement("play_button"),
-                    ColumnElement(
-                        arrayOf(
-                            ImageElement("play_button"),
-                            ImageElement("play_button"),
-                        ),
-                        VerticalAlignment.CENTER,
-                        HorizontalAlignment.CENTER
-                    ),
+                    TextElement(FontInfo("RobotoMono", 50, Color.WHITE), "hi bob"),
                     //SpacerElement(Vector2(0.1f, 0.1f), VerticalAlignment.CENTER, HorizontalAlignment.CENTER),
                     ImageElement("play_button", 0.5f, verticalAlignment = VerticalAlignment.CENTER)
                 ),
