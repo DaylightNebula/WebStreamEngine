@@ -6,6 +6,9 @@ import com.badlogic.gdx.math.Vector2
 import org.json.JSONArray
 import org.json.JSONObject
 import webstreamengine.client.managers.InputProcessorManager
+import webstreamengine.client.ui.MacroUIElement
+import webstreamengine.client.ui.UIElement
+import webstreamengine.client.ui.UIManager
 import java.io.File
 
 object InputManager: InputAdapter() {
@@ -14,8 +17,8 @@ object InputManager: InputAdapter() {
     var scroll = Vector2()
 
     private val elements = mutableListOf<InputElement<*>>()
-    internal val keysUp = BooleanArray(256) { false }
-    internal val keysDown = BooleanArray(256) { false }
+    private val keysUp = BooleanArray(256) { false }
+    private val keysDown = BooleanArray(256) { false }
     private val mouseButtonsDown = BooleanArray(5) { false }
     private val mouseButtonsUp = BooleanArray(5) { false }
 
@@ -92,11 +95,26 @@ object InputManager: InputAdapter() {
         return false
     }
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        val xPos = screenX.toFloat() / Gdx.graphics.width
+        val yPos = 1f - (screenY.toFloat() / Gdx.graphics.height)
+
+        var stop = false
+        recursiveCheckClick(UIManager.getElements(), xPos, yPos) { it.clickUp?.let { it1 -> it1() }; stop = true }
+        if (stop) return false
+
         // update mouse button state trackers
-        mouseButtonsDown[button] = false
         mouseButtonsUp[button] = true
         return false
     }
+
+    fun recursiveCheckClick(elements: List<UIElement>, xPos: Float, yPos: Float, found: (element: UIElement) -> Unit) {
+        elements.forEach {
+            if (it is MacroUIElement) recursiveCheckClick(it.elements.asList(), xPos, yPos, found)
+            else if (it.x < xPos && it.x + it.width > xPos && it.y < yPos && it.y + it.height > yPos)
+                found(it)
+        }
+    }
+
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
         // update mouse trackers
         mouseX = screenX
@@ -104,6 +122,13 @@ object InputManager: InputAdapter() {
         return false
     }
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        val xPos = screenX.toFloat() / Gdx.graphics.width
+        val yPos = 1f - (screenY.toFloat() / Gdx.graphics.height)
+
+        var stop = false
+        recursiveCheckClick(UIManager.getElements(), xPos, yPos) { it.clickDown?.let { it1 -> it1() }; stop = true }
+        if (stop) return false
+
         // update mouse down tracker
         mouseButtonsDown[button] = true
         return false
@@ -178,9 +203,6 @@ abstract class InputElement<T: Any>(val name: String, private val defaultTargets
                     .put("value", target.targetValue)
             }
         )
-//            .put("type", javaClass.name.replace("InputElement", ""))
-//            .put("name", name)
-//            .put("targets", JSONArray())
     }
 
     abstract fun getValue(): T

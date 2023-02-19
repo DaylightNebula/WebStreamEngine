@@ -37,6 +37,10 @@ object UIManager {
         elements.forEach { it.renderToBounds(batch) }
     }
 
+    fun getElements(): List<UIElement> {
+        return elements
+    }
+
     fun dispose() {
         stage.dispose()
     }

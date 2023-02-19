@@ -18,8 +18,10 @@ class TextElement(
     val info: FontInfo,
     var text: String,
     verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
-    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
-): UIElement(verticalAlignment, horizontalAlignment) {
+    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER,
+    clickUp: (() -> Unit)? = null,
+    clickDown: (() -> Unit)? = null
+): UIElement(verticalAlignment, horizontalAlignment, clickUp, clickDown) {
 
     private lateinit var font: BitmapFont
     private lateinit var bounds: Vector2

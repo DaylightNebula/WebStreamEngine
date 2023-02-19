@@ -3,7 +3,10 @@ package webstreamengine.client.ui
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 
-abstract class UIElement(val verticalAlignment: VerticalAlignment, val horizontalAlignment: HorizontalAlignment) {
+abstract class UIElement(
+    val verticalAlignment: VerticalAlignment, val horizontalAlignment: HorizontalAlignment,
+    val clickUp: (() -> Unit)?, val clickDown: (() -> Unit)?
+) {
     internal var x = 0f
     internal var y = 0f
     internal var width = 0f
@@ -24,7 +27,7 @@ abstract class UIElement(val verticalAlignment: VerticalAlignment, val horizonta
 }
 abstract class MacroUIElement(
     val elements: Array<UIElement>, verticalAlignment: VerticalAlignment, horizontalAlignment: HorizontalAlignment
-): UIElement(verticalAlignment, horizontalAlignment) {
+): UIElement(verticalAlignment, horizontalAlignment, null, null) {
     abstract fun updateBounds(rootX: Float, rootY: Float, rootWidth: Float, rootHeight: Float)
 }
 enum class VerticalAlignment() {

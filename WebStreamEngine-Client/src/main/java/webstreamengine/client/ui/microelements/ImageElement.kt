@@ -5,17 +5,16 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import webstreamengine.client.managers.TextureManager
-import webstreamengine.client.ui.HorizontalAlignment
-import webstreamengine.client.ui.UIElement
-import webstreamengine.client.ui.UIManager
-import webstreamengine.client.ui.VerticalAlignment
+import webstreamengine.client.ui.*
 
 class ImageElement(
     key: String,
     private val scale: Float = 1f,
     verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
-    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
-): UIElement(verticalAlignment, horizontalAlignment) {
+    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER,
+    clickUp: (() -> Unit)? = null,
+    clickDown: (() -> Unit)? = null
+): UIElement(verticalAlignment, horizontalAlignment, clickUp, clickDown) {
 
     private var texture: Texture? = null
 
@@ -31,11 +30,10 @@ class ImageElement(
     override fun getRequestedSize(): Vector2 {
         if (texture == null) return Vector2.Zero
 
-        val value = Vector2(
+        return Vector2(
             (texture!!.width.toFloat() / Gdx.graphics.width) * scale,
             (texture!!.height.toFloat() / Gdx.graphics.height) * scale
         )
-        return value
     }
 
     override fun renderToBounds(batch: SpriteBatch) {

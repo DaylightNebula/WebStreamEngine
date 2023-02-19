@@ -81,9 +81,6 @@ Todo list
   - [x] Text element
   - [ ] Button elements
   - [ ] Box element
-  - [ ] Load from json files
-    - [ ] Every element should be able to be created
-    - [ ] Call kotlin functions when something changes
 - [x] Better physics
   - [x] Simple components with simple shapes
   - [x] Ray casting
