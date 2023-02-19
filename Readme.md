@@ -79,8 +79,7 @@ Todo list
     - [x] Height percent based on height of the window
     - [x] Min and max dimensions based on window dimensions
   - [x] Text element
-  - [ ] Button elements
-  - [ ] Box element
+  - [x] Button elements
 - [x] Better physics
   - [x] Simple components with simple shapes
   - [x] Ray casting

@@ -7,9 +7,9 @@ object UIManager {
 
     var isDirty = false
     private var stage = Stage()
-    private var elements = mutableListOf<UIElement>()
+    private var elements = mutableListOf<MacroUIElement>()
 
-    fun addElement(element: UIElement) {
+    fun addElement(element: MacroUIElement) {
         elements.add(element)
         isDirty = true
     }
@@ -19,16 +19,7 @@ object UIManager {
             isDirty = false
 
             elements.forEach {
-                if (it is MacroUIElement)
-                    it.updateBounds(0f, 0f, 1f, 1f)
-                else {
-                    val dimensions = it.getRequestedSize()
-                    it.setSize(dimensions.x, dimensions.y)
-                    it.setPosition(
-                        0.5f - (dimensions.x * 0.5f),
-                        0.5f - (dimensions.y * 0.5f)
-                    )
-                }
+                it.updateBounds(0f, 0f, 1f, 1f)
             }
         }
     }
