@@ -5,8 +5,7 @@ import com.badlogic.gdx.math.Vector2
 
 abstract class UIElement(
     val id: String,
-    val verticalAlignment: VerticalAlignment, val horizontalAlignment: HorizontalAlignment,
-    val clickUp: (() -> Unit)?, val clickDown: (() -> Unit)?
+    val verticalAlignment: VerticalAlignment, val horizontalAlignment: HorizontalAlignment
 ) {
     internal var x = 0f
     internal var y = 0f
@@ -28,7 +27,7 @@ abstract class UIElement(
 }
 abstract class MacroUIElement(
     id: String, val elements: List<UIElement>, verticalAlignment: VerticalAlignment, horizontalAlignment: HorizontalAlignment
-): UIElement(id, verticalAlignment, horizontalAlignment, null, null) {
+): UIElement(id, verticalAlignment, horizontalAlignment) {
     abstract fun updateBounds(rootX: Float, rootY: Float, rootWidth: Float, rootHeight: Float)
 }
 enum class VerticalAlignment() {

@@ -17,44 +17,54 @@ object UIManager {
 
     var isDirty = false
     private var stage = Stage()
-    private var elements = mutableListOf<UIElement>()
-
-    fun addElement(element: UIElement) {
-        elements.add(element)
-        isDirty = true
-    }
+    private var scripts = mutableListOf<UIScript>()
 
     fun update() {
         if (isDirty) {
             isDirty = false
 
-            elements.forEach {
-                if (it is MacroUIElement)
-                    it.updateBounds(0f, 0f, 1f, 1f)
-                else {
-                    val size = it.getRequestedSize()
-                    it.setPosition(0f, 0f)
-                    it.setSize(size.x * Gdx.graphics.width, size.y * Gdx.graphics.height)
+            scripts.forEach { script ->
+                script.elements.forEach {
+                    if (it is MacroUIElement)
+                        it.updateBounds(0f, 0f, 1f, 1f)
+                    else {
+                        val size = it.getRequestedSize()
+                        it.setPosition(0f, 0f)
+                        it.setSize(size.x * Gdx.graphics.width, size.y * Gdx.graphics.height)
+                    }
                 }
             }
         }
     }
 
     fun render(batch: SpriteBatch) {
-        elements.forEach { it.renderToBounds(batch) }
+        scripts.forEach { script -> script.elements.forEach { it.renderToBounds(batch) } }
     }
 
-    fun getElements(): List<UIElement> {
-        return elements
+    fun getScripts(): List<UIScript> {
+        return scripts
     }
 
     fun dispose() {
         stage.dispose()
     }
 
-    fun addUIScript(jarPath: String) {
-        val jsonArray = JSONArray(JarInterface.getTextResource(jarPath) ?: throw IllegalArgumentException("Could not find $jarPath"))
-        jsonArray.forEach { if (it is JSONObject) addElement(compileJSONElementToUIElement(it)) }
+    fun addUIScript(script: UIScript) {
+        // get the path to the scripts ui json file
+        val targetPath = "uis/${script.path}.json"
+
+        // compile the json files elements into ui elements and pass them to the script
+        val jsonArray = JSONArray(JarInterface.getTextResource(targetPath) ?: throw IllegalArgumentException("Could not find $targetPath"))
+        script.elements.addAll(jsonArray.map { compileJSONElementToUIElement(it as JSONObject) })
+
+        // make sure the scripts callbacks are registered
+        script.registerCallbacks()
+
+        // add the script to the tracking list
+        scripts.add(script)
+
+        // mark is dirty
+        isDirty = true
     }
 
     private fun compileJSONElementToUIElement(element: JSONObject): UIElement {

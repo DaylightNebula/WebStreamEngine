@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2
 import org.json.JSONArray
 import org.json.JSONObject
 import webstreamengine.client.managers.InputProcessorManager
+import webstreamengine.client.ui.InteractType
 import webstreamengine.client.ui.MacroUIElement
 import webstreamengine.client.ui.UIElement
 import webstreamengine.client.ui.UIManager
@@ -99,7 +100,12 @@ object InputManager: InputAdapter() {
         val yPos = 1f - (screenY.toFloat() / Gdx.graphics.height)
 
         var stop = false
-        recursiveCheckClick(UIManager.getElements(), xPos, yPos) { it.clickUp?.let { it1 -> it1() }; stop = true }
+        UIManager.getScripts().forEach { script ->
+            recursiveCheckClick(script.elements, xPos, yPos) {
+                script.runCallback("play_button", InteractType.UP)
+                stop = true
+            }
+        }
         if (stop) return false
 
         // update mouse button state trackers
@@ -126,7 +132,12 @@ object InputManager: InputAdapter() {
         val yPos = 1f - (screenY.toFloat() / Gdx.graphics.height)
 
         var stop = false
-        recursiveCheckClick(UIManager.getElements(), xPos, yPos) { it.clickDown?.let { it1 -> it1() }; stop = true }
+        UIManager.getScripts().forEach { script ->
+            recursiveCheckClick(script.elements, xPos, yPos) {
+                script.runCallback("play_button", InteractType.DOWN)
+                stop = true
+            }
+        }
         if (stop) return false
 
         // update mouse down tracker

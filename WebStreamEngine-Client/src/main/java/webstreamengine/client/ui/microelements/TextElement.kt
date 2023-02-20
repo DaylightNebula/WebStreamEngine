@@ -20,10 +20,8 @@ class TextElement(
     val info: FontInfo,
     var text: String,
     verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
-    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER,
-    clickUp: (() -> Unit)? = null,
-    clickDown: (() -> Unit)? = null
-): UIElement(id, verticalAlignment, horizontalAlignment, clickUp, clickDown) {
+    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
+): UIElement(id, verticalAlignment, horizontalAlignment) {
 
     companion object {
         private fun valueOf(hex: String): Color {

@@ -10,6 +10,7 @@ import webstreamengine.client.entities.components.SoundComponent
 import webstreamengine.client.managers.SettingsElement
 import webstreamengine.client.physics.ColliderComponent
 import webstreamengine.client.physics.SimpleBox
+import webstreamengine.client.ui.UIManager
 
 public class Tester : Application() {
 
@@ -27,6 +28,8 @@ public class Tester : Application() {
         GameInfo.setAmbientLight(Color.WHITE)
 
         GameInfo.controller.changeSettings(ControllerSettings.genThirdPersonSettings(testentity, 5f, Vector3(0f, 0f, 0f), 5f))
+
+        UIManager.addUIScript(TestUI())
     }
 
     override fun update() {

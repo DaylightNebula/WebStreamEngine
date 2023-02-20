@@ -11,7 +11,7 @@ class SpacerElement(
     id: String,
     private val size: Vector2,
     verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER, horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
-): UIElement(id, verticalAlignment, horizontalAlignment, null, null) {
+): UIElement(id, verticalAlignment, horizontalAlignment) {
 
     constructor(json: JSONObject, id: String, va: VerticalAlignment, ha: HorizontalAlignment): this(
         id,

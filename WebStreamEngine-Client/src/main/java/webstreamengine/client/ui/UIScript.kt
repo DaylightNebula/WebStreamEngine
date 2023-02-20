@@ -1,12 +1,21 @@
 package webstreamengine.client.ui
 
-open class UIScript {
-    @UIAction
-    fun testClick() {
-        println("TEST")
+abstract class UIScript(val path: String) {
+    val elements = mutableListOf<UIElement>()
+    private val callbacks = hashMapOf<TargetElement, () -> Unit>()
+
+    fun runCallback(id: String, type: InteractType) {
+        callbacks[TargetElement(id, type)]?.let { it() }
     }
+
+    fun registerCallback(target: TargetElement, callback: () -> Unit) {
+        callbacks[target] = callback
+    }
+
+    abstract fun registerCallbacks()
 }
-
-annotation class UIAction() {
-
+data class TargetElement(val id: String, val type: InteractType)
+enum class InteractType {
+    UP,
+    DOWN
 }

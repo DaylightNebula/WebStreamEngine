@@ -114,7 +114,6 @@ object ClientMain: ApplicationAdapter() {
 //                HorizontalAlignment.CENTER
 //            )
 //        )
-        UIManager.addUIScript("uis/test_ui.json")
     }
 
     override fun render() {
