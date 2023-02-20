@@ -11,11 +11,12 @@ import java.net.URLClassLoader
 
 object JarInterface {
 
+    lateinit var loader: URLClassLoader
     var currentApp: Application? = null
 
     fun init(file: File) {
         // create a class loader for the jar
-        val loader = URLClassLoader(
+        loader = URLClassLoader(
             arrayOf(file.toURI().toURL()),
             this.javaClass.classLoader
         )
@@ -51,6 +52,10 @@ object JarInterface {
             // log
             println("Loaded WebStreamApplication from jar file ${file.path}")
         } catch (ex: Exception) { ex.printStackTrace() }
+    }
+
+    fun getTextResource(path: String): String? {
+        return loader.getResource(path)?.readText()
     }
 
     fun getApp(): Application? {

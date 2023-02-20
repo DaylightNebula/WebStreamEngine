@@ -4,19 +4,28 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
+import org.json.JSONObject
 import webstreamengine.client.managers.TextureManager
 import webstreamengine.client.ui.*
 
 class ImageElement(
+    id: String,
     key: String,
     private val scale: Float = 1f,
     verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
     horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER,
     clickUp: (() -> Unit)? = null,
     clickDown: (() -> Unit)? = null
-): UIElement(verticalAlignment, horizontalAlignment, clickUp, clickDown) {
+): UIElement(id, verticalAlignment, horizontalAlignment, clickUp, clickDown) {
 
     private var texture: Texture? = null
+
+    constructor(jsonObject: JSONObject, id: String, va: VerticalAlignment, ha: HorizontalAlignment): this(
+        id,
+        jsonObject.getString("key") ?: throw IllegalArgumentException("A key must be provided to an image ui element"),
+        jsonObject.optFloat("size", 1f),
+        va, ha
+    )
 
     init {
         TextureManager.applyTextureToTarget(this, key)

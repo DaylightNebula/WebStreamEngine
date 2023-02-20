@@ -102,18 +102,19 @@ object ClientMain: ApplicationAdapter() {
 //            VerticalAlignment.CENTER,
 //            HorizontalAlignment.CENTER
 //        ))
-        UIManager.addElement(
-            RowElement(
-                arrayOf(
-                    ImageElement("play_button"),
-                    TextElement(FontInfo("RobotoMono", 50, Color.WHITE), "hi bob"),
-                    //SpacerElement(Vector2(0.1f, 0.1f), VerticalAlignment.CENTER, HorizontalAlignment.CENTER),
-                    ImageElement("play_button", 0.5f, verticalAlignment = VerticalAlignment.CENTER)
-                ),
-                VerticalAlignment.TOP,
-                HorizontalAlignment.CENTER
-            )
-        )
+//        UIManager.addElement(
+//            RowElement(
+//                arrayOf(
+//                    ImageElement("play_button"),
+//                    TextElement(FontInfo("RobotoMono", 50, Color.WHITE), "hi bob"),
+//                    //SpacerElement(Vector2(0.1f, 0.1f), VerticalAlignment.CENTER, HorizontalAlignment.CENTER),
+//                    ImageElement("play_button", 0.5f, verticalAlignment = VerticalAlignment.CENTER)
+//                ),
+//                VerticalAlignment.TOP,
+//                HorizontalAlignment.CENTER
+//            )
+//        )
+        UIManager.addUIScript("uis/test_ui.json")
     }
 
     override fun render() {
@@ -181,4 +182,6 @@ object ClientMain: ApplicationAdapter() {
         TextureManager.dispose()
         SoundManager.dispose()
     }
+
+    override fun resize(width: Int, height: Int) { UIManager.isDirty = true }
 }

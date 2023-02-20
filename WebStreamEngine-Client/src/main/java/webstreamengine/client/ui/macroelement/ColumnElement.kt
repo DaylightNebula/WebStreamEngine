@@ -6,11 +6,12 @@ import webstreamengine.client.ui.*
 import kotlin.math.min
 
 class ColumnElement(
-    elements: Array<UIElement>,
+    id: String,
+    elements: List<UIElement>,
     verticalAlignment: VerticalAlignment,
     horizontalAlignment: HorizontalAlignment
 ): MacroUIElement(
-    elements, verticalAlignment, horizontalAlignment
+    id, elements, verticalAlignment, horizontalAlignment
 ) {
     override fun getRequestedSize(): Vector2 {
         val sizes = elements.map { it.getRequestedSize() }

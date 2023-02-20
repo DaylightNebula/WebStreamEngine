@@ -97,8 +97,17 @@ Todo list
   - [ ] Shoot a ray from the entity to the target
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
-- [ ] State system
+- [ ] Scene system
   - [ ] Clear UI on state change
   - [ ] Clear old entities
   - [ ] Start, stop, and update (you know the drill at this point)
-  - [ ] Load entities and UIs from json file
+- [ ] The JSON-ifying
+  - [ ] UI files
+    - [ ] Uses root folder named "ui" in jar references
+    - [ ] Script reference that are talked to on button pressed and such (matching resource and source directories)
+  - [ ] Entity files
+    - [ ] Components compile and decompile to and from json array
+    - [ ] Script reference that can be used to create an entity if an entity is referenced
+  - [ ] Scene files (must be created from a script first)
+    - [ ] Reference(s) to UI files
+    - [ ] Entity references and positions and rotations

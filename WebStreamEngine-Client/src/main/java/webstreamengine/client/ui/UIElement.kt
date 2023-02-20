@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 
 abstract class UIElement(
+    val id: String,
     val verticalAlignment: VerticalAlignment, val horizontalAlignment: HorizontalAlignment,
     val clickUp: (() -> Unit)?, val clickDown: (() -> Unit)?
 ) {
@@ -26,8 +27,8 @@ abstract class UIElement(
     abstract fun renderToBounds(batch: SpriteBatch)
 }
 abstract class MacroUIElement(
-    val elements: Array<UIElement>, verticalAlignment: VerticalAlignment, horizontalAlignment: HorizontalAlignment
-): UIElement(verticalAlignment, horizontalAlignment, null, null) {
+    id: String, val elements: List<UIElement>, verticalAlignment: VerticalAlignment, horizontalAlignment: HorizontalAlignment
+): UIElement(id, verticalAlignment, horizontalAlignment, null, null) {
     abstract fun updateBounds(rootX: Float, rootY: Float, rootWidth: Float, rootHeight: Float)
 }
 enum class VerticalAlignment() {

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "play_button_container",
+    "type": "column",
+    "elements": [
+      {
+        "id": "play_button",
+        "type": "image",
+        "key": "play_button",
+        "size": 0.5
+      }
+    ],
+    "horizontalAlignment": "left",
+    "verticalAlignment": "bottom"
+  }
+]

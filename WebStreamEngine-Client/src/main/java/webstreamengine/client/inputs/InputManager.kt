@@ -109,7 +109,7 @@ object InputManager: InputAdapter() {
 
     fun recursiveCheckClick(elements: List<UIElement>, xPos: Float, yPos: Float, found: (element: UIElement) -> Unit) {
         elements.forEach {
-            if (it is MacroUIElement) recursiveCheckClick(it.elements.asList(), xPos, yPos, found)
+            if (it is MacroUIElement) recursiveCheckClick(it.elements, xPos, yPos, found)
             else if (it.x < xPos && it.x + it.width > xPos && it.y < yPos && it.y + it.height > yPos)
                 found(it)
         }

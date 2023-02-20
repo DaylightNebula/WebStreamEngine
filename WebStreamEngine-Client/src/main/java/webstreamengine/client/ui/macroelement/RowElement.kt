@@ -10,10 +10,11 @@ import webstreamengine.client.ui.*
 import kotlin.math.min
 
 class RowElement(
-    elements: Array<UIElement>,
+    id: String,
+    elements: List<UIElement>,
     verticalAlignment: VerticalAlignment,
     horizontalAlignment: HorizontalAlignment,
-): MacroUIElement(elements, verticalAlignment, horizontalAlignment) {
+): MacroUIElement(id, elements, verticalAlignment, horizontalAlignment) {
     override fun getRequestedSize(): Vector2 {
         val sizes = elements.map { it.getRequestedSize() }
         return Vector2(
