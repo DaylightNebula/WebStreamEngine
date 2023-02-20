@@ -14,7 +14,7 @@ import webstreamengine.client.ui.UIManager
 
 public class Tester : Application() {
 
-    private val testentity = Entity()
+    private val testentity = Entity("player")
     private val soundComponent = SoundComponent(testentity)
 
     override fun start() {
@@ -30,6 +30,8 @@ public class Tester : Application() {
         GameInfo.controller.changeSettings(ControllerSettings.genThirdPersonSettings(testentity, 5f, Vector3(0f, 0f, 0f), 5f))
 
         UIManager.addUIScript(TestUI())
+
+        Entity("test_entity", position = Vector3(0f, 0f, -10f))
     }
 
     override fun update() {

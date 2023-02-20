@@ -1,10 +1,22 @@
-package webstreamengine.client.entities.components
+package webstreamengine.client.tasks
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch
+import org.json.JSONArray
+import org.json.JSONObject
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
 
 class TaskComponent(entity: Entity, private val tasks: MutableList<Task>): EntityComponent(entity) {
+
+    constructor(entity: Entity, jsonArray: JSONArray): this(
+        entity,
+        jsonArray.map {
+            TaskRegistry.createTaskByJSON(
+                entity,
+                it as? JSONObject ?: throw IllegalArgumentException("Task must be a json object")
+            )
+        }.toMutableList()
+    )
 
     private var currentTask: Task? = null
 

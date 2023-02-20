@@ -99,15 +99,15 @@ Todo list
   - [ ] Remove any points that make the pathfinding slower
 - [ ] Scene system
   - [ ] Clear UI on state change
-  - [ ] Clear old entities
+  - [ ] Clear old entities that arent marked keep (if an entity with the same id and is marked keep, just keep the old one and skip the new one)
   - [ ] Start, stop, and update (you know the drill at this point)
 - [ ] The JSON-ifying
   - [x] UI files
     - [x] Uses root folder named "ui" in jar references
     - [x] Script reference that are talked to on button pressed and such (matching resource and source directories)
-  - [ ] Entity files
-    - [ ] Components compile and decompile to and from json array
-    - [ ] Script reference that can be used to create an entity if an entity is referenced
+  - [x] Entity files
+    - [x] Components compile and decompile to and from json array
+    - [x] Script reference that can be used to create an entity if an entity is referenced
   - [ ] Scene files (must be created from a script first)
     - [ ] Reference(s) to UI files
     - [ ] Entity references and positions and rotations

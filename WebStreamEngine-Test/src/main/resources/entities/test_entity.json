@@ -1,0 +1,9 @@
+{
+  "id": "test_entity",
+  "components": [
+    {
+      "type": "model",
+      "key": "barracks"
+    }
+  ]
+}

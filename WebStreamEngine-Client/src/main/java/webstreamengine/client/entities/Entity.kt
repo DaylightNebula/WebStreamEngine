@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
+import org.json.JSONObject
+import webstreamengine.client.JarInterface
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.physics.SimpleBox
 import kotlin.math.pow
 
 class Entity(
+    private var id: String,
     private var position: Vector3 = Vector3(0f, 0f, 0f),
     private var rotation: Vector3 = Vector3(0f, 0f, 0f),
     private var scale: Vector3 = Vector3(1f, 1f, 1f),
@@ -22,6 +25,35 @@ class Entity(
     val chunks = mutableListOf<Chunk>()
 
     constructor(
+        path: String,
+        position: Vector3 = Vector3(0f, 0f, 0f),
+        rotation: Vector3 = Vector3(0f, 0f, 0f),
+        scale: Vector3 = Vector3(1f, 1f, 1f),
+    ): this(
+        JSONObject(JarInterface.getTextResource("entities/$path.json")),
+        position, rotation, scale
+    )
+
+    constructor(
+        json: JSONObject,
+        position: Vector3 = Vector3(0f, 0f, 0f),
+        rotation: Vector3 = Vector3(0f, 0f, 0f),
+        scale: Vector3 = Vector3(1f, 1f, 1f),
+    ): this(
+        json.optString("id") ?: throw IllegalArgumentException("Entity is required to have a id in json object"),
+        position, rotation, scale,
+        json.optBoolean("registerAutomatically", true),
+        json.optBoolean("global", false)
+    ) {
+        if (json.has("components"))
+            components.addAll(
+                json.getJSONArray("components")
+                    .mapNotNull { EntityComponentRegistry.createComponentViaJSON(this, it as JSONObject) }
+            )
+    }
+
+/*
+    constructor(
         modelKey: String,
         position: Vector3 = Vector3(0f, 0f, 0f),
         rotation: Vector3 = Vector3(0f, 0f, 0f),
@@ -31,6 +63,7 @@ class Entity(
     ): this(position, rotation, scale, registerAutomatically, global) {
         addModelComponent(modelKey)
     }
+*/
 
     init {
         if (registerAutomatically) EntityChunks.addEntity(this)
