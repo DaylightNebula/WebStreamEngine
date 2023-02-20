@@ -102,9 +102,9 @@ Todo list
   - [ ] Clear old entities
   - [ ] Start, stop, and update (you know the drill at this point)
 - [ ] The JSON-ifying
-  - [ ] UI files
-    - [ ] Uses root folder named "ui" in jar references
-    - [ ] Script reference that are talked to on button pressed and such (matching resource and source directories)
+  - [x] UI files
+    - [x] Uses root folder named "ui" in jar references
+    - [x] Script reference that are talked to on button pressed and such (matching resource and source directories)
   - [ ] Entity files
     - [ ] Components compile and decompile to and from json array
     - [ ] Script reference that can be used to create an entity if an entity is referenced
