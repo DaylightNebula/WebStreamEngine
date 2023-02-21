@@ -63,11 +63,11 @@ Todo list
     - [x] Scalar (pressed is 1, not pressed is 0, for example trigger)
     - [x] Axis (slider ie A is -1 and D is 1)
     - [x] Stick (2d slider with WASD or arrows for example)
-- [ ] Sound system updates
-  - [ ] Remove necessity for sounds to play from a component
-  - [ ] Add ability to play at a location
-  - [ ] Add ability to play at a static volume
-  - [ ] Pitch and speed controls (set every play)
+- [x] Sound system updates
+  - [x] Remove necessity for sounds to play from a component
+  - [x] Add ability to play at a location
+  - [x] Add ability to play at a static volume
+  - [x] Pitch and speed controls (set every play)
 - [ ] Particle system
   - [ ] Load particle effects from a json file
   - [ ] Play effect at entity or location

@@ -2,7 +2,7 @@ package webstreamengine.client
 
 import webstreamengine.client.managers.FontManager
 import webstreamengine.client.managers.ModelManager
-import webstreamengine.client.managers.SoundManager
+import webstreamengine.client.sounds.SoundManager
 import webstreamengine.client.managers.TextureManager
 import webstreamengine.core.ByteReader
 import webstreamengine.core.PacketType

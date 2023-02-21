@@ -14,6 +14,7 @@ object GameInfo {
     lateinit var cam: PerspectiveCamera
     val environment = Environment()
     val controller = Controller(ControllerSettings.genStaticSettings())
+    var currentSeconds = 0f
 
     fun initCamera() {
         // create basic camera
@@ -36,5 +37,6 @@ object GameInfo {
 
     fun update() {
         controller.update()
+        currentSeconds += Gdx.graphics.deltaTime
     }
 }

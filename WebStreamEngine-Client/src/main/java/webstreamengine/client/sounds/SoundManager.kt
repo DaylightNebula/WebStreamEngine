@@ -1,36 +1,38 @@
-package webstreamengine.client.managers
+package webstreamengine.client.sounds
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.AudioDevice
 import com.badlogic.gdx.audio.Sound
+import webstreamengine.client.application.GameInfo
 import webstreamengine.client.conn
-import webstreamengine.client.entities.components.SoundComponent
 import webstreamengine.client.networkenabled
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
 import java.io.File
+import kotlin.math.min
 
 object SoundManager {
 
     private val soundMap = hashMapOf<String, Sound>()
     private val requestedIDs = mutableListOf<String>()
-    private val waitingForSound = hashMapOf<String, MutableList<SoundComponent>>()
+    private val waitingForSound = hashMapOf<String, MutableList<SoundRequest>>()
 
     private fun loadLocal(id: String, path: String) {
         soundMap[id] = Gdx.audio.newSound(Gdx.files.absolute(path))
     }
 
-    fun applySoundToComponent(player: SoundComponent, id: String) {
+    fun submitSoundRequest(request: SoundRequest, id: String) {
         // if we already have a sound with the given id, just pass it along
         if (soundMap.containsKey(id)) {
-            player.handleSound(id, soundMap[id]!!)
+            playSoundRequest(request, soundMap[id]!!)
             return
         }
 
         // if the cache has a file for the given id, load that
-        if (cacheCheck(id, player, "mp3")) return
-        if (cacheCheck(id, player, "wav")) return
-        if (cacheCheck(id, player, "ogg")) return
+        if (cacheCheck(id, request, "mp3")) return
+        if (cacheCheck(id, request, "wav")) return
+        if (cacheCheck(id, request, "ogg")) return
 
         // if we are not network enabled, return true
         if (!networkenabled) return
@@ -41,7 +43,7 @@ object SoundManager {
             list = mutableListOf()
             waitingForSound[id] = list
         }
-        list.add(player)
+        list.add(request)
 
         // if the given id is not the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
@@ -56,12 +58,17 @@ object SoundManager {
         }
     }
 
-    private fun cacheCheck(id: String, player: SoundComponent, extension: String): Boolean {
+    private fun playSoundRequest(request: SoundRequest, sound: Sound) {
+        val volume = if (request.position != null) min(1f, 1f / (GameInfo.cam.position.dst2(request.position))) * request.baseVolume else request.baseVolume
+        sound.play(volume, request.pitch, request.pan)
+    }
+
+    private fun cacheCheck(id: String, request: SoundRequest, extension: String): Boolean {
         val soundFile = File(System.getProperty("user.dir"), "cache/$id.$extension")
         if (soundFile.exists()) {
             println("Found sound for id $id at ${soundFile.absolutePath}")
             loadLocal(id, soundFile.absolutePath)
-            player.handleSound(id, soundMap[id]!!)
+            playSoundRequest(request, soundMap[id]!!)
             return true
         }
         return false
@@ -106,7 +113,7 @@ object SoundManager {
 
         // update all targets waiting for this texture
         val sound = soundMap[id]!!
-        waitingForSound[id]?.forEach { it.handleSound(id, sound) }
+        waitingForSound[id]?.forEach { playSoundRequest(it, sound) }
         waitingForSound[id]?.clear()
     }
 

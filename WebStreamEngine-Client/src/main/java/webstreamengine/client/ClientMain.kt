@@ -13,6 +13,7 @@ import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.client.scenes.SceneRegistry
+import webstreamengine.client.sounds.SoundManager
 import webstreamengine.client.ui.UIManager
 import webstreamengine.core.*
 import java.io.File
