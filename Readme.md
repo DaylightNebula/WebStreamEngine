@@ -99,7 +99,7 @@ Todo list
   - [ ] Remove any points that make the pathfinding slower
 - [ ] Scene system
   - [ ] Clear UI on state change
-  - [ ] Clear old entities that arent marked keep (if an entity with the same id and is marked keep, just keep the old one and skip the new one)
+  - [ ] Clear old entities that aren't marked keep (if an entity with the same id and is marked keep, just keep the old one and skip the new one)
   - [ ] Start, stop, and update (you know the drill at this point)
 - [ ] The JSON-ifying
   - [x] UI files
@@ -111,3 +111,22 @@ Todo list
   - [ ] Scene files (must be created from a script first)
     - [ ] Reference(s) to UI files
     - [ ] Entity references and positions and rotations
+- [ ] Last things
+  - [ ] Clear out todos
+  - [ ] Move player controller to a component
+
+=== Pre-Alpha Complete ===
+
+- [ ] Client and Server updates
+  - [ ] Update client and server to use Ktor HTTPS
+    - [ ] Only client should need a certificate
+    - [ ] Certificate generation information in server launch args
+    - [ ] Switch everything over to http calls instead of what we are currently doing
+  - [ ] Allow launcher to download code
+    - [ ] Request for hash map of all jar files
+    - [ ] Bulk request for files
+    - [ ] Client should always check jar file hashs at launch
+  - [ ] Server plugins
+    - [ ] Plugins authenticate connections
+      - [ ] Close connection if authentication fails
+      - [ ] Default to approved connection if no authentication

@@ -11,13 +11,12 @@ import webstreamengine.client.ui.macroelement.RowElement
 import webstreamengine.client.ui.microelements.ImageElement
 import webstreamengine.client.ui.microelements.SpacerElement
 import webstreamengine.client.ui.microelements.TextElement
-import javax.crypto.Mac
 
 object UIManager {
 
     var isDirty = false
     private var stage = Stage()
-    private var scripts = mutableListOf<UIScript>()
+    private var scripts = mutableListOf<UserInterface>()
 
     fun update() {
         if (isDirty) {
@@ -41,7 +40,7 @@ object UIManager {
         scripts.forEach { script -> script.elements.forEach { it.renderToBounds(batch) } }
     }
 
-    fun getScripts(): List<UIScript> {
+    fun getScripts(): List<UserInterface> {
         return scripts
     }
 
@@ -49,7 +48,7 @@ object UIManager {
         stage.dispose()
     }
 
-    fun addUIScript(script: UIScript) {
+    internal fun addUIScript(script: UserInterface) {
         // get the path to the scripts ui json file
         val targetPath = "uis/${script.path}.json"
 

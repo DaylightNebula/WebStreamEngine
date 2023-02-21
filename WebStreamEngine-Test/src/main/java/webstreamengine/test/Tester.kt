@@ -11,10 +11,11 @@ import webstreamengine.client.managers.SettingsElement
 import webstreamengine.client.physics.ColliderComponent
 import webstreamengine.client.physics.SimpleBox
 import webstreamengine.client.ui.UIManager
+import webstreamengine.client.ui.UserInterface
 
 public class Tester : Application() {
 
-    private val testentity = Entity("player")
+    private val testentity = Entity(id = "player")
     private val soundComponent = SoundComponent(testentity)
 
     override fun start() {
@@ -29,7 +30,8 @@ public class Tester : Application() {
 
         GameInfo.controller.changeSettings(ControllerSettings.genThirdPersonSettings(testentity, 5f, Vector3(0f, 0f, 0f), 5f))
 
-        UIManager.addUIScript(TestUI())
+        UserInterface.registerInterface("test_ui") { TestUI() }
+        UserInterface.loadInterface("test_ui")
 
         Entity("test_entity", position = Vector3(0f, 0f, -10f))
     }

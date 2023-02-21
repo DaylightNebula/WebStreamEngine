@@ -55,6 +55,7 @@ object JarInterface {
     }
 
     fun getTextResource(path: String): String? {
+        println("Loading text resource $path")
         return loader.getResource(path)?.readText()
     }
 
