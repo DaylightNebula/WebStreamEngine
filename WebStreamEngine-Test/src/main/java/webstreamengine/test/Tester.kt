@@ -10,6 +10,7 @@ import webstreamengine.client.entities.components.SoundComponent
 import webstreamengine.client.managers.SettingsElement
 import webstreamengine.client.physics.ColliderComponent
 import webstreamengine.client.physics.SimpleBox
+import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.ui.UIManager
 import webstreamengine.client.ui.UserInterface
 
@@ -31,9 +32,8 @@ public class Tester : Application() {
         GameInfo.controller.changeSettings(ControllerSettings.genThirdPersonSettings(testentity, 5f, Vector3(0f, 0f, 0f), 5f))
 
         UserInterface.registerInterface("test_ui") { TestUI() }
-        UserInterface.loadInterface("test_ui")
-
-        Entity("test_entity", position = Vector3(0f, 0f, -10f))
+        SceneRegistry.registerScene("test_scene") { TestScene() }
+        SceneRegistry.loadScene("test_scene")
     }
 
     override fun update() {

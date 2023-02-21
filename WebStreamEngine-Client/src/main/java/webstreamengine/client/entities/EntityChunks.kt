@@ -64,10 +64,19 @@ object EntityChunks {
     }
 
     fun addEntity(entity: Entity) {
+        // if entity is global, add to global list and cancel
         if (entity.global) {
             globalEntities.add(entity)
             return
         }
+
+        // if entity is marked keep and no global entity with the same id exists, add to global list and cancel
+        if (entity.keep) {
+            if (!globalEntities.any { it.id == entity.id }) globalEntities.add(entity)
+            return
+        }
+
+        // add entity to chunks
         val chunkPositions = generateChunkPositionList(entity.getPosition(), entity.box)
         addEntityToChunkPositions(entity, chunkPositions, false)
     }
@@ -202,7 +211,9 @@ object EntityChunks {
         }
     }
 
-    fun disposeAll() {
+    fun clear() {
+        globalEntities.forEach { it.dispose() }
+        globalEntities.clear()
         chunks.values.forEach { chunk ->
             chunk.largeEntities.forEach { it.dispose() }
             chunk.smallEntities.forEach { it.dispose() }

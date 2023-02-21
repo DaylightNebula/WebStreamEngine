@@ -44,6 +44,10 @@ object UIManager {
         return scripts
     }
 
+    fun clearScripts() {
+        scripts.clear()
+    }
+
     fun dispose() {
         stage.dispose()
     }

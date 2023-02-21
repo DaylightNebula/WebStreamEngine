@@ -4,25 +4,16 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
-import com.badlogic.gdx.math.Vector2
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
-import webstreamengine.client.ui.HorizontalAlignment
+import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.ui.UIManager
-import webstreamengine.client.ui.VerticalAlignment
-import webstreamengine.client.ui.macroelement.ColumnElement
-import webstreamengine.client.ui.macroelement.RowElement
-import webstreamengine.client.ui.microelements.FontInfo
-import webstreamengine.client.ui.microelements.SpacerElement
-import webstreamengine.client.ui.microelements.ImageElement
-import webstreamengine.client.ui.microelements.TextElement
 import webstreamengine.core.*
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -131,6 +122,7 @@ object ClientMain: ApplicationAdapter() {
 
         // update app
         JarInterface.getApp()?.update()
+        SceneRegistry.updateScene()
 
         // update input
         InputManager.update()
@@ -167,7 +159,7 @@ object ClientMain: ApplicationAdapter() {
         UIManager.dispose()
 
         // dispose of all entities
-        EntityChunks.disposeAll()
+        EntityChunks.clear()
 
         // close socket
         conn?.socket?.close()

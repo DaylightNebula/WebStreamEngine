@@ -1,0 +1,19 @@
+{
+  "entities": [
+    {
+      "id": "test_entity",
+      "position": [0.0, 0.0, -10.0]
+    },
+    {
+      "id": "test_entity",
+      "position": [5.0, 0.0, -10.0]
+    },
+    {
+      "id": "test_entity",
+      "position": [-5.0, 0.0, -10.0]
+    }
+  ],
+  "uis": [
+    "test_ui"
+  ]
+}

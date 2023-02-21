@@ -12,12 +12,13 @@ import webstreamengine.client.physics.SimpleBox
 import kotlin.math.pow
 
 class Entity(
-    private var id: String,
+    var id: String,
     private var position: Vector3 = Vector3(0f, 0f, 0f),
     private var rotation: Vector3 = Vector3(0f, 0f, 0f),
     private var scale: Vector3 = Vector3(1f, 1f, 1f),
     private var registerAutomatically: Boolean = true,
-    val global: Boolean = false
+    val global: Boolean = false,
+    val keep: Boolean = false
 ) {
     private val components = mutableListOf<EntityComponent>()
     val transformChangeCallbacks = mutableListOf<(entity: Entity) -> Unit>()
@@ -43,7 +44,8 @@ class Entity(
         json.optString("id") ?: throw IllegalArgumentException("Entity is required to have a id in json object"),
         position, rotation, scale,
         json.optBoolean("registerAutomatically", true),
-        json.optBoolean("global", false)
+        json.optBoolean("global", false),
+        json.optBoolean("keep", false)
     ) {
         if (json.has("components"))
             components.addAll(

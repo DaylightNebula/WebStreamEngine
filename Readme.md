@@ -97,20 +97,20 @@ Todo list
   - [ ] Shoot a ray from the entity to the target
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
-- [ ] Scene system
-  - [ ] Clear UI on state change
-  - [ ] Clear old entities that aren't marked keep (if an entity with the same id and is marked keep, just keep the old one and skip the new one)
-  - [ ] Start, stop, and update (you know the drill at this point)
-- [ ] The JSON-ifying
+- [x] Scene system
+  - [x] Clear UI on state change
+  - [x] Clear old entities that aren't marked keep (if an entity with the same id and is marked keep, just keep the old one and skip the new one)
+  - [x] Start, stop, and update (you know the drill at this point)
+- [x] The JSON-ifying
   - [x] UI files
     - [x] Uses root folder named "ui" in jar references
     - [x] Script reference that are talked to on button pressed and such (matching resource and source directories)
   - [x] Entity files
     - [x] Components compile and decompile to and from json array
     - [x] Script reference that can be used to create an entity if an entity is referenced
-  - [ ] Scene files (must be created from a script first)
-    - [ ] Reference(s) to UI files
-    - [ ] Entity references and positions and rotations
+  - [x] Scene files (must be created from a script first)
+    - [x] Reference(s) to UI files
+    - [x] Entity references and positions and rotations
 - [ ] Last things
   - [ ] Clear out todos
   - [ ] Move player controller to a component
