@@ -125,3 +125,10 @@ Goals:
   - [ ] Shoot a ray from the entity to the target
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
+- [ ] Editor plugins
+  - [ ] .properties (switch from .config)
+  - [ ] .json
+  - [ ] .scene (switch from current scenes .json files)
+  - [ ] .entity (switch from current entity .json files)
+  - [ ] .ui (switch from current ui .json files)
+  - [ ] input.json
