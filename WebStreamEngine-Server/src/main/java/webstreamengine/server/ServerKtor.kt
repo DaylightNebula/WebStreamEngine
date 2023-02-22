@@ -59,9 +59,9 @@ fun main(args: Array<String>) {
     // generate server environment
     val environment = applicationEngineEnvironment {
         log = LoggerFactory.getLogger("ktor.application")
-        connector {
-            port = 8080
-        }
+//        connector {
+//            port = 8080
+//        }
         sslConnector(
             keyStore = keyStore,
             keyAlias = keyStoreAlias,
