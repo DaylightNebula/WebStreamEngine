@@ -9,7 +9,7 @@ Goals:
 - Simple particle system
 - Simple pathfinding
 
-Todo list
+============= L0 Todolist =============
 - [x] Make client able to run without network
 - [x] Entity Prioritized Task System
   - [x] A component that runs tasks based on those tasks priority
@@ -45,13 +45,9 @@ Todo list
     - [x] Chunk size
     - [x] Update threshold (distance from the players entities location or the players root location in which entities are updated)
     - [x] Render threshold and size scale
-- [ ] Standardized settings
+- [x] Standardized settings
   - [x] Look sensitivity (degrees per second)
   - [x] Scroll sensitivity (units per second)
-  - [-] VSync
-  - [-] Antialiasing
-  - [ ] Windowed, Windowed Fullscreen, or Fullscreen
-  - [ ] Target monitor options
   - [x] Savable
 - [x] Assignable input system
   - [x] Each input is given a name and a default value
@@ -68,9 +64,6 @@ Todo list
   - [x] Add ability to play at a location
   - [x] Add ability to play at a static volume
   - [x] Pitch and speed controls (set every play)
-- [ ] Particle system
-  - [ ] Load particle effects from a json file
-  - [ ] Play effect at entity or location
 - [x] New UI system
   - [x] Macro elements (such as grids and rows and columns) (these control size and position micro elements)
   - [x] Micro elements (such as images and text and spacers)
@@ -92,11 +85,6 @@ Todo list
   - [x] Flags
     - [x] Is static (marks if an object is affected by forces put on it for example gravity or entities pushing on it)
     - [x] Is Ray Cast Only (marks if an object can only collide with ray casts)
-- [ ] Pathfinding
-  - [ ] Use an array of points to dictate where the entity should move
-  - [ ] Shoot a ray from the entity to the target
-    - [ ] Add points to move around the target
-  - [ ] Remove any points that make the pathfinding slower
 - [x] Scene system
   - [x] Clear UI on state change
   - [x] Clear old entities that aren't marked keep (if an entity with the same id and is marked keep, just keep the old one and skip the new one)
@@ -111,22 +99,29 @@ Todo list
   - [x] Scene files (must be created from a script first)
     - [x] Reference(s) to UI files
     - [x] Entity references and positions and rotations
-- [ ] Last things
-  - [ ] Clear out todos
-  - [ ] Move player controller to a component
 
-=== Pre-Alpha Complete ===
-
+============= L1 Todolist =============
 - [ ] Client and Server updates
-  - [ ] Update client and server to use Ktor HTTPS
-    - [ ] Only client should need a certificate
-    - [ ] Certificate generation information in server launch args
-    - [ ] Switch everything over to http calls instead of what we are currently doing
-  - [ ] Allow launcher to download code
-    - [ ] Request for hash map of all jar files
-    - [ ] Bulk request for files
-    - [ ] Client should always check jar file hashs at launch
+  - [ ] Ktor
+    - [ ] HTTPS
+      - [ ] Only client should need a certificate
+      - [ ] Certificate generation information in server launch args
+      - [ ] On server side, keep a list of all available files with their corresponding hash codes
+      - [ ] On client side, keep a list of all downloaded files with their corresponding hash codes
+      - [ ] Anyone, that passes server plugin connection checks, should be allowed to download data
+    - [ ] Endpoints
+      - [ ] Download file (sends back files and their hash codes)
+      - [ ] Bulk download file list (sends back all files with their corresponding hash code)
+      - [ ] Get file map (hashes and types)
+    - [ ] Make client program args include 
   - [ ] Server plugins
     - [ ] Plugins authenticate connections
       - [ ] Close connection if authentication fails
       - [ ] Default to approved connection if no authentication
+- [ ] Particles
+  - [ ] Play particle effects from PFX
+- [ ] Pathfinding
+  - [ ] Use an array of points to dictate where the entity should move
+  - [ ] Shoot a ray from the entity to the target
+    - [ ] Add points to move around the target
+  - [ ] Remove any points that make the pathfinding slower
