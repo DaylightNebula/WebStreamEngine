@@ -104,8 +104,8 @@ Goals:
 - [ ] Client and Server updates
   - [ ] Ktor
     - [ ] HTTPS
-      - [ ] Only client should need a certificate
-      - [ ] Certificate generation information in server launch args
+      - [x] LOCAL ONLY Client certification information
+      - [x] LOCAL ONLY Certificate generation information in server launch args
       - [ ] On server side, keep a list of all available files with their corresponding hash codes
       - [ ] On client side, keep a list of all downloaded files with their corresponding hash codes
       - [ ] Anyone, that passes server plugin connection checks, should be allowed to download data

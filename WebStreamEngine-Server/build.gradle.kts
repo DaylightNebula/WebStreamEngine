@@ -19,6 +19,9 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     api(project(":WebStreamEngine-Core"))
+    implementation("io.ktor:ktor-server-core:2.2.3")
+    implementation("io.ktor:ktor-server-netty:2.2.3")
+    implementation("io.ktor:ktor-network-tls-certificates:2.2.3")
 }
 
 tasks.getByName<Test>("test") {

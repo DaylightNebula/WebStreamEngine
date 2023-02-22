@@ -14,7 +14,6 @@ object EntityComponentRegistry {
                 ?: throw IllegalArgumentException("Key argument must be added to model component json"))
             null
         }
-        registerComponent("sound") { entity, _ -> SoundComponent(entity) }
         registerComponent("point_light") { entity, json ->
             PointLightComponent(
                 entity,

@@ -19,6 +19,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     implementation(kotlin("stdlib-jdk8"))
+    //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
 
     // all necessary submodules
     implementation(project(":WebStreamEngine-Core"))
@@ -39,6 +40,7 @@ dependencies {
     implementation("com.badlogicgames.gdx:gdx-bullet-platform:1.11.0:natives-desktop")
 
     implementation("org.json:json:20220924")
+    implementation("com.github.kittinunf.fuel:fuel:2.3.1")
 }
 
 tasks.getByName<Test>("test") {
