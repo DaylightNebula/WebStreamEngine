@@ -1,0 +1,122 @@
+{
+ "play_button.png": {
+  "localPath": "play_button.png",
+  "id": "play_button.png",
+  "type": "png",
+  "hash": 73764589100084757168148403174039404595
+ },
+ "chunk_settings.json": {
+  "localPath": "jar\\chunk_settings.json",
+  "id": "chunk_settings.json",
+  "type": "json",
+  "hash": 285330590578013602484949209389663900189
+ },
+ "barracks.g3dj": {
+  "localPath": "barracks.g3dj",
+  "id": "barracks.g3dj",
+  "type": "g3dj",
+  "hash": 170331528945922380878011963579316675482
+ },
+ "test_sound.mp3": {
+  "localPath": "test_sound.mp3",
+  "id": "test_sound.mp3",
+  "type": "mp3",
+  "hash": 22897678814612355569570281209209858591
+ },
+ "test_entity.json": {
+  "localPath": "jar\\entities\\test_entity.json",
+  "id": "test_entity.json",
+  "type": "json",
+  "hash": 295295526425376070974806778451209227030
+ },
+ "setup.config": {
+  "localPath": "jar\\setup.config",
+  "id": "setup.config",
+  "type": "config",
+  "hash": 321039420784118301516059753397438219923
+ },
+ "TestUI.class": {
+  "localPath": "jar\\webstreamengine\\test\\TestUI.class",
+  "id": "TestUI.class",
+  "type": "class",
+  "hash": 243992244288231257313130096057647876040
+ },
+ "test_scene.json": {
+  "localPath": "jar\\scenes\\test_scene.json",
+  "id": "test_scene.json",
+  "type": "json",
+  "hash": 247133558021946485092759521807189344604
+ },
+ "TestScene.class": {
+  "localPath": "jar\\webstreamengine\\test\\TestScene.class",
+  "id": "TestScene.class",
+  "type": "class",
+  "hash": 146278896432320996885820008298603487602
+ },
+ "Tester$start$testbutton$1.class": {
+  "localPath": "jar\\webstreamengine\\test\\Tester$start$testbutton$1.class",
+  "id": "Tester$start$testbutton$1.class",
+  "type": "class",
+  "hash": 317711822689013663230112860944232908531
+ },
+ "TestUI$registerCallbacks$1.class": {
+  "localPath": "jar\\webstreamengine\\test\\TestUI$registerCallbacks$1.class",
+  "id": "TestUI$registerCallbacks$1.class",
+  "type": "class",
+  "hash": 212354817281641963751031891580019785456
+ },
+ "WebStreamEngine-Test.kotlin_module": {
+  "localPath": "jar\\META-INF\\WebStreamEngine-Test.kotlin_module",
+  "id": "WebStreamEngine-Test.kotlin_module",
+  "type": "kotlin_module",
+  "hash": 336829940468679406747691377977309945197
+ },
+ "Tester$start$1.class": {
+  "localPath": "jar\\webstreamengine\\test\\Tester$start$1.class",
+  "id": "Tester$start$1.class",
+  "type": "class",
+  "hash": 23822277141055330844750424938807600867
+ },
+ "RobotoMono.ttf": {
+  "localPath": "RobotoMono.ttf",
+  "id": "RobotoMono.ttf",
+  "type": "ttf",
+  "hash": 249405453582425702325587770554324058756
+ },
+ "Tester.class": {
+  "localPath": "jar\\webstreamengine\\test\\Tester.class",
+  "id": "Tester.class",
+  "type": "class",
+  "hash": 97424662465062288484217558779828075435
+ },
+ "MANIFEST.MF": {
+  "localPath": "jar\\META-INF\\MANIFEST.MF",
+  "id": "MANIFEST.MF",
+  "type": "MF",
+  "hash": 195148855421168188959124199715502223505
+ },
+ "Tester$start$2.class": {
+  "localPath": "jar\\webstreamengine\\test\\Tester$start$2.class",
+  "id": "Tester$start$2.class",
+  "type": "class",
+  "hash": 303364828891060119964468621567290060038
+ },
+ "settings.json": {
+  "localPath": "jar\\settings.json",
+  "id": "settings.json",
+  "type": "json",
+  "hash": 34122368864282156986811538323721566600
+ },
+ "input.json": {
+  "localPath": "jar\\input.json",
+  "id": "input.json",
+  "type": "json",
+  "hash": 133788528672507786617480605204520053641
+ },
+ "test_ui.json": {
+  "localPath": "jar\\uis\\test_ui.json",
+  "id": "test_ui.json",
+  "type": "json",
+  "hash": 335207233505376779819002201248752174675
+ }
+}

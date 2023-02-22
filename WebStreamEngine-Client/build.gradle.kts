@@ -20,6 +20,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     implementation(kotlin("stdlib-jdk8"))
     //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     // all necessary submodules
     implementation(project(":WebStreamEngine-Core"))

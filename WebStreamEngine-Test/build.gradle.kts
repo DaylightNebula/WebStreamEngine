@@ -38,6 +38,6 @@ compileTestKotlin.kotlinOptions {
 }
 
 tasks.getByName<Jar>("jar") {
-    destinationDirectory.set(file("$rootDir\\cache"))
+    destinationDirectory.set(file("$rootDir\\assets"))
 
 }

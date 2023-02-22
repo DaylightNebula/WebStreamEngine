@@ -22,6 +22,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core:2.2.3")
     implementation("io.ktor:ktor-server-netty:2.2.3")
     implementation("io.ktor:ktor-network-tls-certificates:2.2.3")
+    implementation("org.json:json:20220924")
 }
 
 tasks.getByName<Test>("test") {

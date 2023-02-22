@@ -110,7 +110,7 @@ object FileHandler {
         }
     }
 
-    private fun getLocalPath(file: File): String {
+    fun getLocalPath(file: File): String {
         val absPath = file.absolutePath
         return absPath.substring(rootDirLength + 1, absPath.length)
     }

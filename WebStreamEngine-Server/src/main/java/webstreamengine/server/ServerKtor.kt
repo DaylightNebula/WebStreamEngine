@@ -6,11 +6,27 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.json.JSONObject
 import org.slf4j.*
 import java.io.*
+import java.math.BigInteger
 import java.security.KeyStore
+import java.security.MessageDigest
+import java.util.zip.ZipFile
+
+val fileMap = JSONObject()
+val assetsFolder = File("assets")
 
 fun main(args: Array<String>) {
+    println("Starting with args ${args.map { it }}")
+
+    FBXToG3DJConverter.init()
+
+    // load assets
+    val start = System.currentTimeMillis()
+    loadAssets(assetsFolder)
+    val end = System.currentTimeMillis()
+    println("Loaded assets from $assetsFolder in ${end - start}MS")
 
     // get the key store path
     val keyStoreFilePath = args.firstOrNull { it.startsWith("-keyStorePath=") }?.split("=")?.last()
@@ -36,6 +52,7 @@ fun main(args: Array<String>) {
             }
         }
         keyStore.saveToFile(keyStoreFile, keyStoreMaster)
+        println("Generated KeyStore")
         keyStore
     } else KeyStore.getInstance("JKS").apply { this.load(keyStoreFile.inputStream(), keyStoreMaster.toCharArray()) }
 
@@ -56,16 +73,81 @@ fun main(args: Array<String>) {
         }
         module(Application::module)
     }
+    println("Created server environments")
 
     // start the server
     embeddedServer(Netty, environment).start(wait = true)
 }
 
+fun loadAssets(rootFolder: File) {
+    // load all files recursively
+    recursivelyLoadFiles(rootFolder)
+
+    // save fileMap.json
+    File(assetsFolder, "fileMap.json").writeText(fileMap.toString(1))
+}
+
+fun recursivelyLoadFiles(rootFile: File) {
+    rootFile.listFiles()?.forEach { file ->
+        if (file.isDirectory) {
+            recursivelyLoadFiles(file)
+            return@forEach
+        }
+
+        // ignore any files named "fileMap.json"
+        if (file.name.equals("fileMap.json")) return@forEach
+
+        // load file bytes, with some changes for some file types
+        val fileBytes = when(file.extension) {
+            "jar" -> {
+                val jarFolder = File(assetsFolder, "jar")
+                UnzipUtils.unzip(file, jarFolder)
+                recursivelyLoadFiles(jarFolder)
+                file.delete()
+                return@forEach
+            }
+            "fbx" -> {
+                FBXToG3DJConverter.convertFile(file)
+                File(file.path.replace("fbx", "g3dj")).readBytes()
+            }
+            else -> {
+                file.readBytes()
+            }
+        }
+
+        // generate hash for the file
+        val hash = BigInteger(1, MessageDigest.getInstance("MD5").digest(fileBytes))
+
+        // save to file map json
+        fileMap.put(file.name, JSONObject().put("id", file.name).put("hash", hash).put("type", file.extension).put("localPath", file.path.removePrefix("assets\\")))
+    }
+}
+
 // create routing for http requests
 fun Application.module() {
     routing {
-        get("/") {
-            call.respondText("Hello, world!")
+        get("/allfiles") {
+            call.respondText(fileMap.toString(1))
+        }
+        get("/file") {
+            val fileParam = call.parameters["file"]
+            val srcJson = fileMap.getJSONObject(fileParam)
+            println("File param $fileParam")
+            println("SRC JSON $srcJson")
+
+            if (srcJson == null) {
+                println("WARNING: Client requested file $fileParam which does not exist")
+                call.respondText("NO_FILE")
+                return@get
+            }
+
+            // send the file back
+            val json = JSONObject()
+                        .put("id", srcJson.getString("id"))
+                        .put("hash", srcJson.getBigInteger("hash"))
+                        .put("bytes", String(File(assetsFolder, srcJson.getString("localPath")).readBytes()))
+            println("Sending $json")
+            call.respondText(json.toString(0))
         }
     }
 }

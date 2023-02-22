@@ -106,14 +106,18 @@ Goals:
     - [ ] HTTPS
       - [x] LOCAL ONLY Client certification information
       - [x] LOCAL ONLY Certificate generation information in server launch args
-      - [ ] On server side, keep a list of all available files with their corresponding hash codes
-      - [ ] On client side, keep a list of all downloaded files with their corresponding hash codes
+      - [x] On server side, keep a list of all available files with their corresponding hash codes
+      - [x] On client side, keep a list of all downloaded files with their corresponding hash codes
       - [ ] Anyone, that passes server plugin connection checks, should be allowed to download data
-    - [ ] Endpoints
-      - [ ] Download file (sends back files and their hash codes)
-      - [ ] Bulk download file list (sends back all files with their corresponding hash code)
-      - [ ] Get file map (hashes and types)
-    - [ ] Make client program args include 
+    - [x] Endpoints
+      - [x] Download file (sends back files and their hash codes)
+      - [x] Get file map (hashes and types)
+    - [x] Server stuff
+      - [x] Replace fbx files at start
+      - [x] Uncompress jar files at start
+    - [ ] Client stuff
+      - [ ] Download all jar files at startup
+      - [ ]
   - [ ] Server plugins
     - [ ] Plugins authenticate connections
       - [ ] Close connection if authentication fails
