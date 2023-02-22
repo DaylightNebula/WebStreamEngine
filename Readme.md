@@ -116,8 +116,8 @@ Goals:
       - [x] Replace fbx files at start
       - [x] Uncompress jar files at start
     - [ ] Client stuff
-      - [ ] Download all jar files at startup
-      - [ ]
+      - [x] Download all jar files at startup
+      - [ ] Make it run like normal with new client
   - [ ] Server plugins
     - [ ] Plugins authenticate connections
       - [ ] Close connection if authentication fails

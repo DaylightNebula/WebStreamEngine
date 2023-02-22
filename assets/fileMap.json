@@ -1,15 +1,15 @@
 {
+ "chunk_settings.json": {
+  "localPath": "chunk_settings.json",
+  "id": "chunk_settings.json",
+  "type": "json",
+  "hash": 285330590578013602484949209389663900189
+ },
  "play_button.png": {
   "localPath": "play_button.png",
   "id": "play_button.png",
   "type": "png",
   "hash": 73764589100084757168148403174039404595
- },
- "chunk_settings.json": {
-  "localPath": "jar\\chunk_settings.json",
-  "id": "chunk_settings.json",
-  "type": "json",
-  "hash": 285330590578013602484949209389663900189
  },
  "barracks.g3dj": {
   "localPath": "barracks.g3dj",
@@ -23,29 +23,11 @@
   "type": "mp3",
   "hash": 22897678814612355569570281209209858591
  },
- "test_entity.json": {
-  "localPath": "jar\\entities\\test_entity.json",
-  "id": "test_entity.json",
-  "type": "json",
-  "hash": 295295526425376070974806778451209227030
- },
- "setup.config": {
-  "localPath": "jar\\setup.config",
-  "id": "setup.config",
-  "type": "config",
-  "hash": 321039420784118301516059753397438219923
- },
  "TestUI.class": {
   "localPath": "jar\\webstreamengine\\test\\TestUI.class",
   "id": "TestUI.class",
   "type": "class",
   "hash": 243992244288231257313130096057647876040
- },
- "test_scene.json": {
-  "localPath": "jar\\scenes\\test_scene.json",
-  "id": "test_scene.json",
-  "type": "json",
-  "hash": 247133558021946485092759521807189344604
  },
  "TestScene.class": {
   "localPath": "jar\\webstreamengine\\test\\TestScene.class",
@@ -77,6 +59,12 @@
   "type": "class",
   "hash": 23822277141055330844750424938807600867
  },
+ "test_scene.scene": {
+  "localPath": "test_scene.scene",
+  "id": "test_scene.scene",
+  "type": "scene",
+  "hash": 247133558021946485092759521807189344604
+ },
  "RobotoMono.ttf": {
   "localPath": "RobotoMono.ttf",
   "id": "RobotoMono.ttf",
@@ -95,6 +83,18 @@
   "type": "MF",
   "hash": 195148855421168188959124199715502223505
  },
+ "setup.properties": {
+  "localPath": "setup.properties",
+  "id": "setup.properties",
+  "type": "properties",
+  "hash": 321039420784118301516059753397438219923
+ },
+ "test_entity.entity": {
+  "localPath": "test_entity.entity",
+  "id": "test_entity.entity",
+  "type": "entity",
+  "hash": 295295526425376070974806778451209227030
+ },
  "Tester$start$2.class": {
   "localPath": "jar\\webstreamengine\\test\\Tester$start$2.class",
   "id": "Tester$start$2.class",
@@ -102,21 +102,21 @@
   "hash": 303364828891060119964468621567290060038
  },
  "settings.json": {
-  "localPath": "jar\\settings.json",
+  "localPath": "settings.json",
   "id": "settings.json",
   "type": "json",
   "hash": 34122368864282156986811538323721566600
  },
  "input.json": {
-  "localPath": "jar\\input.json",
+  "localPath": "input.json",
   "id": "input.json",
   "type": "json",
   "hash": 133788528672507786617480605204520053641
  },
- "test_ui.json": {
-  "localPath": "jar\\uis\\test_ui.json",
-  "id": "test_ui.json",
-  "type": "json",
+ "test_ui.ui": {
+  "localPath": "test_ui.ui",
+  "id": "test_ui.ui",
+  "type": "ui",
   "hash": 335207233505376779819002201248752174675
  }
 }

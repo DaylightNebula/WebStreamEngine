@@ -132,8 +132,6 @@ fun Application.module() {
         get("/file") {
             val fileParam = call.parameters["file"]
             val srcJson = fileMap.getJSONObject(fileParam)
-            println("File param $fileParam")
-            println("SRC JSON $srcJson")
 
             if (srcJson == null) {
                 println("WARNING: Client requested file $fileParam which does not exist")
@@ -146,7 +144,6 @@ fun Application.module() {
                         .put("id", srcJson.getString("id"))
                         .put("hash", srcJson.getBigInteger("hash"))
                         .put("bytes", String(File(assetsFolder, srcJson.getString("localPath")).readBytes()))
-            println("Sending $json")
             call.respondText(json.toString(0))
         }
     }

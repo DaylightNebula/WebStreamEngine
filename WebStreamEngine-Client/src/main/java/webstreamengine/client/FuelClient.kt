@@ -55,10 +55,11 @@ object FuelClient {
         }
     }
 
+    private val requiredFileTypes = listOf("class", "MF", "kotlin_module")
     private fun downloadRequired() {
         allFiles.keys().forEach { key ->
             val extension = key.split(".").last()
-            val required = extension == "class"
+            val required = requiredFileTypes.contains(extension)
             if (required) requestFileBlocking(key)
         }
     }
@@ -67,14 +68,15 @@ object FuelClient {
         if (!fileMap.has(fileName) || !allFiles.has(fileName)) return null
 
         // get all files hash
-        val serverFileHash = allFiles.getJSONObject(fileName).getBigInteger("hash")
+        val allFile = allFiles.getJSONObject("fileName")
+        val serverFileHash = allFile.getBigInteger("hash")
 
         // load file map json
         val json = fileMap.getJSONObject(fileName)
-        val curHash = fileMap.getBigInteger("hash")
+        val curHash = json.getBigInteger("hash")
 
         // if the current hash is equivalent, return the file, otherwise, return nothing
-        val file = File(cacheFolder, fileName)
+        val file = File(cacheFolder, allFile.getString("localPath"))
         return if (serverFileHash == curHash)
                 file
             else {
@@ -89,7 +91,9 @@ object FuelClient {
         if (preexisting != null) return preexisting
 
         // send a request for the file
-        val targetFile = File(cacheFolder, fileName)
+        val localPath = allFiles.getJSONObject(fileName).getString("localPath")
+        val targetFile = File(cacheFolder, localPath)
+        targetFile.parentFile.mkdirs()
         runBlocking {
             val json = "${serverAddr}/file".httpGet(listOf(Pair("file", fileName)))
                 .awaitResult(deserializable = object : Deserializable<JSONObject>{
@@ -98,11 +102,13 @@ object FuelClient {
                     }
                 }).get()
             val bytes = json.getString("bytes")!!.toByteArray()
+            targetFile.parentFile.mkdir()
             targetFile.writeBytes(bytes)
             fileMap.put(
                 fileName,
                 JSONObject()
                     .put("id", fileName)
+                    .put("path", localPath)
                     .put("hash", BigInteger(1, MessageDigest.getInstance("MD5").digest(bytes)))
             )
             fileMapFile.writeBytes(fileMap.toString(1).toByteArray())
@@ -116,15 +122,18 @@ object FuelClient {
         if (preexisting != null) { onComplete(preexisting); return }
 
         // send request to server for the file
+        val localPath = allFiles.getJSONObject(fileName).getString("localPath")
         "${serverAddr}/file".httpGet(listOf(Pair("file", fileName))).response { _, response, _ ->
             val data = JSONObject(String(response.data))
-            val file = File(cacheFolder, fileName)
+            val file = File(cacheFolder, localPath)
             val bytes = data.getString("bytes").toByteArray()
+            file.mkdirs()
             file.writeBytes(bytes)
             fileMap.put(
                 fileName,
                 JSONObject()
                     .put("id", fileName)
+                    .put("path", localPath)
                     .put("hash", BigInteger(1, MessageDigest.getInstance("MD5").digest(bytes)))
             )
             fileMapFile.writeBytes(fileMap.toString(1).toByteArray())
