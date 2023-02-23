@@ -14,6 +14,23 @@
             <option value="$PROJECT_DIR$/WebStreamEngine-Backend-OpenGL" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Client" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Core" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-IntellijPlugin" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-Server" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-ServerPluginTest" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-Test" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/WebStreamEngine-IntellijPlugin" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-Backend-OpenGL" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-Client" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-Core" />
+            <option value="$PROJECT_DIR$/WebStreamEngine-IntellijPlugin" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Server" />
             <option value="$PROJECT_DIR$/WebStreamEngine-ServerPluginTest" />
             <option value="$PROJECT_DIR$/WebStreamEngine-Test" />
