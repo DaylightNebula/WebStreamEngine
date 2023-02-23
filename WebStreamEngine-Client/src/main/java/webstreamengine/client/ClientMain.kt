@@ -22,14 +22,10 @@ import java.net.Socket
 
 var conn: Connection? = null
 
-var networkenabled = false
-var programargs = arrayOf<String>()
-
 fun main(args: Array<String>) {
     println("Starting with args ${args.map { it }}")
 
-    networkenabled = args.size >= 2
-    programargs = args
+    FuelClient.startClient(args)
 
     val config = Lwjgl3ApplicationConfiguration()
     config.setTitle("WebStreamEngine")
@@ -42,10 +38,6 @@ object ClientMain: ApplicationAdapter() {
     private lateinit var modelbatch: ModelBatch
     private lateinit var spritebatch: SpriteBatch
 
-    private lateinit var testRed: Entity
-    private lateinit var testBlue: Entity
-    private lateinit var testGreen: Entity
-
     override fun create() {
         // setup settings
         SettingsManager.init(
@@ -57,7 +49,6 @@ object ClientMain: ApplicationAdapter() {
 
         // setup input
         InputProcessorManager.init()
-//        UIHandler.init()
         InputManager.init(
             File(
                 System.getProperty("user.dir"),
@@ -72,46 +63,10 @@ object ClientMain: ApplicationAdapter() {
         // setup camera
         GameInfo.initCamera()
 
-        // create connection to server
-        if (networkenabled) {
-            try {
-                conn = Connection(Socket(programargs[0], programargs[1].toInt()))
-                conn!!.sendPacket(PacketUtils.generatePacket(PacketType.REQUEST_JAR, byteArrayOf()))
-            } catch (ex: Exception) {
-                System.err.println("Unable to connect to server! ${ex.message}")
-            }
-        } else {
-            // load jar file if we can find it
-            val file = File("cache/").listFiles()?.firstOrNull { it.extension == "jar" } ?: throw IllegalArgumentException("Could not find a jar file in the cache.")
-            if (file.exists()) JarInterface.init(file)
-        }
-
-//        UIManager.addElement(ColumnElement(
-//            arrayOf(,
-//                SpacerElement(Vector2(0.1f, 0.1f), VerticalAlignment.CENTER, HorizontalAlignment.CENTER),
-//                ImageElement("play_button")
-//            ),
-//            VerticalAlignment.CENTER,
-//            HorizontalAlignment.CENTER
-//        ))
-//        UIManager.addElement(
-//            RowElement(
-//                arrayOf(
-//                    ImageElement("play_button"),
-//                    TextElement(FontInfo("RobotoMono", 50, Color.WHITE), "hi bob"),
-//                    //SpacerElement(Vector2(0.1f, 0.1f), VerticalAlignment.CENTER, HorizontalAlignment.CENTER),
-//                    ImageElement("play_button", 0.5f, verticalAlignment = VerticalAlignment.CENTER)
-//                ),
-//                VerticalAlignment.TOP,
-//                HorizontalAlignment.CENTER
-//            )
-//        )
+        JarInterface.init()
     }
 
     override fun render() {
-        // handle incoming pockets
-        if (networkenabled && conn!!.isDataAvailable()) ClientPacketHandler.handlePacket(conn!!.getDataPacket())
-
         // update the settings manager
         SettingsManager.update()
 

@@ -3,8 +3,8 @@ package webstreamengine.client.managers
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import webstreamengine.client.FuelClient
 import webstreamengine.client.conn
-import webstreamengine.client.networkenabled
 import webstreamengine.client.ui.microelements.ImageElement
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
@@ -54,9 +54,6 @@ object TextureManager {
             return
         }
 
-        // if we are not network enabled, return true
-        if (!networkenabled) return
-
         // if we made it this far, add the given target to the waiting list
         var list = waitingForTexture[id]
         if (list == null) {
@@ -68,32 +65,25 @@ object TextureManager {
         // if the given id is not in the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
             requestedIDs.add(id)
-            conn?.sendPacket(
-                PacketUtils.generatePacket(
-                    PacketType.REQUEST_IMAGE,
-                    ByteUtils.convertStringToByteArray(id)
-                )
-            )
+            FuelClient.requestFile(id) { handleTextureDelivery(id, it) }
         }
     }
 
-    fun handleTextureDelivery(id: String, bytes: ByteArray) {
-        // write file bytes to a cache file
-        val file = File(System.getProperty("user.dir"), "cache/$id.img")
-        file.parentFile.mkdirs()
-        file.writeBytes(bytes)
+    private fun handleTextureDelivery(id: String, file: File) {
+        Gdx.app.postRunnable {
+            // load file
+            loadLocal(id, file.absolutePath)
 
-        // load file
-        loadLocal(id, file.absolutePath)
+            // remove requested id
+            requestedIDs.remove(id)
 
-        // remove requested id
-        requestedIDs.remove(id)
-
-        // update all targets waiting for this texture
-        val texture = textureMap[id]!!
-        waitingForTexture[id]?.forEach { applyLoadedTextureToAny(it, texture) }
-        waitingForTexture[id]?.clear()
-        waitingForTexture.remove(id)
+            // update all targets waiting for this texture
+            val texture = textureMap[id]!!
+            println("Texture $texture")
+            waitingForTexture[id]?.forEach { applyLoadedTextureToAny(it, texture) }
+            waitingForTexture[id]?.clear()
+            waitingForTexture.remove(id)
+        }
     }
 
     private fun applyLoadedTextureToAny(any: Any, texture: Texture) {

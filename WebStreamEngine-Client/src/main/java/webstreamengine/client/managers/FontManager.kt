@@ -2,8 +2,8 @@ package webstreamengine.client.managers
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
+import webstreamengine.client.FuelClient
 import webstreamengine.client.conn
-import webstreamengine.client.networkenabled
 import webstreamengine.client.ui.UIElement
 import webstreamengine.client.ui.microelements.TextElement
 import webstreamengine.core.ByteUtils
@@ -35,9 +35,6 @@ object FontManager {
             return
         }
 
-        // if we are not network enabled, return true
-        if (!networkenabled) return
-
         // if we made it this far, add the given target to the waiting list for the given font
         var list = waitingForFont[id]
         if (list == null) {
@@ -49,21 +46,11 @@ object FontManager {
         // if the given id is not in the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
             requestedIDs.add(id)
-            conn?.sendPacket(
-                PacketUtils.generatePacket(
-                    PacketType.REQUEST_FONT,
-                    ByteUtils.convertStringToByteArray(id)
-                )
-            )
+            FuelClient.requestFile(id) { handleFontDelivery(id, it) }
         }
     }
 
-    fun handleFontDelivery(id: String, bytes: ByteArray) {
-        // write file bytes to a cache file
-        val file = File(System.getProperty("user.dir"), "cache/$id.ttf")
-        file.parentFile.mkdirs()
-        file.writeBytes(bytes)
-
+    fun handleFontDelivery(id: String, file: File) {
         // load file
         loadLocal(id, file.absolutePath)
 

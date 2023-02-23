@@ -21,6 +21,7 @@ class Controller(
     var pcOffsetRootDistance = 0f
 
     private var lastMouse: Vector2? = null
+    private var drag = settings.lockMouse
 
     fun update() {
         // if the settings have scroll wheel enabled, apply necessary updates
@@ -37,8 +38,15 @@ class Controller(
         // update cursor lock
         Gdx.input.isCursorCatched = settings.lockMouse
 
+        if (!settings.lockMouse && InputManager.isMouseButtonDown(Input.Buttons.RIGHT))
+            drag = true
+        else if (!settings.lockMouse && InputManager.isMouseButtonUp(Input.Buttons.RIGHT)) {
+            drag = false
+            lastMouse = null
+        }
+
         // check if the settings allow for the user to rotate the camera, and we currently can rotate around the root
-        if (settings.canPlayerChangeRotationAroundRoot && (settings.lockMouse || InputManager.isMouseButtonDown(Input.Buttons.RIGHT))) {
+        if (settings.canPlayerChangeRotationAroundRoot && drag) {
             if (lastMouse != null) {
                 val mouseSensitivity = (SettingsManager.getElementValue("Look Rate") as Int).toFloat()
                 val diffX = InputManager.mouseX.toFloat() - lastMouse!!.x

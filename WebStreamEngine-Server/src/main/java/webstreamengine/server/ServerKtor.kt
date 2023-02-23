@@ -12,6 +12,7 @@ import java.io.*
 import java.math.BigInteger
 import java.security.KeyStore
 import java.security.MessageDigest
+import java.util.*
 import java.util.zip.ZipFile
 
 val fileMap = JSONObject()
@@ -98,20 +99,13 @@ fun recursivelyLoadFiles(rootFile: File) {
         if (file.name.equals("fileMap.json")) return@forEach
 
         // load file bytes, with some changes for some file types
-        val fileBytes = when(file.extension) {
-            "jar" -> {
-                val jarFolder = File(assetsFolder, "jar")
-                UnzipUtils.unzip(file, jarFolder)
-                recursivelyLoadFiles(jarFolder)
-                file.delete()
-                return@forEach
-            }
+        val (fileBytes, fileName) = when(file.extension) {
             "fbx" -> {
                 FBXToG3DJConverter.convertFile(file)
-                File(file.path.replace("fbx", "g3dj")).readBytes()
+                Pair(File(file.path.replace("fbx", "g3dj")).readBytes(), file.name.replace("fbx", "g3dj"))
             }
             else -> {
-                file.readBytes()
+                Pair(file.readBytes(), file.name)
             }
         }
 
@@ -119,7 +113,7 @@ fun recursivelyLoadFiles(rootFile: File) {
         val hash = BigInteger(1, MessageDigest.getInstance("MD5").digest(fileBytes))
 
         // save to file map json
-        fileMap.put(file.name, JSONObject().put("id", file.name).put("hash", hash).put("type", file.extension).put("localPath", file.path.removePrefix("assets\\")))
+        fileMap.put(fileName, JSONObject().put("id", fileName).put("hash", hash).put("type", file.extension).put("localPath", file.path.removePrefix("assets\\")))
     }
 }
 
@@ -140,10 +134,11 @@ fun Application.module() {
             }
 
             // send the file back
+            val bytes = File(assetsFolder, srcJson.getString("localPath")).readBytes()
             val json = JSONObject()
                         .put("id", srcJson.getString("id"))
                         .put("hash", srcJson.getBigInteger("hash"))
-                        .put("bytes", String(File(assetsFolder, srcJson.getString("localPath")).readBytes()))
+                        .put("bytes", Base64.getEncoder().encodeToString(bytes))
             call.respondText(json.toString(0))
         }
     }

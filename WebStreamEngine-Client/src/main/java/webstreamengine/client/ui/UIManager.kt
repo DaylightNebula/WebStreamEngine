@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import org.json.JSONArray
 import org.json.JSONObject
+import webstreamengine.client.FuelClient
 import webstreamengine.client.JarInterface
 import webstreamengine.client.ui.macroelement.ColumnElement
 import webstreamengine.client.ui.macroelement.RowElement
@@ -56,18 +57,20 @@ object UIManager {
         // get the path to the scripts ui json file
         val targetPath = "uis/${script.path}.json"
 
-        // compile the json files elements into ui elements and pass them to the script
-        val jsonArray = JSONArray(JarInterface.getTextResource(targetPath) ?: throw IllegalArgumentException("Could not find $targetPath"))
-        script.elements.addAll(jsonArray.map { compileJSONElementToUIElement(it as JSONObject) })
+        FuelClient.requestFile("${script.path}.ui") {
+            // compile the json files elements into ui elements and pass them to the script
+            val jsonArray = JSONArray(it.readText())
+            script.elements.addAll(jsonArray.map { compileJSONElementToUIElement(it as JSONObject) })
 
-        // make sure the scripts callbacks are registered
-        script.registerCallbacks()
+            // make sure the scripts callbacks are registered
+            script.registerCallbacks()
 
-        // add the script to the tracking list
-        scripts.add(script)
+            // add the script to the tracking list
+            scripts.add(script)
 
-        // mark is dirty
-        isDirty = true
+            // mark is dirty
+            isDirty = true
+        }
     }
 
     private fun compileJSONElementToUIElement(element: JSONObject): UIElement {

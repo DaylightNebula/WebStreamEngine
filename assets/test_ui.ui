@@ -6,7 +6,7 @@
       {
         "id": "play_button",
         "type": "image",
-        "key": "play_button",
+        "key": "play_button.png",
         "size": 1.0
       }
     ],

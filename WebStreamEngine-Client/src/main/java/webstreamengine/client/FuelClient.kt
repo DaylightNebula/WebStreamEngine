@@ -1,5 +1,6 @@
 package webstreamengine.client
 
+import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.*
 import com.github.kittinunf.fuel.httpGet
 import kotlinx.coroutines.runBlocking
@@ -9,22 +10,24 @@ import java.io.FileInputStream
 import java.math.BigInteger
 import java.security.KeyStore
 import java.security.MessageDigest
+import java.util.*
 
 fun main(args: Array<String>) {
+    println("Starting with args ${args.map { it }}")
+
     FuelClient.startClient(args)
     while(true) {}
 }
 
 object FuelClient {
+    lateinit var allFiles: JSONObject
+
     private val cacheFolder = File("cache")
     private lateinit var serverAddr: String
-    private lateinit var allFiles: JSONObject
     private val fileMapFile = File(cacheFolder, "fileMap.json")
     private lateinit var fileMap: JSONObject
 
     fun startClient(args: Array<String>) {
-        println("Starting with args ${args.map { it }}")
-
         // if we have a file map file, load it, otherwise create a new one
         fileMap = if (fileMapFile.exists())
             JSONObject(fileMapFile.readText())
@@ -48,19 +51,13 @@ object FuelClient {
         }
 
         // download all files list
-        "${serverAddr}/allfiles".httpGet().response { _, response, _ ->
-            allFiles = JSONObject(String(response.data))
-            downloadRequired()
-            requestFileBlocking("barracks.g3dj")
-        }
-    }
-
-    private val requiredFileTypes = listOf("class", "MF", "kotlin_module")
-    private fun downloadRequired() {
-        allFiles.keys().forEach { key ->
-            val extension = key.split(".").last()
-            val required = requiredFileTypes.contains(extension)
-            if (required) requestFileBlocking(key)
+        runBlocking {
+            allFiles = Fuel.get("$serverAddr/allfiles")
+                .awaitResult(deserializable = object : Deserializable<JSONObject> {
+                    override fun deserialize(response: Response): JSONObject {
+                        return JSONObject(String(response.data))
+                    }
+                }).get()
         }
     }
 
@@ -68,7 +65,7 @@ object FuelClient {
         if (!fileMap.has(fileName) || !allFiles.has(fileName)) return null
 
         // get all files hash
-        val allFile = allFiles.getJSONObject("fileName")
+        val allFile = allFiles.getJSONObject(fileName)
         val serverFileHash = allFile.getBigInteger("hash")
 
         // load file map json
@@ -101,7 +98,7 @@ object FuelClient {
                         return JSONObject(String(response.data))
                     }
                 }).get()
-            val bytes = json.getString("bytes")!!.toByteArray()
+            val bytes = Base64.getDecoder().decode(json.getString("bytes")!!)
             targetFile.parentFile.mkdir()
             targetFile.writeBytes(bytes)
             fileMap.put(
@@ -126,8 +123,8 @@ object FuelClient {
         "${serverAddr}/file".httpGet(listOf(Pair("file", fileName))).response { _, response, _ ->
             val data = JSONObject(String(response.data))
             val file = File(cacheFolder, localPath)
-            val bytes = data.getString("bytes").toByteArray()
-            file.mkdirs()
+            val bytes = Base64.getDecoder().decode(data.getString("bytes")!!)
+            file.parentFile.mkdirs()
             file.writeBytes(bytes)
             fileMap.put(
                 fileName,

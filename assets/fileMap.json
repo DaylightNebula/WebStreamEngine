@@ -17,47 +17,41 @@
   "type": "g3dj",
   "hash": 170331528945922380878011963579316675482
  },
+ "setup.properties": {
+  "localPath": "setup.properties",
+  "id": "setup.properties",
+  "type": "properties",
+  "hash": 321039420784118301516059753397438219923
+ },
+ "test_entity.entity": {
+  "localPath": "test_entity.entity",
+  "id": "test_entity.entity",
+  "type": "entity",
+  "hash": 295295526425376070974806778451209227030
+ },
  "test_sound.mp3": {
   "localPath": "test_sound.mp3",
   "id": "test_sound.mp3",
   "type": "mp3",
   "hash": 22897678814612355569570281209209858591
  },
- "TestUI.class": {
-  "localPath": "jar\\webstreamengine\\test\\TestUI.class",
-  "id": "TestUI.class",
-  "type": "class",
-  "hash": 243992244288231257313130096057647876040
+ "settings.json": {
+  "localPath": "settings.json",
+  "id": "settings.json",
+  "type": "json",
+  "hash": 34122368864282156986811538323721566600
  },
- "TestScene.class": {
-  "localPath": "jar\\webstreamengine\\test\\TestScene.class",
-  "id": "TestScene.class",
-  "type": "class",
-  "hash": 146278896432320996885820008298603487602
+ "WebStreamEngine-Test-0.0.1.jar": {
+  "localPath": "WebStreamEngine-Test-0.0.1.jar",
+  "id": "WebStreamEngine-Test-0.0.1.jar",
+  "type": "jar",
+  "hash": 273232640857094641255808175728943564565
  },
- "Tester$start$testbutton$1.class": {
-  "localPath": "jar\\webstreamengine\\test\\Tester$start$testbutton$1.class",
-  "id": "Tester$start$testbutton$1.class",
-  "type": "class",
-  "hash": 317711822689013663230112860944232908531
- },
- "TestUI$registerCallbacks$1.class": {
-  "localPath": "jar\\webstreamengine\\test\\TestUI$registerCallbacks$1.class",
-  "id": "TestUI$registerCallbacks$1.class",
-  "type": "class",
-  "hash": 212354817281641963751031891580019785456
- },
- "WebStreamEngine-Test.kotlin_module": {
-  "localPath": "jar\\META-INF\\WebStreamEngine-Test.kotlin_module",
-  "id": "WebStreamEngine-Test.kotlin_module",
-  "type": "kotlin_module",
-  "hash": 336829940468679406747691377977309945197
- },
- "Tester$start$1.class": {
-  "localPath": "jar\\webstreamengine\\test\\Tester$start$1.class",
-  "id": "Tester$start$1.class",
-  "type": "class",
-  "hash": 23822277141055330844750424938807600867
+ "input.json": {
+  "localPath": "input.json",
+  "id": "input.json",
+  "type": "json",
+  "hash": 133788528672507786617480605204520053641
  },
  "test_scene.scene": {
   "localPath": "test_scene.scene",
@@ -71,52 +65,10 @@
   "type": "ttf",
   "hash": 249405453582425702325587770554324058756
  },
- "Tester.class": {
-  "localPath": "jar\\webstreamengine\\test\\Tester.class",
-  "id": "Tester.class",
-  "type": "class",
-  "hash": 97424662465062288484217558779828075435
- },
- "MANIFEST.MF": {
-  "localPath": "jar\\META-INF\\MANIFEST.MF",
-  "id": "MANIFEST.MF",
-  "type": "MF",
-  "hash": 195148855421168188959124199715502223505
- },
- "setup.properties": {
-  "localPath": "setup.properties",
-  "id": "setup.properties",
-  "type": "properties",
-  "hash": 321039420784118301516059753397438219923
- },
- "test_entity.entity": {
-  "localPath": "test_entity.entity",
-  "id": "test_entity.entity",
-  "type": "entity",
-  "hash": 295295526425376070974806778451209227030
- },
- "Tester$start$2.class": {
-  "localPath": "jar\\webstreamengine\\test\\Tester$start$2.class",
-  "id": "Tester$start$2.class",
-  "type": "class",
-  "hash": 303364828891060119964468621567290060038
- },
- "settings.json": {
-  "localPath": "settings.json",
-  "id": "settings.json",
-  "type": "json",
-  "hash": 34122368864282156986811538323721566600
- },
- "input.json": {
-  "localPath": "input.json",
-  "id": "input.json",
-  "type": "json",
-  "hash": 133788528672507786617480605204520053641
- },
  "test_ui.ui": {
   "localPath": "test_ui.ui",
   "id": "test_ui.ui",
   "type": "ui",
-  "hash": 335207233505376779819002201248752174675
+  "hash": 158469274684512368527936011049977899291
  }
 }

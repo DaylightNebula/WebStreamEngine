@@ -11,13 +11,9 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.JsonReader
-import webstreamengine.client.conn
+import webstreamengine.client.FuelClient
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.components.ModelComponent
-import webstreamengine.client.networkenabled
-import webstreamengine.core.ByteUtils
-import webstreamengine.core.PacketType
-import webstreamengine.core.PacketUtils
 import java.io.File
 
 object ModelManager {
@@ -29,10 +25,10 @@ object ModelManager {
     private val runOnDeliver = hashMapOf<String, MutableList<(key: String) -> Unit>>()
 
     // loaders
-    val builder = ModelBuilder()
-    val loader = G3dModelLoader(JsonReader())
+    private val builder = ModelBuilder()
+    private val loader = G3dModelLoader(JsonReader())
 
-    fun isIDInUse(id: String): Boolean {
+    private fun isIDInUse(id: String): Boolean {
         return modelMap.containsKey(id) || requestedIDs.contains(id)
     }
 
@@ -87,7 +83,7 @@ object ModelManager {
         )
     }
 
-    fun loadLocal(id: String, path: String) {
+    private fun loadLocal(id: String, path: String) {
         modelMap[id] = loader.loadModel(Gdx.files.absolute(path))
     }
 
@@ -106,9 +102,6 @@ object ModelManager {
             return
         }
 
-        // if we are not network enabled, return true
-        if (!networkenabled) return
-
         // add to waiting list
         var list = waitingForModel[id]
         if (list == null) {
@@ -123,35 +116,27 @@ object ModelManager {
         }
     }
 
-    fun askForDelivery(id: String) {
+    private fun askForDelivery(id: String) {
         requestedIDs.add(id)
-        conn?.sendPacket(
-            PacketUtils.generatePacket(
-                PacketType.REQUEST_MODEL,
-                ByteUtils.convertStringToByteArray(id)
-            )
-        )
+        FuelClient.requestFile("$id.g3dj") { handleModelDelivery(id, it) }
     }
 
-    fun handleModelDelivery(id: String, bytes: ByteArray) {
-        // write file bytes to a cache file
-        val file = File(System.getProperty("user.dir"), "cache/$id.g3dj")
-        file.parentFile.mkdirs()
-        file.writeBytes(bytes)
+    private fun handleModelDelivery(id: String, file: File) {
+        Gdx.app.postRunnable {
+            // load file
+            loadLocal(id, file.absolutePath)
 
-        // load file
-        loadLocal(id, file.absolutePath)
+            // remove requested id
+            requestedIDs.remove(id)
 
-        // remove requested id
-        requestedIDs.remove(id)
-
-        // update all entities waiting for this mesh
-        val model = modelMap[id]!!
-        waitingForModel[id]?.forEach { it.addComponent(ModelComponent(it, ModelInstance(model))) }
-        waitingForModel[id]?.clear()
+            // update all entities waiting for this mesh
+            val model = modelMap[id]!!
+            waitingForModel[id]?.forEach { it.addComponent(ModelComponent(it, ModelInstance(model))) }
+            waitingForModel[id]?.clear()
+        }
     }
 
-    fun createModelInstance(id: String): ModelInstance? {
+    private fun createModelInstance(id: String): ModelInstance? {
         return ModelInstance(modelMap[id] ?: return null)
     }
 

@@ -44,6 +44,7 @@ class ImageElement(
     }
 
     override fun renderToBounds(batch: SpriteBatch) {
+        if (texture == null) return
         batch.draw(texture, x * Gdx.graphics.width, y * Gdx.graphics.height, width * Gdx.graphics.width, height * Gdx.graphics.height)
     }
 }

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.distsDirectory
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -39,5 +40,4 @@ compileTestKotlin.kotlinOptions {
 
 tasks.getByName<Jar>("jar") {
     destinationDirectory.set(file("$rootDir\\assets"))
-
 }

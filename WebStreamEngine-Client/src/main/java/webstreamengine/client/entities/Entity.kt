@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
+import webstreamengine.client.FuelClient
 import webstreamengine.client.JarInterface
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.managers.ModelManager
@@ -25,15 +26,20 @@ class Entity(
     var box = SimpleBox(Vector3(), Vector3())
     val chunks = mutableListOf<Chunk>()
 
-    constructor(
-        path: String,
-        position: Vector3 = Vector3(0f, 0f, 0f),
-        rotation: Vector3 = Vector3(0f, 0f, 0f),
-        scale: Vector3 = Vector3(1f, 1f, 1f),
-    ): this(
-        JSONObject(JarInterface.getTextResource("entities/$path.json")),
-        position, rotation, scale
-    )
+    companion object {
+        fun createFromPath(path: String,
+           position: Vector3 = Vector3(0f, 0f, 0f),
+           rotation: Vector3 = Vector3(0f, 0f, 0f),
+           scale: Vector3 = Vector3(1f, 1f, 1f)
+        ) {
+            FuelClient.requestFile("$path.entity") {
+                Entity(
+                    JSONObject(it.readText()),
+                    position, rotation, scale
+                )
+            }
+        }
+    }
 
     constructor(
         json: JSONObject,

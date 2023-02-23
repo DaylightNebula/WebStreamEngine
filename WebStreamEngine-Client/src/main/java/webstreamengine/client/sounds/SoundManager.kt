@@ -1,11 +1,10 @@
 package webstreamengine.client.sounds
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.audio.AudioDevice
 import com.badlogic.gdx.audio.Sound
+import webstreamengine.client.FuelClient
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.conn
-import webstreamengine.client.networkenabled
 import webstreamengine.core.ByteUtils
 import webstreamengine.core.PacketType
 import webstreamengine.core.PacketUtils
@@ -34,9 +33,6 @@ object SoundManager {
         if (cacheCheck(id, request, "wav")) return
         if (cacheCheck(id, request, "ogg")) return
 
-        // if we are not network enabled, return true
-        if (!networkenabled) return
-
         // if we made it this far, add the given sound component to the waiting list
         var list = waitingForSound[id]
         if (list == null) {
@@ -48,13 +44,7 @@ object SoundManager {
         // if the given id is not the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
             requestedIDs.add(id)
-            conn?.sendPacket(
-                PacketUtils.generatePacket(
-                    PacketType.REQUEST_SOUND,
-                    ByteUtils.convertStringToByteArray(id)
-                )
-            )
-            println("Requested sound $id")
+            FuelClient.requestFile(id) { handleSoundDelivery(id, it) }
         }
     }
 

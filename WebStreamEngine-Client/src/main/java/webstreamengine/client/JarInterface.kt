@@ -14,14 +14,19 @@ object JarInterface {
     lateinit var loader: URLClassLoader
     var currentApp: Application? = null
 
-    fun init(file: File) {
+    fun init() {
+        // download jar file, this is required, so we can use the blocking method
+        val file = FuelClient.requestFileBlocking(
+            FuelClient.allFiles.keySet().first { it.endsWith(".jar") }
+        )
+
         // create a class loader for the jar
         loader = URLClassLoader(
             arrayOf(file.toURI().toURL()),
             this.javaClass.classLoader
         )
 
-        val setup = loader.getResource("setup.config")?.readText()?.split("\n") ?: throw IllegalArgumentException("Jar file does not have a setup.config")
+        val setup = FuelClient.requestFileBlocking("setup.properties").readText().split("\n")
         val mainClass = setup.firstOrNull { it.startsWith("MAIN_CLASS") }?.split("=")?.last() ?: throw IllegalArgumentException("setup.config does not specify a main class")
 
         // get target class and its constructor
@@ -43,8 +48,8 @@ object JarInterface {
 
             // load built-in configs
             SettingsManager.addAllElements(*currentApp!!.getSettings())
-            InputManager.loadInputDefaults(loader.getResource("input.json")?.readText())
-            loader.getResource("chunk_settings.json")?.let { EntityChunks.updateSettings(JSONObject(it.readText())) }
+            InputManager.loadInputDefaults(FuelClient.requestFileBlocking("input.json").readText())
+            EntityChunks.updateSettings(JSONObject(FuelClient.requestFileBlocking("chunk_settings.json").readText()))
 
             // start current app
             currentApp!!.start()
@@ -52,11 +57,6 @@ object JarInterface {
             // log
             println("Loaded WebStreamApplication from jar file ${file.path}")
         } catch (ex: Exception) { ex.printStackTrace() }
-    }
-
-    fun getTextResource(path: String): String? {
-        println("Loading text resource $path")
-        return loader.getResource(path)?.readText()
     }
 
     fun getApp(): Application? {

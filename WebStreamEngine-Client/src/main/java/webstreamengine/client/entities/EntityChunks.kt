@@ -64,6 +64,7 @@ object EntityChunks {
     }
 
     fun addEntity(entity: Entity) {
+        println("Adding entity $entity")
         // if entity is global, add to global list and cancel
         if (entity.global) {
             globalEntities.add(entity)
