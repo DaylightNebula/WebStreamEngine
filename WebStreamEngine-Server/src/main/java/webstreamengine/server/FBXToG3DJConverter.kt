@@ -17,9 +17,9 @@ object FBXToG3DJConverter {
 
     fun convertFile(file: File) {
         // get target files and their local paths
-        val targetLocalPath = FileHandler.getLocalPath(file)
+        val targetLocalPath = getLocalPath(file)
         val finalFile = File(file.absolutePath.replace("fbx", "g3dj"))
-        val finalFileLocalPath = FileHandler.getLocalPath(finalFile)
+        val finalFileLocalPath = getLocalPath(finalFile)
 
         // if a final file already exists, cancel
         if (finalFile.exists()) {
@@ -36,5 +36,11 @@ object FBXToG3DJConverter {
         process.waitFor()
 
         file.delete()
+    }
+
+    private val rootDirLength = System.getProperty("user.dir").length
+    private fun getLocalPath(file: File): String {
+        val absPath = file.absolutePath
+        return absPath.substring(rootDirLength + 1, absPath.length)
     }
 }

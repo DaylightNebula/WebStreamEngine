@@ -79,7 +79,6 @@ object TextureManager {
 
             // update all targets waiting for this texture
             val texture = textureMap[id]!!
-            println("Texture $texture")
             waitingForTexture[id]?.forEach { applyLoadedTextureToAny(it, texture) }
             waitingForTexture[id]?.clear()
             waitingForTexture.remove(id)

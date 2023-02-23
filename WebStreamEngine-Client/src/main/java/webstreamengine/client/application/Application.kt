@@ -8,4 +8,7 @@ abstract class Application {
     abstract fun update()
     abstract fun stop()
     abstract fun getSettings(): Array<SettingsElement<*>>
+    open fun getBaseHTTPParams(): Array<Pair<String, Any?>> {
+        return emptyArray()
+    }
 }

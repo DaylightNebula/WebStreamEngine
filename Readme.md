@@ -101,14 +101,14 @@ Goals:
     - [x] Entity references and positions and rotations
 
 ============= L1 Todolist =============
-- [ ] Client and Server updates
-  - [ ] Ktor
-    - [ ] HTTPS
+- [x] Client and Server updates
+  - [x] Ktor
+    - [x] HTTPS
       - [x] LOCAL ONLY Client certification information
       - [x] LOCAL ONLY Certificate generation information in server launch args
       - [x] On server side, keep a list of all available files with their corresponding hash codes
       - [x] On client side, keep a list of all downloaded files with their corresponding hash codes
-      - [ ] Anyone, that passes server plugin connection checks, should be allowed to download data
+      - [x] Anyone, that passes server plugin connection checks, should be allowed to download data
     - [x] Endpoints
       - [x] Download file (sends back files and their hash codes)
       - [x] Get file map (hashes and types)
@@ -118,10 +118,8 @@ Goals:
     - [x] Client stuff
       - [x] Download all jar files at startup
       - [x] Make it run like normal with new client
-  - [ ] Server plugins
-    - [ ] Plugins authenticate connections
-      - [ ] Close connection if authentication fails
-      - [ ] Default to approved connection if no authentication
+  - [x] Allow server side plugins to validate packets
+  - [x] Allow client side plugins to add to packets to pass those validations
 - [ ] Particles
   - [ ] Play particle effects from PFX
 - [ ] Pathfinding

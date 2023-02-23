@@ -22,6 +22,7 @@ fun main(args: Array<String>) {
     println("Starting with args ${args.map { it }}")
 
     FBXToG3DJConverter.init()
+    ServerPluginLoader.init()
 
     // load assets
     val start = System.currentTimeMillis()
@@ -121,9 +122,13 @@ fun recursivelyLoadFiles(rootFile: File) {
 fun Application.module() {
     routing {
         get("/allfiles") {
+            if (!ServerPluginLoader.plugins.all { it.verifyParams(call.parameters) })
+                return@get
             call.respondText(fileMap.toString(1))
         }
         get("/file") {
+            if (!ServerPluginLoader.plugins.all { it.verifyParams(call.parameters) })
+                return@get
             val fileParam = call.parameters["file"]
             val srcJson = fileMap.getJSONObject(fileParam)
 
