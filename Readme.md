@@ -1,5 +1,7 @@
 The idea: In Minecraft games are very easy to make using server plugins and this usually only requires a small download for the player to download assets.  How can we replicate this to make games easier to access for users, and easier to make for developers?
 
+Go to documentation/general-setup.md for an explanation of how to use this.
+
 Goals:
 - Simple dynamic player controller
 - Simple physics system
@@ -122,11 +124,13 @@ Goals:
   - [x] Allow client side plugins to add to packets to pass those validations
 - [ ] Particles
   - [ ] Play particle effects from PFX
-- [ ] Pathfinding
-  - [ ] Use an array of points to dictate where the entity should move
-  - [ ] Shoot a ray from the entity to the target
-    - [ ] Add points to move around the target
-  - [ ] Remove any points that make the pathfinding slower
+
+============== Stuff that's gotta get done at some point =============
+- [ ] Reloading
+  - [ ] Server should reload itself when a file changes
+- [ ] Client LibGDX changes
+  - [ ] Put libgdx on a second thread
+  - [ ] Allow client to easily reload with CTRL + R
 - [ ] Editor plugins
   - [ ] .properties (switch from .config)
   - [ ] .json
@@ -134,3 +138,8 @@ Goals:
   - [ ] .entity (switch from current entity .json files)
   - [ ] .ui (switch from current ui .json files)
   - [ ] input.json
+- [ ] Pathfinding
+  - [ ] Use an array of points to dictate where the entity should move
+  - [ ] Shoot a ray from the entity to the target
+    - [ ] Add points to move around the target
+  - [ ] Remove any points that make the pathfinding slower

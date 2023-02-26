@@ -54,9 +54,6 @@ object UIManager {
     }
 
     internal fun addUIScript(script: UserInterface) {
-        // get the path to the scripts ui json file
-        val targetPath = "uis/${script.path}.json"
-
         FuelClient.requestFile("${script.path}.ui") {
             // compile the json files elements into ui elements and pass them to the script
             val jsonArray = JSONArray(it.readText())
