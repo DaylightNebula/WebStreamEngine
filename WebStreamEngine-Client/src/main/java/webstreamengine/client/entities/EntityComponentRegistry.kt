@@ -1,8 +1,11 @@
 package webstreamengine.client.entities
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
 import webstreamengine.client.entities.components.*
+import webstreamengine.client.physics.ColliderComponent
+import webstreamengine.client.physics.SimpleBox
 import webstreamengine.client.tasks.TaskComponent
 
 object EntityComponentRegistry {
@@ -13,6 +16,21 @@ object EntityComponentRegistry {
             entity.addModelComponent(json.getString("key")
                 ?: throw IllegalArgumentException("Key argument must be added to model component json"))
             null
+        }
+        registerComponent("collider") { entity, json ->
+            ColliderComponent(
+                entity,
+                SimpleBox(
+                    if (json.has("center")) Vector3(json.getJSONArray("center").getFloat(0), json.getJSONArray("center").getFloat(1), json.getJSONArray("center").getFloat(2)) else Vector3(0f, 0f, 0f),
+                    Vector3(
+                        json.getJSONArray("size").getFloat(0),
+                        json.getJSONArray("size").getFloat(1),
+                        json.getJSONArray("size").getFloat(2)
+                    )
+                ),
+                json.optBoolean("gravity", true),
+                json.optBoolean("rayCastOnly", false)
+            )
         }
         registerComponent("point_light") { entity, json ->
             PointLightComponent(
