@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.application.Application
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.controller.ControllerSettings
+import webstreamengine.client.controller.PlayerControllerComponent
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.components.ModelComponent
 import webstreamengine.client.managers.SettingsElement
@@ -22,31 +23,21 @@ public class Tester : Application() {
         testentity.addComponent(ModelComponent(testentity, "barracks"))
         testentity.move(Vector3(0f, 0f, 0f))
         testentity.addComponent(ColliderComponent(testentity, SimpleBox(Vector3(0f, 0f, 0f), Vector3(1f, 1f, 1f)), false))
+        testentity.addComponent(
+            PlayerControllerComponent(testentity, ControllerSettings.genThirdPersonSettings(
+                5f, Vector3(0f, 0f, 0f), 5f
+            ))
+        )
 
         // set ambient light
         GameInfo.setAmbientLight(Color.WHITE)
-
-        GameInfo.controller.changeSettings(ControllerSettings.genThirdPersonSettings(testentity, 5f, Vector3(0f, 0f, 0f), 5f))
 
         UserInterface.registerInterface("test_ui") { TestUI() }
         SceneRegistry.registerScene("test_scene") { TestScene() }
         SceneRegistry.loadScene("test_scene")
     }
 
-    override fun update() {
-//        if (InputManager.getElement("click")?.getValue() == true) {
-//            val pickRay = GameInfo.cam.getPickRay(InputManager.mouseX.toFloat(), InputManager.mouseY.toFloat())
-//            val hit = PhysicsManager.rayCast(pickRay)
-//            println("Ray Cast hit $hit")
-//
-//            soundComponent.playSound("test_sound")
-//        }
-    }
-
-    override fun stop() {
-
-    }
-
+    override fun update() {}
+    override fun stop() {}
     override fun getSettings(): Array<SettingsElement<*>> { return arrayOf() }
-
 }

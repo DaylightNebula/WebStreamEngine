@@ -5,8 +5,6 @@ import webstreamengine.client.entities.Entity
 
 data class ControllerSettings(
     // root info
-    val rootEntity: Entity?,
-    val backupRootLocation: Vector3,
     val offsetFromRoot: Vector3,
 
     // movement info
@@ -28,8 +26,6 @@ data class ControllerSettings(
     companion object {
         fun genStaticSettings(): ControllerSettings {
             return ControllerSettings(
-                rootEntity = null,
-                backupRootLocation = Vector3(0f, 0f, 0f),
                 offsetFromRoot = Vector3(0f, 0f, 0f),
                 movementStickInputName = null,
                 movementSpeed = 0f,
@@ -43,10 +39,8 @@ data class ControllerSettings(
             )
         }
 
-        fun genThirdPersonSettings(entity: Entity, movespeed: Float, rotation: Vector3, dstToRoot: Float): ControllerSettings {
+        fun genThirdPersonSettings(movespeed: Float, rotation: Vector3, dstToRoot: Float): ControllerSettings {
             return ControllerSettings(
-                rootEntity = entity,
-                backupRootLocation = Vector3(0f, 0f, 0f),
                 offsetFromRoot = Vector3(0f, 0f, 0f),
                 movementStickInputName = "movement",
                 movementSpeed = movespeed,

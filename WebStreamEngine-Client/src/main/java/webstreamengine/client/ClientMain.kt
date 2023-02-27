@@ -81,9 +81,6 @@ object ClientMain {
         // update the settings manager
         SettingsManager.update()
 
-        // update game info
-        GameInfo.update()
-
         // update app
         JarInterface.getApp()?.update()
         SceneRegistry.updateScene()

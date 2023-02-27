@@ -1,17 +1,11 @@
 package webstreamengine.client.entities
 
-import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
 import webstreamengine.client.FuelClient
-import webstreamengine.client.JarInterface
-import webstreamengine.client.Renderer
-import webstreamengine.client.application.GameInfo
-import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.physics.SimpleBox
-import kotlin.math.pow
 
 class Entity(
     var id: String,
@@ -61,19 +55,6 @@ class Entity(
             )
     }
 
-/*
-    constructor(
-        modelKey: String,
-        position: Vector3 = Vector3(0f, 0f, 0f),
-        rotation: Vector3 = Vector3(0f, 0f, 0f),
-        scale: Vector3 = Vector3(1f, 1f, 1f),
-        registerAutomatically: Boolean = true,
-        global: Boolean = false
-    ): this(position, rotation, scale, registerAutomatically, global) {
-        addModelComponent(modelKey)
-    }
-*/
-
     init {
         if (registerAutomatically) EntityChunks.addEntity(this)
     }
@@ -93,7 +74,7 @@ class Entity(
 
     fun addComponent(component: EntityComponent) {
         components.add(component)
-        component.start()
+        component.serverstart()
     }
 
     fun getComponents(): List<EntityComponent> {
@@ -102,24 +83,20 @@ class Entity(
 
     fun removeComponent(component: EntityComponent) {
         components.remove(component)
-        component.stop()
+        component.serverstop()
     }
 
     fun update() {
-        components.forEach { it.update() }
+        components.forEach { it.serverupdate() }
     }
 
-    private var lastRenderTime = -2f
-    fun render(batch: ModelBatch) {
-        if (Renderer.currentSeconds - lastRenderTime > 0.005f) {
-            // make sure we only render once per frame
-            components.forEach { it.render(batch) }
-            lastRenderTime = Renderer.currentSeconds
-        }
+    fun clientupdate() {
+        // make sure we only render once per frame
+        components.forEach { it.clientupdate() }
     }
 
     fun dispose() {
-        components.forEach { it.stop() }
+        components.forEach { it.serverstop() }
     }
 
     private fun updateInstanceTransform() {

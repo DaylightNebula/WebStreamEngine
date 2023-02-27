@@ -76,8 +76,8 @@ object InputManager: InputAdapter() {
         // update buttons up arrays
         mouseButtonsUp.forEachIndexed { index, b -> if (b) mouseButtonsUp[index] = false }
         keysUp.forEachIndexed { index, b -> if (b) keysUp[index] = false }
-        mouseButtonsDown.forEachIndexed { index, b -> if (b) mouseButtonsDown[index] = false }
-        keysDown.forEachIndexed { index, b -> if (b) keysDown[index] = false }
+        //mouseButtonsDown.forEachIndexed { index, b -> if (b) mouseButtonsDown[index] = false }
+        //keysDown.forEachIndexed { index, b -> if (b) keysDown[index] = false }
         scroll.set(0f, 0f)
 
         if (isSaveDirty) {
@@ -114,6 +114,7 @@ object InputManager: InputAdapter() {
 
         // update mouse button state trackers
         mouseButtonsUp[button] = true
+        mouseButtonsDown[button] = false
         return false
     }
 

@@ -1,6 +1,5 @@
 package webstreamengine.client.entities
 
-import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
 import webstreamengine.client.physics.SimpleBox
@@ -172,18 +171,18 @@ object EntityChunks {
         )
     }
 
-    fun renderEntities(batch: ModelBatch, camPosition: Vector3) {
-        globalEntities.forEach { it.render(batch) }
+    fun renderEntities(camPosition: Vector3) {
+        globalEntities.forEach { it.clientupdate() }
 
         // get all chunks that are inside the large entity render threshold
         chunks.values.filter { chunk -> Vector3(chunk.chunkPosition).scl(chunkBounds).dst2(camPosition) < largeEntityRenderCutoff }.forEach { chunk ->
             // render large entities
-            chunk.largeEntities.forEach { it.render(batch) }
+            chunk.largeEntities.forEach { it.clientupdate() }
 
             // render all small entities that are within the small entity cutoff
             chunk.smallEntities
                 .filter { it.getPosition().dst2(camPosition) < smallEntityRenderCutoff }
-                .forEach { it.render(batch) }
+                .forEach { it.clientupdate() }
         }
 
         // render debug window

@@ -74,13 +74,11 @@ object Renderer: ApplicationAdapter() {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.width, Gdx.graphics.height)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
-        println("==============================")
-        println("Rendering")
         // start 3d draw
         modelbatch.begin(cam)
 
         // draw entities
-        EntityChunks.renderEntities(modelbatch, cam.position)
+        EntityChunks.renderEntities(cam.position)
 
         // end 3d draw
         modelbatch.end()
@@ -102,7 +100,6 @@ object Renderer: ApplicationAdapter() {
     }
 
     fun renderComponent(component: ModelComponent) {
-        println("Drawing model ${component.key}")
         if (!component.hasInstance()) {
             val model = ModelManager.getModelByKey(component.key) ?: return
             component.instance = ModelInstance(model).apply {

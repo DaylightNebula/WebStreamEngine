@@ -45,14 +45,14 @@ open class LightComponent(entity: Entity, val light: BaseLight<*>): EntityCompon
         }
     }
 
-    override fun stop() {
+    override fun serverstop() {
         // remove light from environment
         GameInfo.environment.remove(light)
     }
 
-    override fun start() {}
-    override fun update() {}
-    override fun render(batch: ModelBatch) {}
+    override fun serverstart() {}
+    override fun serverupdate() {}
+    override fun clientupdate() {}
 }
 class PointLightComponent(entity: Entity, color: Color, intensity: Float): LightComponent(
     entity,
