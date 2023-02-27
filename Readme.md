@@ -12,8 +12,8 @@ Goals:
 - Simple pathfinding
 
 ========================== Networking =================================
-- [ ] Make LibGDX run on a thread secondary to the main thread
-- [ ] Make a headless mode
+- [x] Make LibGDX run on a thread secondary to the main thread
+- [x] Make a headless mode
 - [ ] Network controller component
   - [ ] Headless mode clients are treated as the server
   - [ ] Visual clients are treated as the client
@@ -24,17 +24,25 @@ Goals:
     - [ ] Update is run on server or owning client depending on flag
     - [ ] Server determines who owns what
   - [ ] All transform changes should be replicated on each client
-- [ ] Networkable Physics
+- [ ] Network-able Physics
   - [ ] Global physics solver
     - [ ] Handles all collisions in updated chunks
-    - [ ] Update the collider components maximum travel to a collision in all six directions
+    - [ ] Update the collider components maximum travel to a collision in all six directions ONLY for colliders marked as not static
   - [ ] Collider component
-    - [ ] Make just a collection of planes
+    - [ ] Make just a collection of 3 4-point polygons that align along each axis
     - [ ] Update velocity based off of maximum travels that are updated by the physics solver
-- [ ] Make player controller a component
-- [ ] Make EntityChunks reliant on player positions instead of camera position
+    - [ ] Possible collision bounding box (since box checking is quicker than polygon checking)
+      - [ ] Only run a full collision test if the possible collision check passes
+    - [ ] Flags
+      - [ ] Static (does not move) (default false)
+      - 
+- [x] Make player controller a component
+- [ ] Remove the entity chunking for now
 
 ============== Stuff that's gotta get done at some point =============
+- [ ] Reimplement entity chunking
+  - [ ] Small entities belong to ONLY ONE chunk at time
+  - [ ] Large entities are treated as global entities
 - [ ] Particles
   - [ ] Play particle effects from PFX
 - [ ] Reloading
