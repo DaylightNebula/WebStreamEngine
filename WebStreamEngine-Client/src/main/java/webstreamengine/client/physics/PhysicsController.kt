@@ -63,21 +63,22 @@ object PhysicsController {
     
     fun getCollidersInBox(sourcePosition: Vector3, sourceBox: SimpleBox): List<ColliderComponent> {
         // get chunks to check for collisions
-        val chunks = EntityChunks.generateChunkPositionList(sourcePosition, sourceBox).mapNotNull { EntityChunks.chunks[it] }
-
-        // get all colliders we collided with, filtered by if we are moving towards them
-        val colliders = mutableListOf<ColliderComponent>()
-        chunks.forEach { chunk ->
-            (chunk.smallEntities + chunk.largeEntities)
-                .forEach { other ->
-                    if (other.getPosition() == sourcePosition) return@forEach
-                    val otherBox = (other.getComponentOfType<ColliderComponent>() ?: return@forEach)
-                    if (otherBox.box.isIntersectingWithOther(other.getPosition(), sourceBox, sourcePosition))
-                        colliders.add(otherBox)
-                }
-        }
-
-        return colliders
+//        FIXME val chunks = EntityChunks.generateChunkPositionList(sourcePosition, sourceBox).mapNotNull { EntityChunks.chunks[it] }
+//
+//        // get all colliders we collided with, filtered by if we are moving towards them
+//        val colliders = mutableListOf<ColliderComponent>()
+//        chunks.forEach { chunk ->
+//            (chunk.smallEntities + chunk.largeEntities)
+//                .forEach { other ->
+//                    if (other.getPosition() == sourcePosition) return@forEach
+//                    val otherBox = (other.getComponentOfType<ColliderComponent>() ?: return@forEach)
+//                    if (otherBox.box.isIntersectingWithOther(other.getPosition(), sourceBox, sourcePosition))
+//                        colliders.add(otherBox)
+//                }
+//        }
+//
+//        return colliders
+        return emptyList()
     }
 }
 enum class FakeRayCastPlane(val dstToFunc: (vec: Vector3, direction: Vector3, level: Float) -> Float) {

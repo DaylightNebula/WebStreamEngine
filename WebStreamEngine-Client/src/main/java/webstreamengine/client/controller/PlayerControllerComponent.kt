@@ -100,7 +100,7 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
 
     private fun updateCamera() {
         // get root location
-        val root = entity.getPosition()
+        val root = Vector3(entity.getPosition())
 
         // get cameras direction from root
         val totalRotation = Vector3(

@@ -78,7 +78,7 @@ object Renderer: ApplicationAdapter() {
         modelbatch.begin(cam)
 
         // draw entities
-        EntityChunks.renderEntities(cam.position)
+        EntityChunks.renderEntities()
 
         // end 3d draw
         modelbatch.end()

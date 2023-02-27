@@ -89,7 +89,7 @@ object ClientMain {
         InputManager.update()
 
         // update entities
-        EntityChunks.updateEntities(Vector3.Zero)
+        EntityChunks.updateEntities()
     }
 
     fun dispose() {
