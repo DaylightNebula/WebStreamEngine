@@ -35,9 +35,8 @@ Goals:
       - [ ] Only run a full collision test if the possible collision check passes
     - [ ] Flags
       - [ ] Static (does not move) (default false)
-      - 
 - [x] Make player controller a component
-- [ ] Remove the entity chunking for now
+- [x] Remove the entity chunking for now
 
 ============== Stuff that's gotta get done at some point =============
 - [ ] Reimplement entity chunking
