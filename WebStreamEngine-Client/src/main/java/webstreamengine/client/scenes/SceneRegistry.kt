@@ -3,10 +3,8 @@ package webstreamengine.client.scenes
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
 import webstreamengine.client.FuelClient
-import webstreamengine.client.JarInterface
 import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.EntityChunks
-import webstreamengine.client.entities.EntityComponentRegistry
+import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.ui.UIManager
 import webstreamengine.client.ui.UserInterface
 
@@ -34,7 +32,7 @@ object SceneRegistry {
 
             // clear old ui and entities if necessary
             if (currentScene != null) UIManager.clearScripts()
-            if (currentScene != null) EntityChunks.clear()
+            if (currentScene != null) EntityHandler.clear()
 
             // load uis
             masterJson.getJSONArray("uis").forEach { str ->

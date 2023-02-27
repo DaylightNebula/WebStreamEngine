@@ -1,11 +1,7 @@
 package webstreamengine.client.physics
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.math.collision.Ray
-import com.sun.source.util.DocSourcePositions
-import webstreamengine.client.entities.Chunk
-import webstreamengine.client.entities.EntityChunks
 import kotlin.math.abs
 
 object PhysicsController {

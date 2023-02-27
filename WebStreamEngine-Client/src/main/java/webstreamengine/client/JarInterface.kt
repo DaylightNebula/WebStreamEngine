@@ -2,10 +2,9 @@ package webstreamengine.client
 
 import org.json.JSONObject
 import webstreamengine.client.application.Application
-import webstreamengine.client.entities.EntityChunks
+import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.SettingsManager
-import java.io.File
 import java.lang.IllegalArgumentException
 import java.net.URLClassLoader
 
@@ -49,7 +48,7 @@ object JarInterface {
             // load built-in configs
             SettingsManager.addAllElements(*currentApp!!.getSettings())
             InputManager.loadInputDefaults(FuelClient.requestFileBlocking("input.json").readText())
-            EntityChunks.updateSettings(JSONObject(FuelClient.requestFileBlocking("chunk_settings.json").readText()))
+            EntityHandler.updateSettings(JSONObject(FuelClient.requestFileBlocking("chunk_settings.json").readText()))
 
             // start current app
             currentApp!!.start()

@@ -2,13 +2,10 @@ package webstreamengine.client.entities
 
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
-import webstreamengine.client.physics.SimpleBox
-import java.awt.Color
 import javax.swing.JFrame
 import kotlin.math.pow
-import kotlin.math.roundToInt
 
-object EntityChunks {
+object EntityHandler {
     // settings
     private var chunkBounds = Vector3(10f, 10f, 10f)
     private var largeEntityThreshold = 100f // threshold at which entities are considered large

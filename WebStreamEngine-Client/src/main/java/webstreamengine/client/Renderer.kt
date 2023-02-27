@@ -13,10 +13,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import webstreamengine.client.application.GameInfo
-import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.EntityChunks
+import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.entities.components.ModelComponent
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.InputProcessorManager
@@ -78,7 +75,7 @@ object Renderer: ApplicationAdapter() {
         modelbatch.begin(cam)
 
         // draw entities
-        EntityChunks.renderEntities()
+        EntityHandler.renderEntities()
 
         // end 3d draw
         modelbatch.end()

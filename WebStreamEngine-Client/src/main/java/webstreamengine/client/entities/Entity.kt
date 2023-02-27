@@ -56,7 +56,7 @@ class Entity(
     }
 
     init {
-        if (registerAutomatically) EntityChunks.addEntity(this)
+        if (registerAutomatically) EntityHandler.addEntity(this)
     }
 
     fun generateTransformationMatrix(offset: Vector3 = Vector3(0f, 0f, 0f)): Matrix4 {
@@ -101,7 +101,7 @@ class Entity(
 
     private fun updateInstanceTransform() {
         transformChangeCallbacks.forEach { it(this) }
-        EntityChunks.updateEntity(this)
+        EntityHandler.updateEntity(this)
     }
 
     fun getPosition(): Vector3 { return position }

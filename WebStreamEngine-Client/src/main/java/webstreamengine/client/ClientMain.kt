@@ -1,26 +1,14 @@
 package webstreamengine.client
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g3d.ModelBatch
-import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.application.GameInfo
-import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.EntityChunks
+import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.sounds.SoundManager
-import webstreamengine.client.ui.UIManager
 import webstreamengine.core.*
 import java.io.File
-import java.lang.IllegalArgumentException
 import java.lang.Thread.sleep
-import java.net.Socket
 
 const val MS_PER_TICK = 16
 val programArgs = hashMapOf<String, String>()
@@ -89,7 +77,7 @@ object ClientMain {
         InputManager.update()
 
         // update entities
-        EntityChunks.updateEntities()
+        EntityHandler.updateEntities()
     }
 
     fun dispose() {
@@ -97,7 +85,7 @@ object ClientMain {
         JarInterface.getApp()?.stop()
 
         // dispose of all entities
-        EntityChunks.clear()
+        EntityHandler.clear()
 
         // close socket
         conn?.socket?.close()

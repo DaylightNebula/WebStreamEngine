@@ -1,11 +1,8 @@
 package webstreamengine.client.physics
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.physics.bullet.softbody.btSoftColliders.CollideVF_SS
 import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.EntityChunks
 import webstreamengine.client.entities.EntityComponent
 import kotlin.math.abs
 
