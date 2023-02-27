@@ -24,7 +24,13 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
     private var lastMouse: Vector2? = null
     private var drag = settings.lockMouse
 
+    var firstclientupdate = true
     override fun clientupdate() {
+        if (firstclientupdate) {
+            firstclientupdate = false
+            Renderer.setCursorCatched(settings.lockMouse)
+        }
+
         if (settings.canPlayerChangeDistanceFromRoot) updateDistanceFromRoot()
         if (settings.canPlayerChangeRotationAroundRoot) updateLookRotation()
         if (settings.movementStickInputName != null) updateMovement()
@@ -49,7 +55,7 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
             lastMouse = null
         }
 
-        if (lastMouse != null) {
+        if (lastMouse != null && drag) {
             val mouseSensitivity = (SettingsManager.getElementValue("Look Rate") as Int).toFloat()
             val diffX = InputManager.mouseX.toFloat() - lastMouse!!.x
             val diffY = InputManager.mouseY.toFloat() - lastMouse!!.y
@@ -62,27 +68,33 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
     }
 
     private fun updateMovement() {
+        // get total rotation
         val rotation = Vector3(
             settings.defaultRotationAroundRoot.x + pcOffsetRotation.x,
             settings.defaultRotationAroundRoot.y + pcOffsetRotation.y,
             settings.defaultRotationAroundRoot.z + pcOffsetRotation.z
         )
+
+        // get input stick
         val stick = InputManager.getElement(settings.movementStickInputName!!) as? StickInputElement ?: return
 
         // get total change scaled by the current delta time
         val change = stick.getValue()
-        println("Input $change")
 
+        // get collider
         val collider = entity.getComponentOfType<ColliderComponent>()
 
+        // do movement
         val forward = Vector3(0f, 0f, settings.movementSpeed)
         val right = Vector3(settings.movementSpeed, 0f, 0f)
         Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(forward).scl(change.y)
         Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(right).scl(change.x)
         val move = Vector3(forward).add(right).scl(Gdx.graphics.deltaTime)
 
+        // if we found a collider, ask it if we can move, if not, cancel
         if (collider != null && !collider.isMoveValid(move)) return
 
+        // do move if we made it this far
         entity.move(move)
     }
 

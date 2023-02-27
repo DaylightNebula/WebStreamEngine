@@ -48,7 +48,7 @@ object TextureManager {
         if (textureMap.containsKey(key)) return
 
         // check if the cache has a file for the given id, if so load that
-        val textureFile = File(System.getProperty("user.dir"), "cache/$key.img")
+        val textureFile = File(System.getProperty("user.dir"), "cache/$key")
         if (textureFile.exists()) return
 
         // if the given id is not in the requested id list, send a request to the server
@@ -58,7 +58,7 @@ object TextureManager {
         }
     }
 
-    fun getTextureIfAvailable(key: String): Texture? = textureMap[key] ?: loadLocal(key, "cache/$key.png")
+    fun getTextureIfAvailable(key: String): Texture? = textureMap[key] ?: loadLocal(key, "cache/$key")
 
     fun dispose() {
         textureMap.values.forEach { it.dispose() }

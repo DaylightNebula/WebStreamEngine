@@ -39,7 +39,14 @@ class ImageElement(
     }
 
     override fun renderToBounds(batch: SpriteBatch) {
+        // try to get texture, do not render if no texture
         val texture = TextureManager.getTextureIfAvailable(key) ?: return
-        Renderer.renderImage(texture, Vector2(x * Gdx.graphics.width, y * Gdx.graphics.height), Vector2(width * Gdx.graphics.width, height * Gdx.graphics.height))
+
+        // calculate final position and size of this element
+        val position = Vector2(x * Gdx.graphics.width, y * Gdx.graphics.height)
+        val size = Vector2(width * Gdx.graphics.width, height * Gdx.graphics.height)
+
+        // render the image
+        Renderer.renderImage(texture, position, size)
     }
 }
