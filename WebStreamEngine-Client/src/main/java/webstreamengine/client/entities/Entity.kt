@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
 import webstreamengine.client.FuelClient
 import webstreamengine.client.JarInterface
+import webstreamengine.client.Renderer
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.physics.SimpleBox
@@ -77,10 +78,6 @@ class Entity(
         if (registerAutomatically) EntityChunks.addEntity(this)
     }
 
-    fun addModelComponent(modelID: String) {
-        ModelManager.applyModelToEntity(this, modelID)
-    }
-
     fun generateTransformationMatrix(offset: Vector3 = Vector3(0f, 0f, 0f)): Matrix4 {
         val matrix = Matrix4()
         matrix.idt()
@@ -108,17 +105,16 @@ class Entity(
         component.stop()
     }
 
-    private var canRender = false
     fun update() {
         components.forEach { it.update() }
-        canRender = true
     }
 
+    private var lastRenderTime = -2f
     fun render(batch: ModelBatch) {
-        // make sure we only render once per frame
-        if (canRender) {
+        if (Renderer.currentSeconds - lastRenderTime > 0.005f) {
+            // make sure we only render once per frame
             components.forEach { it.render(batch) }
-            canRender = false
+            lastRenderTime = Renderer.currentSeconds
         }
     }
 

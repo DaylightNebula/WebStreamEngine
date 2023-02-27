@@ -17,8 +17,12 @@ object TextureManager {
     private val requestedIDs = mutableListOf<String>()
     private val waitingForTexture = hashMapOf<String, MutableList<Any>>()
 
-    fun loadLocal(id: String, path: String) {
-        textureMap[id] = Texture(Gdx.files.absolute(path))
+    fun loadLocal(id: String, path: String): Texture? {
+        val file = Gdx.files.absolute(path)
+        if (!file.exists()) return null
+        val texture = Texture(file)
+        textureMap[id] = texture
+        return texture
     }
 
     fun generateSimpleTexture(id: String, width: Int, height: Int, render: (pixmap: Pixmap) -> Unit) {
@@ -39,58 +43,22 @@ object TextureManager {
         textureMap[id] = texture
     }
 
-    fun applyTextureToTarget(target: Any, id: String) {
+    fun requestTextureIfNecessary(key: String) {
         // if we already have a texture with the given id, just pass it along
-        if (textureMap.containsKey(id)) {
-            applyLoadedTextureToAny(target, textureMap[id]!!)
-            return
-        }
+        if (textureMap.containsKey(key)) return
 
         // check if the cache has a file for the given id, if so load that
-        val textureFile = File(System.getProperty("user.dir"), "cache/$id.img")
-        if (textureFile.exists()) {
-            loadLocal(id, textureFile.absolutePath)
-            applyLoadedTextureToAny(target, textureMap[id]!!)
-            return
-        }
-
-        // if we made it this far, add the given target to the waiting list
-        var list = waitingForTexture[id]
-        if (list == null) {
-            list = mutableListOf()
-            waitingForTexture[id] = list
-        }
-        list.add(target)
+        val textureFile = File(System.getProperty("user.dir"), "cache/$key.img")
+        if (textureFile.exists()) return
 
         // if the given id is not in the requested id list, send a request to the server
-        if (!requestedIDs.contains(id)) {
-            requestedIDs.add(id)
-            FuelClient.requestFile(id) { handleTextureDelivery(id, it) }
+        if (!requestedIDs.contains(key)) {
+            requestedIDs.add(key)
+            FuelClient.requestFile(key) { }
         }
     }
 
-    private fun handleTextureDelivery(id: String, file: File) {
-        Gdx.app.postRunnable {
-            // load file
-            loadLocal(id, file.absolutePath)
-
-            // remove requested id
-            requestedIDs.remove(id)
-
-            // update all targets waiting for this texture
-            val texture = textureMap[id]!!
-            waitingForTexture[id]?.forEach { applyLoadedTextureToAny(it, texture) }
-            waitingForTexture[id]?.clear()
-            waitingForTexture.remove(id)
-        }
-    }
-
-    private fun applyLoadedTextureToAny(any: Any, texture: Texture) {
-        if (any is ImageElement)
-            any.handleTextureAssign(texture)
-        else
-            System.err.println("No texture application methods created for target type ${any.javaClass}")
-    }
+    fun getTextureIfAvailable(key: String): Texture? = textureMap[key] ?: loadLocal(key, "cache/$key.png")
 
     fun dispose() {
         textureMap.values.forEach { it.dispose() }

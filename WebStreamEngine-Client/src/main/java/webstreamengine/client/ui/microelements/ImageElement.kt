@@ -5,18 +5,18 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import org.json.JSONObject
+import webstreamengine.client.Renderer
 import webstreamengine.client.managers.TextureManager
 import webstreamengine.client.ui.*
 
 class ImageElement(
     id: String,
-    key: String,
+    private val key: String,
     private val scale: Float = 1f,
     verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
     horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
 ): UIElement(id, verticalAlignment, horizontalAlignment) {
 
-    private var texture: Texture? = null
 
     constructor(jsonObject: JSONObject, id: String, va: VerticalAlignment, ha: HorizontalAlignment): this(
         id,
@@ -26,25 +26,20 @@ class ImageElement(
     )
 
     init {
-        TextureManager.applyTextureToTarget(this, key)
-    }
-
-    fun handleTextureAssign(texture: Texture) {
-        this.texture = texture
-        UIManager.isDirty = true
+        TextureManager.requestTextureIfNecessary(key)
     }
 
     override fun getRequestedSize(): Vector2 {
-        if (texture == null) return Vector2.Zero
+        val texture = TextureManager.getTextureIfAvailable(key) ?: return Vector2.Zero
 
         return Vector2(
-            (texture!!.width.toFloat() / Gdx.graphics.width) * scale,
-            (texture!!.height.toFloat() / Gdx.graphics.height) * scale
+            (texture.width.toFloat() / Gdx.graphics.width) * scale,
+            (texture.height.toFloat() / Gdx.graphics.height) * scale
         )
     }
 
     override fun renderToBounds(batch: SpriteBatch) {
-        if (texture == null) return
-        batch.draw(texture, x * Gdx.graphics.width, y * Gdx.graphics.height, width * Gdx.graphics.width, height * Gdx.graphics.height)
+        val texture = TextureManager.getTextureIfAvailable(key) ?: return
+        Renderer.renderImage(texture, Vector2(x * Gdx.graphics.width, y * Gdx.graphics.height), Vector2(width * Gdx.graphics.width, height * Gdx.graphics.height))
     }
 }

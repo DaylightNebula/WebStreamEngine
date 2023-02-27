@@ -16,7 +16,6 @@ import webstreamengine.client.ui.microelements.TextElement
 object UIManager {
 
     var isDirty = false
-    private var stage = Stage()
     private var scripts = mutableListOf<UserInterface>()
 
     fun update() {
@@ -47,10 +46,6 @@ object UIManager {
 
     fun clearScripts() {
         scripts.clear()
-    }
-
-    fun dispose() {
-        stage.dispose()
     }
 
     internal fun addUIScript(script: UserInterface) {

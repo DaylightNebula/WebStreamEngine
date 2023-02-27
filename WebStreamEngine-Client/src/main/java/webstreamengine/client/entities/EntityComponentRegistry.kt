@@ -13,9 +13,8 @@ object EntityComponentRegistry {
 
     init {
         registerComponent("model") { entity, json ->
-            entity.addModelComponent(json.getString("key")
+            ModelComponent(entity, json.getString("key")
                 ?: throw IllegalArgumentException("Key argument must be added to model component json"))
-            null
         }
         registerComponent("collider") { entity, json ->
             ColliderComponent(

@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.math.Vector2
 import org.json.JSONArray
 import org.json.JSONObject
+import webstreamengine.client.Renderer
 import webstreamengine.client.managers.InputProcessorManager
 import webstreamengine.client.ui.InteractType
 import webstreamengine.client.ui.MacroUIElement
@@ -13,8 +14,8 @@ import webstreamengine.client.ui.UIManager
 import java.io.File
 
 object InputManager: InputAdapter() {
-    var mouseX: Int = Gdx.input.x
-    var mouseY: Int = Gdx.input.y
+    var mouseX: Int = 0
+    var mouseY: Int = 0
     var scroll = Vector2()
 
     private val elements = mutableListOf<InputElement<*>>()
@@ -98,8 +99,9 @@ object InputManager: InputAdapter() {
         return false
     }
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        val xPos = screenX.toFloat() / Gdx.graphics.width
-        val yPos = 1f - (screenY.toFloat() / Gdx.graphics.height)
+        val dimensions = Renderer.getWindowSize()
+        val xPos = screenX.toFloat() / dimensions.x
+        val yPos = 1f - (screenY.toFloat() / dimensions.y)
 
         var stop = false
         UIManager.getScripts().forEach { script ->
@@ -130,8 +132,9 @@ object InputManager: InputAdapter() {
         return false
     }
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        val xPos = screenX.toFloat() / Gdx.graphics.width
-        val yPos = 1f - (screenY.toFloat() / Gdx.graphics.height)
+        val dimensions = Renderer.getWindowSize()
+        val xPos = screenX.toFloat() / dimensions.x
+        val yPos = 1f - (screenY.toFloat() / dimensions.y)
 
         var stop = false
         UIManager.getScripts().forEach { script ->

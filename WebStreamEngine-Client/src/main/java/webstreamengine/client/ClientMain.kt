@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
+import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityChunks
@@ -18,27 +19,46 @@ import webstreamengine.client.ui.UIManager
 import webstreamengine.core.*
 import java.io.File
 import java.lang.IllegalArgumentException
+import java.lang.Thread.sleep
 import java.net.Socket
 
+const val MS_PER_TICK = 16
+val programArgs = hashMapOf<String, String>()
+var headless = false
 var conn: Connection? = null
+var running = true
 
 fun main(args: Array<String>) {
+    processProgramArgs(args)
     println("Starting with args ${args.map { it }}")
+
+    if (programArgs["headless"]?.equals("true", ignoreCase = true) == true)
+        headless = true
 
     FuelClient.startClient(args)
 
-    val config = Lwjgl3ApplicationConfiguration()
-    config.setTitle("WebStreamEngine")
-    config.setWindowedMode(1280, 720)
-    Lwjgl3Application(ClientMain, config)
+    // start client main
+    ClientMain.start()
+
+    // update loop, locked to ms per tick
+    while (running) {
+        // update the client
+        val start = System.currentTimeMillis()
+        ClientMain.update()
+
+        // sleep long enough to sync with ms per tick
+        val sleepMS = MS_PER_TICK - (System.currentTimeMillis() - start)
+        if (sleepMS > 0)
+            sleep(sleepMS)
+    }
+
+    // stop the client
+    ClientMain.dispose()
 }
 
-object ClientMain: ApplicationAdapter() {
+object ClientMain {
 
-    private lateinit var modelbatch: ModelBatch
-    private lateinit var spritebatch: SpriteBatch
-
-    override fun create() {
+    fun start() {
         // setup settings
         SettingsManager.init(
             File(
@@ -47,34 +67,22 @@ object ClientMain: ApplicationAdapter() {
             )
         )
 
-        // setup input
-        InputProcessorManager.init()
-        InputManager.init(
-            File(
-                System.getProperty("user.dir"),
-                "gamedata/current_input.json"
-            )
-        )
-
-        // setup batches for rendering
-        modelbatch = ModelBatch()
-        spritebatch = SpriteBatch()
-
         // setup camera
         GameInfo.initCamera()
+
+        // create renderer
+        if (!headless)
+            RendererStart().start()
 
         JarInterface.init()
     }
 
-    override fun render() {
+    fun update() {
         // update the settings manager
         SettingsManager.update()
 
         // update game info
         GameInfo.update()
-
-        // update model manager
-        ModelManager.update()
 
         // update app
         JarInterface.getApp()?.update()
@@ -83,36 +91,13 @@ object ClientMain: ApplicationAdapter() {
         // update input
         InputManager.update()
 
-        UIManager.update()
-
         // update entities
-        EntityChunks.updateEntities(GameInfo.cam.position)
-
-        // clear screen
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.width, Gdx.graphics.height)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
-
-        // start 3d draw
-        modelbatch.begin(GameInfo.cam)
-
-        // draw entities
-        EntityChunks.renderEntities(modelbatch, GameInfo.cam.position)
-
-        // end 3d draw
-        modelbatch.end()
-
-        // draw test ui
-        spritebatch.begin()
-        UIManager.render(spritebatch)
-        spritebatch.end()
+        EntityChunks.updateEntities(Vector3.Zero)
     }
 
-    override fun dispose() {
+    fun dispose() {
         // stop app
         JarInterface.getApp()?.stop()
-
-        // dispose UI
-        UIManager.dispose()
 
         // dispose of all entities
         EntityChunks.clear()
@@ -120,15 +105,15 @@ object ClientMain: ApplicationAdapter() {
         // close socket
         conn?.socket?.close()
 
-        // close batches
-        modelbatch.dispose()
-        spritebatch.dispose()
-
         // tell managers to dispose
-        ModelManager.dispose()
-        TextureManager.dispose()
         SoundManager.dispose()
     }
+}
 
-    override fun resize(width: Int, height: Int) { UIManager.isDirty = true }
+fun processProgramArgs(inputArgs: Array<String>) {
+    inputArgs.forEach {
+        if (!it.startsWith("-")) return@forEach
+        val tokens = it.split("=", limit = 2)
+        programArgs[tokens.first().substring(1)] = tokens.last()
+    }
 }

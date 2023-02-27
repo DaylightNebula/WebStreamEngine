@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils.clamp
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.Renderer
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.inputs.StickInputElement
@@ -36,7 +37,7 @@ class Controller(
         }
 
         // update cursor lock
-        Gdx.input.isCursorCatched = settings.lockMouse
+        //Renderer.setCursorCatched(settings.lockMouse)
 
         if (!settings.lockMouse && InputManager.isMouseButtonDown(Input.Buttons.RIGHT))
             drag = true
@@ -59,7 +60,8 @@ class Controller(
         }
 
         // get calculation info
-        val camera = GameInfo.cam
+        if (!Renderer.isCameraReady()) return
+        val camera = Renderer.cam
         val root = settings.rootEntity?.getPosition() ?: settings.backupRootLocation
 
         // convert total rotation to a direction vector

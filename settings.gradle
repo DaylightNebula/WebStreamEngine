@@ -4,5 +4,4 @@ include 'WebStreamEngine-Client'
 include 'WebStreamEngine-Server'
 include 'WebStreamEngine-Test'
 include 'WebStreamEngine-ServerPluginTest'
-include 'WebStreamEngine-IntellijPlugin'
 

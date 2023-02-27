@@ -6,6 +6,7 @@ import webstreamengine.client.application.Application
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.controller.ControllerSettings
 import webstreamengine.client.entities.Entity
+import webstreamengine.client.entities.components.ModelComponent
 import webstreamengine.client.managers.SettingsElement
 import webstreamengine.client.physics.ColliderComponent
 import webstreamengine.client.physics.SimpleBox
@@ -18,7 +19,7 @@ public class Tester : Application() {
 
     override fun start() {
         // setup some test stuffs
-        testentity.addModelComponent("barracks")
+        testentity.addComponent(ModelComponent(testentity, "barracks"))
         testentity.move(Vector3(0f, 0f, 0f))
         testentity.addComponent(ColliderComponent(testentity, SimpleBox(Vector3(0f, 0f, 0f), Vector3(1f, 1f, 1f)), false))
 

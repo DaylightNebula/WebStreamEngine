@@ -1,6 +1,5 @@
 package webstreamengine.client.managers
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.VertexAttributes.Usage
 import com.badlogic.gdx.graphics.g3d.Material
@@ -12,8 +11,9 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.JsonReader
 import webstreamengine.client.FuelClient
+import webstreamengine.client.Renderer
 import webstreamengine.client.entities.Entity
-import webstreamengine.client.entities.components.ModelComponent
+import webstreamengine.client.headless
 import java.io.File
 
 object ModelManager {
@@ -38,20 +38,15 @@ object ModelManager {
             askForDelivery(lowPrioQueue.first())
     }
 
-    fun guaranteeModelForFunction(id: String, isHighPrio: Boolean, callback: (key: String) -> Unit) {
+    fun requestIfNecessary(id: String, isHighPrio: Boolean, callback: (key: String) -> Unit) {
+        if (headless) return
+
         // if we already have the model, just run the callback
-        if (modelMap.containsKey(id)) {
-            callback(id)
-            return
-        }
+        if (modelMap.containsKey(id)) return
 
         // if we have a locally stored model for the id, load that and then run the callback
         val modelFile = File(System.getProperty("user.dir"), "cache/$id.g3dj")
-        if (modelFile.exists()) {
-            loadLocal(id, modelFile.absolutePath)
-            callback(id)
-            return
-        }
+        if (modelFile.exists()) return
 
         // add to run on delivery list
         var list = runOnDeliver[id]
@@ -72,6 +67,8 @@ object ModelManager {
     }
 
     fun createTestBox(id: String, dimensions: Vector3, color: Color) {
+        if (headless) return
+
         // make sure we don't already have something of the current id
         if (isIDInUse(id)) return
 
@@ -83,14 +80,19 @@ object ModelManager {
         )
     }
 
-    private fun loadLocal(id: String, path: String) {
-        modelMap[id] = loader.loadModel(Gdx.files.absolute(path))
+    private fun loadLocal(id: String, path: String): Model? {
+        val file = Renderer.getGdxFile(path)
+        if (!file.exists()) return null
+        val model = loader.loadModel(file)
+        modelMap[id] = model
+        return model
     }
 
     fun applyModelToEntity(entity: Entity, id: String) {
+        if (headless) return
+
         // if we already have a model with the given id, just pass it along
         if (modelMap.containsKey(id)) {
-            entity.addComponent(ModelComponent(entity, createModelInstance(id)!!))
             return
         }
 
@@ -98,7 +100,6 @@ object ModelManager {
         val modelFile = File(System.getProperty("user.dir"), "cache/$id.g3dj")
         if (modelFile.exists()) {
             loadLocal(id, modelFile.absolutePath)
-            entity.addComponent(ModelComponent(entity, createModelInstance(id)!!))
             return
         }
 
@@ -117,12 +118,16 @@ object ModelManager {
     }
 
     private fun askForDelivery(id: String) {
+        if (headless) return
+
         requestedIDs.add(id)
         FuelClient.requestFile("$id.g3dj") { handleModelDelivery(id, it) }
     }
 
     private fun handleModelDelivery(id: String, file: File) {
-        Gdx.app.postRunnable {
+        if (headless) return
+
+        Renderer.runOnGdxThread {
             // load file
             loadLocal(id, file.absolutePath)
 
@@ -131,7 +136,6 @@ object ModelManager {
 
             // update all entities waiting for this mesh
             val model = modelMap[id]!!
-            waitingForModel[id]?.forEach { it.addComponent(ModelComponent(it, ModelInstance(model))) }
             waitingForModel[id]?.clear()
         }
     }
@@ -139,6 +143,8 @@ object ModelManager {
     private fun createModelInstance(id: String): ModelInstance? {
         return ModelInstance(modelMap[id] ?: return null)
     }
+
+    fun getModelByKey(key: String): Model? = modelMap[key] ?: loadLocal(key, File("cache/$key.g3dj").absolutePath)
 
     fun dispose() {
         // dispose of all models

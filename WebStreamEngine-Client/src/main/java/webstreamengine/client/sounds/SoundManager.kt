@@ -3,6 +3,7 @@ package webstreamengine.client.sounds
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import webstreamengine.client.FuelClient
+import webstreamengine.client.Renderer
 import webstreamengine.client.application.GameInfo
 import webstreamengine.client.conn
 import webstreamengine.core.ByteUtils
@@ -49,7 +50,7 @@ object SoundManager {
     }
 
     private fun playSoundRequest(request: SoundRequest, sound: Sound) {
-        val volume = if (request.position != null) min(1f, 1f / (GameInfo.cam.position.dst2(request.position))) * request.baseVolume else request.baseVolume
+        val volume = if (request.position != null) min(1f, 1f / (Renderer.cam.position.dst2(request.position))) * request.baseVolume else request.baseVolume
         sound.play(volume, request.pitch, request.pan)
     }
 

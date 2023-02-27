@@ -11,19 +11,10 @@ import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
 
 object GameInfo {
-    lateinit var cam: PerspectiveCamera
     val environment = Environment()
     val controller = Controller(ControllerSettings.genStaticSettings())
-    var currentSeconds = 0f
 
     fun initCamera() {
-        // create basic camera
-        cam = PerspectiveCamera(67f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        cam.position.set(0f, 0f, 0f)
-        cam.lookAt(0f, 0f, 10f)
-        cam.near = .1f
-        cam.far = 1000f
-        cam.update()
     }
 
     fun setAmbientLight(color: Color) {
@@ -37,6 +28,5 @@ object GameInfo {
 
     fun update() {
         controller.update()
-        currentSeconds += Gdx.graphics.deltaTime
     }
 }

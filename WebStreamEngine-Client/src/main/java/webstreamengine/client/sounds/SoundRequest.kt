@@ -1,6 +1,7 @@
 package webstreamengine.client.sounds
 
 import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.Renderer
 import webstreamengine.client.application.GameInfo
 
 data class SoundRequest(
@@ -10,5 +11,5 @@ data class SoundRequest(
     val pan: Float,
 
     val position: Vector3? = null,
-    val startTime: Float = GameInfo.currentSeconds
+    val startTime: Float = Renderer.currentSeconds
 )

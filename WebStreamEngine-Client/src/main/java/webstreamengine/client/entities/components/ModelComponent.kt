@@ -4,13 +4,15 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.math.collision.BoundingBox
-import webstreamengine.client.application.GameInfo
+import webstreamengine.client.Renderer
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
+import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.physics.SimpleBox
 
-class ModelComponent(entity: Entity, private val modelInstance: ModelInstance): EntityComponent(entity) {
+class ModelComponent(entity: Entity, val key: String): EntityComponent(entity) {
+
+    lateinit var instance: ModelInstance
 
     init {
         // call and register update transform function
@@ -18,24 +20,24 @@ class ModelComponent(entity: Entity, private val modelInstance: ModelInstance): 
         updateTransform()
 
         // update bounds
-        val bounds = modelInstance.model.calculateBoundingBox(BoundingBox())
-        entity.box = SimpleBox(bounds.getCenter(Vector3()), Vector3(bounds.width, bounds.height, bounds.depth))
+        entity.box = SimpleBox(Vector3(), Vector3(1f, 1f, 1f))
+
+        ModelManager.requestIfNecessary(key, true) {}
     }
 
     private fun updateTransform() {
-        modelInstance.transform.set(
-            entity.getPosition(),
-            Quaternion().setEulerAngles(
-                entity.getRotation().x,
-                entity.getRotation().y,
-                entity.getRotation().z
-            ),
-            entity.getScale()
-        )
+        if (!hasInstance()) return
+        instance.apply {
+            this.transform.scl(entity.getScale())
+            this.transform.rotate(Quaternion().setEulerAngles(entity.getRotation().x, entity.getRotation().y, entity.getRotation().z))
+            this.transform.translate(entity.getPosition())
+        }
     }
 
     override fun start() {}
     override fun update() {}
-    override fun render(batch: ModelBatch) { batch.render(modelInstance, GameInfo.environment) }
+    override fun render(batch: ModelBatch) { Renderer.renderComponent(this) }
     override fun stop() {}
+
+    fun hasInstance(): Boolean = this::instance.isInitialized
 }

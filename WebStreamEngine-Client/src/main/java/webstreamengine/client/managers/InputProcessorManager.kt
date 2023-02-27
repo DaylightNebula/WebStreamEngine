@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor
 
 object InputProcessorManager {
 
-    val mult = InputMultiplexer()
+    private val mult = InputMultiplexer()
 
     fun init() {
         Gdx.input.inputProcessor = mult
