@@ -18,7 +18,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     implementation(kotlin("stdlib-jdk8"))
 
-    api(project(":WebStreamEngine-Core"))
     implementation("io.ktor:ktor-server-core:2.2.3")
     implementation("io.ktor:ktor-server-netty:2.2.3")
     implementation("io.ktor:ktor-network-tls-certificates:2.2.3")

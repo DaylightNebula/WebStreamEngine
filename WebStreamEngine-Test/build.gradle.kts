@@ -18,7 +18,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation(project(":WebStreamEngine-Core"))
     implementation(project(":WebStreamEngine-Client"))
     implementation("com.badlogicgames.gdx:gdx:1.11.0")
 }

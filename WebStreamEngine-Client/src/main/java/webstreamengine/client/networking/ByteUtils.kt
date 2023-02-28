@@ -1,4 +1,4 @@
-package webstreamengine.core
+package webstreamengine.client.networking
 
 import java.lang.StringBuilder
 import java.nio.ByteBuffer

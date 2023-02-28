@@ -2,13 +2,9 @@ package webstreamengine.client.managers
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
-import webstreamengine.client.FuelClient
-import webstreamengine.client.conn
+import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.ui.UIElement
 import webstreamengine.client.ui.microelements.TextElement
-import webstreamengine.core.ByteUtils
-import webstreamengine.core.PacketType
-import webstreamengine.core.PacketUtils
 import java.io.File
 
 object FontManager {

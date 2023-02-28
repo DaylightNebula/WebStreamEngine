@@ -3,12 +3,7 @@ package webstreamengine.client.managers
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
-import webstreamengine.client.FuelClient
-import webstreamengine.client.conn
-import webstreamengine.client.ui.microelements.ImageElement
-import webstreamengine.core.ByteUtils
-import webstreamengine.core.PacketType
-import webstreamengine.core.PacketUtils
+import webstreamengine.client.networking.FuelClient
 import java.io.File
 
 object TextureManager {

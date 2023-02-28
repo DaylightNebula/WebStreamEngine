@@ -22,9 +22,6 @@ dependencies {
     //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
-    // all necessary submodules
-    implementation(project(":WebStreamEngine-Core"))
-
     // libgdx stuffs
     implementation("com.badlogicgames.gdx:gdx:1.11.0")
     implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.11.0")
@@ -42,6 +39,8 @@ dependencies {
 
     implementation("org.json:json:20220924")
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    implementation("io.ktor:ktor-network:2.2.3")
+    implementation("io.ktor:ktor-network-tls:2.2.3")
 }
 
 tasks.getByName<Test>("test") {

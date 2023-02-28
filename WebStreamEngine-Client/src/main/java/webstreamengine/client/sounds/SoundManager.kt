@@ -2,13 +2,8 @@ package webstreamengine.client.sounds
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
-import webstreamengine.client.FuelClient
+import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.Renderer
-import webstreamengine.client.application.GameInfo
-import webstreamengine.client.conn
-import webstreamengine.core.ByteUtils
-import webstreamengine.core.PacketType
-import webstreamengine.core.PacketUtils
 import java.io.File
 import kotlin.math.min
 

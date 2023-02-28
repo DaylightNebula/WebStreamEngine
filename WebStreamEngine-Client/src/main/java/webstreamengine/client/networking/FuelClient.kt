@@ -1,10 +1,11 @@
-package webstreamengine.client
+package webstreamengine.client.networking
 
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.*
 import com.github.kittinunf.fuel.httpGet
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
+import webstreamengine.client.JarInterface
 import java.io.File
 import java.io.FileInputStream
 import java.math.BigInteger
@@ -92,7 +93,7 @@ object FuelClient {
         val targetFile = File(cacheFolder, localPath)
         targetFile.parentFile.mkdirs()
         runBlocking {
-            val json = "${serverAddr}/file".httpGet(listOf(*(JarInterface.currentApp?.getBaseHTTPParams() ?: arrayOf()), Pair("file", fileName)))
+            val json = "$serverAddr/file".httpGet(listOf(*(JarInterface.currentApp?.getBaseHTTPParams() ?: arrayOf()), Pair("file", fileName)))
                 .awaitResult(deserializable = object : Deserializable<JSONObject>{
                     override fun deserialize(response: Response): JSONObject {
                         return JSONObject(String(response.data))
@@ -120,7 +121,7 @@ object FuelClient {
 
         // send request to server for the file
         val localPath = allFiles.getJSONObject(fileName).getString("localPath")
-        "${serverAddr}/file".httpGet(listOf(*(JarInterface.currentApp?.getBaseHTTPParams() ?: arrayOf()), Pair("file", fileName))).response { _, response, _ ->
+        "$serverAddr/file".httpGet(listOf(*(JarInterface.currentApp?.getBaseHTTPParams() ?: arrayOf()), Pair("file", fileName))).response { _, response, _ ->
             val data = JSONObject(String(response.data))
             val file = File(cacheFolder, localPath)
             val bytes = Base64.getDecoder().decode(data.getString("bytes")!!)

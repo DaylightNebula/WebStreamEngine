@@ -5,6 +5,7 @@ import webstreamengine.client.application.Application
 import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.SettingsManager
+import webstreamengine.client.networking.FuelClient
 import java.lang.IllegalArgumentException
 import java.net.URLClassLoader
 

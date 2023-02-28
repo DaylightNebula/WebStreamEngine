@@ -2,7 +2,7 @@ package webstreamengine.client.scenes
 
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
-import webstreamengine.client.FuelClient
+import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.ui.UIManager

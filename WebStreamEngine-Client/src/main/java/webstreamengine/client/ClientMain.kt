@@ -4,16 +4,15 @@ import webstreamengine.client.application.GameInfo
 import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
+import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.sounds.SoundManager
-import webstreamengine.core.*
 import java.io.File
 import java.lang.Thread.sleep
 
 const val MS_PER_TICK = 16
 val programArgs = hashMapOf<String, String>()
 var headless = false
-var conn: Connection? = null
 var running = true
 
 fun main(args: Array<String>) {
@@ -86,9 +85,6 @@ object ClientMain {
 
         // dispose of all entities
         EntityHandler.clear()
-
-        // close socket
-        conn?.socket?.close()
 
         // tell managers to dispose
         SoundManager.dispose()

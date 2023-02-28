@@ -2,11 +2,9 @@ package webstreamengine.client.ui
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.scenes.scene2d.Stage
 import org.json.JSONArray
 import org.json.JSONObject
-import webstreamengine.client.FuelClient
-import webstreamengine.client.JarInterface
+import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.ui.macroelement.ColumnElement
 import webstreamengine.client.ui.macroelement.RowElement
 import webstreamengine.client.ui.microelements.ImageElement
