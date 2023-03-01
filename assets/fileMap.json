@@ -35,11 +35,17 @@
   "type": "mp3",
   "hash": 22897678814612355569570281209209858591
  },
+ "player.entity": {
+  "localPath": "player.entity",
+  "id": "player.entity",
+  "type": "entity",
+  "hash": 143519945695611539480606894243638703087
+ },
  "WebStreamEngine-Test-0.0.1.jar": {
   "localPath": "WebStreamEngine-Test-0.0.1.jar",
   "id": "WebStreamEngine-Test-0.0.1.jar",
   "type": "jar",
-  "hash": 58094664738291780951881328059143556232
+  "hash": 46557026442047881797047299435896273591
  },
  "input.json": {
   "localPath": "input.json",

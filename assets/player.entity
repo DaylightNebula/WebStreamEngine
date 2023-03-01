@@ -1,0 +1,19 @@
+{
+  "id": "player",
+  "components": [
+    {
+      "type": "model",
+      "key": "barracks"
+    },
+    {
+      "type": "controller",
+      "canZoom": false,
+      "canRotate": true,
+      "lockMouse": true,
+      "moveInputStick": "movement",
+      "defaultRotation": [0.0, 0.0, 0.0],
+      "distanceFromRoot": 5.0,
+      "movementSpeed": 5.0
+    }
+  ]
+}

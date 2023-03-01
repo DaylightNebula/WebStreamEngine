@@ -15,25 +15,43 @@ import webstreamengine.client.inputs.StickInputElement
 import webstreamengine.client.managers.SettingsManager
 import webstreamengine.client.physics.ColliderComponent
 
-class PlayerControllerComponent(entity: Entity, private val settings: ControllerSettings): EntityComponent(entity) {
+class PlayerControllerComponent(
+    entity: Entity,
+    
+    // flags
+    private val canPlayerZoom: Boolean,
+    private val canPlayerRotate: Boolean,
+    private val lockMouse: Boolean,
+    private val moveInputStick: String?,
+    
+    // settings
+    private val defaultRotation: Vector3,
+    private val defaultDistanceFromRoot: Float,
+    var movementSpeed: Float,
+
+    // preset settings
+    private val minDistanceFromRoot: Float = 0f,
+    private val maxDistanceFromRoot: Float = defaultDistanceFromRoot,
+    private val positionOffset: Vector3 = Vector3(0f, 0f, 0f)
+): EntityComponent(entity) {
 
     private val pcOffsetPosition = Vector3(0f, 0f, 0f)
     private val pcOffsetRotation = Vector3(0f, 0f, 0f)
     private var pcOffsetRootDistance = 0f
 
     private var lastMouse: Vector2? = null
-    private var drag = settings.lockMouse
+    private var drag = lockMouse
 
     var firstclientupdate = true
     override fun clientUpdate() {
         if (firstclientupdate) {
             firstclientupdate = false
-            Renderer.setCursorCatched(settings.lockMouse)
+            Renderer.setCursorCatched(lockMouse)
         }
 
-        if (settings.canPlayerChangeDistanceFromRoot) updateDistanceFromRoot()
-        if (settings.canPlayerChangeRotationAroundRoot) updateLookRotation()
-        if (settings.movementStickInputName != null) updateMovement()
+        if (canPlayerZoom) updateDistanceFromRoot()
+        if (canPlayerRotate) updateLookRotation()
+        if (moveInputStick != null) updateMovement()
         updateCamera()
     }
 
@@ -42,15 +60,15 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
         val scrollSensitivity = SettingsManager.getElementValue("Zoom Rate") as Float
         pcOffsetRootDistance = MathUtils.clamp(
             pcOffsetRootDistance + InputManager.scroll.y * Gdx.graphics.deltaTime * scrollSensitivity,
-            settings.distanceFromRootMinMax.first - settings.defaultDistanceFromRoot,
-            settings.distanceFromRootMinMax.second - settings.defaultDistanceFromRoot
+            minDistanceFromRoot - defaultDistanceFromRoot,
+            maxDistanceFromRoot - defaultDistanceFromRoot
         )
     }
 
     private fun updateLookRotation() {
-        if (!settings.lockMouse && InputManager.isMouseButtonDown(Input.Buttons.RIGHT))
+        if (!lockMouse && InputManager.isMouseButtonDown(Input.Buttons.RIGHT))
             drag = true
-        else if (!settings.lockMouse && InputManager.isMouseButtonUp(Input.Buttons.RIGHT)) {
+        else if (!lockMouse && InputManager.isMouseButtonUp(Input.Buttons.RIGHT)) {
             drag = false
             lastMouse = null
         }
@@ -70,13 +88,13 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
     private fun updateMovement() {
         // get total rotation
         val rotation = Vector3(
-            settings.defaultRotationAroundRoot.x + pcOffsetRotation.x,
-            settings.defaultRotationAroundRoot.y + pcOffsetRotation.y,
-            settings.defaultRotationAroundRoot.z + pcOffsetRotation.z
+            defaultRotation.x + pcOffsetRotation.x,
+            defaultRotation.y + pcOffsetRotation.y,
+            defaultRotation.z + pcOffsetRotation.z
         )
 
         // get input stick
-        val stick = InputManager.getElement(settings.movementStickInputName!!) as? StickInputElement ?: return
+        val stick = InputManager.getElement(moveInputStick!!) as? StickInputElement ?: return
 
         // get total change scaled by the current delta time
         val change = stick.getValue()
@@ -85,8 +103,8 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
         val collider = entity.getComponentOfType<ColliderComponent>()
 
         // do movement
-        val forward = Vector3(0f, 0f, settings.movementSpeed)
-        val right = Vector3(settings.movementSpeed, 0f, 0f)
+        val forward = Vector3(0f, 0f, movementSpeed)
+        val right = Vector3(movementSpeed, 0f, 0f)
         Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(forward).scl(change.y)
         Quaternion().setEulerAngles(rotation.x, 0f, 0f).transform(right).scl(change.x)
         val move = Vector3(forward).add(right).scl(Gdx.graphics.deltaTime)
@@ -104,23 +122,23 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
 
         // get cameras direction from root
         val totalRotation = Vector3(
-            settings.defaultRotationAroundRoot.x + pcOffsetRotation.x,
-            settings.defaultRotationAroundRoot.y + pcOffsetRotation.y,
-            settings.defaultRotationAroundRoot.z + pcOffsetRotation.z
+            defaultRotation.x + pcOffsetRotation.x,
+            defaultRotation.y + pcOffsetRotation.y,
+            defaultRotation.z + pcOffsetRotation.z
         )
         val direction = Vector3(0f, 0f, 1f)
         Quaternion().setEulerAngles(totalRotation.x, totalRotation.y, totalRotation.z).transform(direction)
 
         // multiply the vector by the total distance from the root
-        direction.x *= settings.defaultDistanceFromRoot + pcOffsetRootDistance
-        direction.y *= settings.defaultDistanceFromRoot + pcOffsetRootDistance
-        direction.z *= settings.defaultDistanceFromRoot + pcOffsetRootDistance
+        direction.x *= defaultDistanceFromRoot + pcOffsetRootDistance
+        direction.y *= defaultDistanceFromRoot + pcOffsetRootDistance
+        direction.z *= defaultDistanceFromRoot + pcOffsetRootDistance
 
         // update location
         val location = Vector3(root)
         location.add(direction)
         location.add(pcOffsetPosition)
-        location.add(settings.offsetFromRoot)
+        location.add(positionOffset)
         Renderer.cam.position.set(location)
 
         // update look

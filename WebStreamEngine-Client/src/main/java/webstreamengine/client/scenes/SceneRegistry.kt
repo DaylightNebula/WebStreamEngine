@@ -67,7 +67,7 @@ object SceneRegistry {
                 else Vector3(1f, 1f, 1f)
 
                 // register the entity
-                Entity.createFromPath(id, position, rotation, scale)
+                Entity.createFromPath(id, position, rotation, scale) {}
             }
 
             // update the tracker and start the new scene

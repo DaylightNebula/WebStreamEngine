@@ -3,6 +3,7 @@ package webstreamengine.client.entities
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
+import webstreamengine.client.controller.PlayerControllerComponent
 import webstreamengine.client.entities.components.*
 import webstreamengine.client.physics.ColliderComponent
 import webstreamengine.client.physics.SimpleBox
@@ -59,6 +60,21 @@ object EntityComponentRegistry {
                 json.optJSONArray("tasks") ?: throw IllegalArgumentException("Tasks array must be added to tasks component json")
             )
         }
+        registerComponent("controller") { entity, json ->
+            PlayerControllerComponent(
+                entity,
+                json.optBoolean("canZoom", false),
+                json.optBoolean("canRotate", false),
+                json.optBoolean("lockMouse", false),
+                json.optString("moveInputStick", ""),
+                json.optVector3("defaultRotation", Vector3.Zero),
+                json.optFloat("distanceFromRoot", 0f),
+                json.optFloat("movementSpeed", 0f),
+                json.optFloat("minDistanceFromRoot", 0f),
+                json.optFloat("maxDistanceFromRoot", json.optFloat("distanceFromRoot", 0f)),
+                json.optVector3("positionOffset", Vector3.Zero)
+            )
+        }
     }
 
     fun createComponentViaJSON(entity: Entity, json: JSONObject): EntityComponent? {
@@ -70,4 +86,18 @@ object EntityComponentRegistry {
     fun registerComponent(jsonID: String, createFunc: (entity: Entity, json: JSONObject) -> EntityComponent?) {
         constructorMap[jsonID] = createFunc
     }
+}
+
+fun JSONObject.getVector3(name: String): Vector3? {
+    val arr = this.optJSONArray(name) ?: return null
+    if (arr.length() < 3) return null
+    return Vector3(
+        arr.getFloat(0),
+        arr.getFloat(1),
+        arr.getFloat(2),
+    )
+}
+
+fun JSONObject.optVector3(name: String, other: Vector3): Vector3 {
+    return getVector3(name) ?: other
 }

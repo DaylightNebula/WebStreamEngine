@@ -25,13 +25,15 @@ class Entity(
         fun createFromPath(path: String,
            position: Vector3 = Vector3(0f, 0f, 0f),
            rotation: Vector3 = Vector3(0f, 0f, 0f),
-           scale: Vector3 = Vector3(1f, 1f, 1f)
+           scale: Vector3 = Vector3(1f, 1f, 1f),
+           createCallback: (entity: Entity) -> Unit
         ) {
             FuelClient.requestFile("$path.entity") {
-                Entity(
+                val entity = Entity(
                     JSONObject(it.readText()),
                     position, rotation, scale
                 )
+                createCallback(entity)
             }
         }
     }

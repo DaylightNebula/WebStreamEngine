@@ -18,18 +18,13 @@ import webstreamengine.client.ui.UserInterface
 
 public class Tester : Application() {
 
-    private val testentity = Entity(id = "player")
+    private lateinit var testentity: Entity
 
     override fun start() {
         // setup some test stuffs
-        testentity.addComponent(ModelComponent(testentity, "barracks"))
-        testentity.move(Vector3(0f, 0f, 0f))
-        testentity.addComponent(ColliderComponent(testentity, SimpleBox(Vector3(0f, 0f, 0f), Vector3(1f, 1f, 1f)), false))
-        testentity.addComponent(
-            PlayerControllerComponent(testentity, ControllerSettings.genThirdPersonSettings(
-                5f, Vector3(0f, 0f, 0f), 5f
-            ))
-        )
+        Entity.createFromPath("player") { entity ->
+            testentity = entity
+        }
 
         // set ambient light
         GameInfo.setAmbientLight(Color.WHITE)
