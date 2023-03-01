@@ -34,10 +34,10 @@ class ByteUtils {
         fun convertFloatToByteArray(value: Float): ByteArray {
             val intBits = java.lang.Float.floatToIntBits(value)
             return byteArrayOf(
-                (intBits shr 0).toByte(),
-                (intBits shr 8).toByte(),
+                (intBits shr 24).toByte(),
                 (intBits shr 16).toByte(),
-                (intBits shr 24).toByte()
+                (intBits shr 8).toByte(),
+                (intBits shr 0).toByte()
             )
         }
 
@@ -54,7 +54,7 @@ class ByteUtils {
         }
 
         fun convertBytesToFloat(buffer: ByteArray, startByte: Int): Float {
-            return ByteBuffer.wrap(buffer.sliceArray(IntRange(startByte, startByte + 3))).getFloat()
+            return ByteBuffer.wrap(buffer.sliceArray(IntRange(startByte, startByte + 3))).float
         }
 
         fun applyIntToByteArray(value: Int, array: ByteArray, startIndex: Int) {

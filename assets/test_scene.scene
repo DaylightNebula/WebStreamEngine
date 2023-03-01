@@ -1,15 +1,18 @@
 {
   "entities": [
     {
-      "id": "test_entity",
+      "id": "test_entity1",
+      "path": "test_entity",
       "position": [0.0, 0.0, -10.0]
     },
     {
-      "id": "test_entity",
+      "id": "test_entity2",
+      "path": "test_entity",
       "position": [5.0, 0.0, -10.0]
     },
     {
-      "id": "test_entity",
+      "id": "test_entity3",
+      "path": "test_entity",
       "position": [-5.0, 0.0, -10.0]
     }
   ],

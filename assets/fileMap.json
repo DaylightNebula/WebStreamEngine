@@ -39,13 +39,13 @@
   "localPath": "player.entity",
   "id": "player.entity",
   "type": "entity",
-  "hash": 143519945695611539480606894243638703087
+  "hash": 32335637122012830576239264840378641382
  },
  "WebStreamEngine-Test-0.0.1.jar": {
   "localPath": "WebStreamEngine-Test-0.0.1.jar",
   "id": "WebStreamEngine-Test-0.0.1.jar",
   "type": "jar",
-  "hash": 46557026442047881797047299435896273591
+  "hash": 101831360989978505648581863103305889722
  },
  "input.json": {
   "localPath": "input.json",
@@ -57,7 +57,7 @@
   "localPath": "test_scene.scene",
   "id": "test_scene.scene",
   "type": "scene",
-  "hash": 247133558021946485092759521807189344604
+  "hash": 217555637624159859338021655378391771479
  },
  "RobotoMono.ttf": {
   "localPath": "RobotoMono.ttf",

@@ -1,12 +1,16 @@
 package webstreamengine.client.scenes
 
+import com.badlogic.gdx.Net
 import com.badlogic.gdx.math.Vector3
 import org.json.JSONObject
 import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityHandler
+import webstreamengine.client.networking.Connection
+import webstreamengine.client.networking.NetworkManager
 import webstreamengine.client.ui.UIManager
 import webstreamengine.client.ui.UserInterface
+import java.util.*
 
 object SceneRegistry {
     private val constructors = hashMapOf<String, () -> Scene>()
@@ -48,7 +52,8 @@ object SceneRegistry {
             masterJson.getJSONArray("entities").forEach { j ->
                 // load basic json
                 val json = j as JSONObject
-                val id = json.getString("id")
+
+                val path = json.getString("path")
 
                 // load arrays for vectors
                 val positionArr = json.optJSONArray("position")
@@ -67,7 +72,7 @@ object SceneRegistry {
                 else Vector3(1f, 1f, 1f)
 
                 // register the entity
-                Entity.createFromPath(id, position, rotation, scale) {}
+                Entity.createFromPath(UUID.randomUUID(), true, path, position, rotation, scale) {}
             }
 
             // update the tracker and start the new scene
@@ -82,5 +87,15 @@ object SceneRegistry {
 
     fun clientUpdate() {
         currentScene?.clientUpdate()
+    }
+
+    fun handleNetJoin(conn: Connection) {
+        if (NetworkManager.isActive && NetworkManager.isServer)
+            currentScene?.netJoin(conn)
+    }
+
+    fun handleDisconnect(conn: Connection) {
+        if (NetworkManager.isActive && NetworkManager.isServer)
+            currentScene?.netDisconnect(conn)
     }
 }

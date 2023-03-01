@@ -13,6 +13,7 @@ import webstreamengine.client.entities.EntityComponent
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.inputs.StickInputElement
 import webstreamengine.client.managers.SettingsManager
+import webstreamengine.client.networking.NetworkManager
 import webstreamengine.client.physics.ColliderComponent
 
 class PlayerControllerComponent(
@@ -44,6 +45,8 @@ class PlayerControllerComponent(
 
     var firstclientupdate = true
     override fun clientUpdate() {
+        if (NetworkManager.isActive && NetworkManager.myID != entity.assignedTo) return
+
         if (firstclientupdate) {
             firstclientupdate = false
             Renderer.setCursorCatched(lockMouse)
@@ -57,7 +60,7 @@ class PlayerControllerComponent(
 
     private fun updateDistanceFromRoot() {
         // get the new distance by clamping the new value between the min and max adjusted by the default
-        val scrollSensitivity = SettingsManager.getElementValue("Zoom Rate") as Float
+        val scrollSensitivity = (SettingsManager.getElementValue("Zoom Rate") as Int).toFloat()
         pcOffsetRootDistance = MathUtils.clamp(
             pcOffsetRootDistance + InputManager.scroll.y * Gdx.graphics.deltaTime * scrollSensitivity,
             minDistanceFromRoot - defaultDistanceFromRoot,

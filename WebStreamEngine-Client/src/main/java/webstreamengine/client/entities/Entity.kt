@@ -3,12 +3,18 @@ package webstreamengine.client.entities
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
+import org.json.JSONArray
 import org.json.JSONObject
 import webstreamengine.client.networking.FuelClient
+import webstreamengine.client.networking.NetworkManager
+import webstreamengine.client.networking.PacketType
+import webstreamengine.client.networking.PacketUtils
 import webstreamengine.client.physics.SimpleBox
+import java.util.*
 
 class Entity(
-    var id: String,
+    val id: UUID = UUID.randomUUID(),
+    val sceneCreated: Boolean,
     private var position: Vector3 = Vector3(0f, 0f, 0f),
     private var rotation: Vector3 = Vector3(0f, 0f, 0f),
     private var scale: Vector3 = Vector3(1f, 1f, 1f),
@@ -20,31 +26,73 @@ class Entity(
     val transformChangeCallbacks = mutableListOf<(entity: Entity) -> Unit>()
     var box = SimpleBox(Vector3(), Vector3())
     val chunks = mutableListOf<Chunk>()
+    var path = ""
+
+    var assignedTo = 0
+        set(value) {
+            // if we are an active server, send assign packet
+            if (NetworkManager.isActive && NetworkManager.isServer) {
+                NetworkManager.connections.filter { it.id == value }.forEach { conn ->
+                    conn.sendPacket(
+                        PacketType.ASSIGN_CONTROL,
+                        JSONObject()
+                            .put("net_id", value)
+                            .put("entity_id", id.toString())
+                    )
+                }
+            }
+
+            // set value
+            println("Assigned entity $id to NET_ID = $value")
+            field = value
+        }
 
     companion object {
-        fun createFromPath(path: String,
-           position: Vector3 = Vector3(0f, 0f, 0f),
-           rotation: Vector3 = Vector3(0f, 0f, 0f),
-           scale: Vector3 = Vector3(1f, 1f, 1f),
-           createCallback: (entity: Entity) -> Unit
+        fun createFromPath(
+            id: UUID = UUID.randomUUID(),
+            sceneCreated: Boolean,
+            path: String,
+            position: Vector3 = Vector3(0f, 0f, 0f),
+            rotation: Vector3 = Vector3(0f, 0f, 0f),
+            scale: Vector3 = Vector3(1f, 1f, 1f),
+            createCallback: (entity: Entity) -> Unit
         ) {
+            // if we are a server, broadcast create
+            if (NetworkManager.isActive && NetworkManager.isServer) {
+                val packet = PacketUtils.packPacket(
+                    PacketType.CREATE_ENTITY_FROM_SCRIPT,
+                    JSONObject()
+                        .put("id", id.toString())
+                        .put("path", path)
+                        .put("position", position.toJSONArray())
+                        .put("rotation", rotation.toJSONArray())
+                        .put("scale", scale.toJSONArray())
+                )
+                NetworkManager.connections.forEach { it.sendRaw(packet) }
+            }
+
+            // request file and create entity
             FuelClient.requestFile("$path.entity") {
                 val entity = Entity(
+                    id, sceneCreated,
                     JSONObject(it.readText()),
                     position, rotation, scale
                 )
+                entity.path = path
                 createCallback(entity)
             }
         }
     }
 
     constructor(
+        id: UUID = UUID.randomUUID(),
+        sceneCreated: Boolean,
         json: JSONObject,
         position: Vector3 = Vector3(0f, 0f, 0f),
         rotation: Vector3 = Vector3(0f, 0f, 0f),
         scale: Vector3 = Vector3(1f, 1f, 1f),
     ): this(
-        json.optString("id") ?: throw IllegalArgumentException("Entity is required to have a id in json object"),
+        id, sceneCreated,
         position, rotation, scale,
         json.optBoolean("registerAutomatically", true),
         json.optBoolean("global", false),
@@ -59,6 +107,18 @@ class Entity(
 
     init {
         if (registerAutomatically) EntityHandler.addEntity(this)
+    }
+
+    fun getCreatePacket(): ByteArray {
+        return PacketUtils.packPacket(
+            PacketType.CREATE_ENTITY_FROM_SCRIPT,
+            JSONObject()
+                .put("id", id.toString())
+                .put("path", path)
+                .put("position", position.toJSONArray())
+                .put("rotation", rotation.toJSONArray())
+                .put("scale", scale.toJSONArray())
+        )
     }
 
     fun generateTransformationMatrix(offset: Vector3 = Vector3(0f, 0f, 0f)): Matrix4 {
@@ -101,9 +161,14 @@ class Entity(
         components.forEach { it.generalStop() }
     }
 
-    private fun updateInstanceTransform() {
+    private fun updateInstanceTransform(silent: Boolean = false) {
         transformChangeCallbacks.forEach { it(this) }
         EntityHandler.updateEntity(this)
+
+        if (!silent) {
+            val packet = PacketUtils.packPacket(PacketType.UPDATE_ENTITY_TRANSFORM, JSONObject().put("id", id.toString()).put("position", position.toJSONArray()).put("rotation", rotation.toJSONArray()).put("scale", scale.toJSONArray()))
+            NetworkManager.connections.forEach { it.sendRaw(packet) }
+        }
     }
 
     fun getPosition(): Vector3 { return position }
@@ -140,7 +205,21 @@ class Entity(
         updateInstanceTransform()
     }
 
+    fun setTransformSilent(position: Vector3, rotation: Vector3, scale: Vector3) {
+        this.rotation.set(rotation)
+        this.position.set(position)
+        this.scale.set(scale)
+        updateInstanceTransform(silent = true)
+    }
+
     inline fun <reified T: EntityComponent> getComponentOfType(): T? {
         return getComponents().firstOrNull { it is T } as? T
     }
+}
+
+fun Vector3.toJSONArray(): JSONArray {
+    return JSONArray()
+        .put(this.x)
+        .put(this.y)
+        .put(this.z)
 }

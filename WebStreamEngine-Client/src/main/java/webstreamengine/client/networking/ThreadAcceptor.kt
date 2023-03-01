@@ -5,6 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import webstreamengine.client.entities.EntityHandler
+import webstreamengine.client.scenes.SceneRegistry
 
 class ThreadAcceptor(private val serverSocket: ServerSocket, private val introPacket: ByteArray): Thread() {
 
@@ -31,12 +33,17 @@ class ThreadAcceptor(private val serverSocket: ServerSocket, private val introPa
         NetworkManager.connections.add(conn)
         runBlocking {
             withContext(Dispatchers.IO) {
-                val idPacket = PacketUtils.packPacket(PacketType.SET_ID, JSONObject().put("id", id))
-                conn.dataOut.writeFully(idPacket, 0, idPacket.size)
+                conn.sendPacket(PacketType.SET_ID, JSONObject().put("id", id))
                 conn.dataOut.writeFully(introPacket, 0, introPacket.size)
+                EntityHandler.entities.forEach { entity ->
+                    if (!entity.sceneCreated) {
+                        val packet = entity.getCreatePacket()
+                        conn.dataOut.writeFully(packet, 0, packet.size)
+                    }
+                }
+                SceneRegistry.handleNetJoin(conn)
             }
         }
-        println("Sent connection packet")
     }
 }
 enum class ThreadAcceptorState {

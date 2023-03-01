@@ -21,10 +21,10 @@ public class Tester : Application() {
     private lateinit var testentity: Entity
 
     override fun start() {
-        // setup some test stuffs
-        Entity.createFromPath("player") { entity ->
-            testentity = entity
-        }
+//        // setup some test stuffs
+//        Entity.createFromPath("player", "player") { entity ->
+//            testentity = entity
+//        }
 
         // set ambient light
         GameInfo.setAmbientLight(Color.WHITE)
@@ -36,7 +36,7 @@ public class Tester : Application() {
 
         // do connection
         if (headless)
-            NetworkManager.becomeServer("localhost", 9003)
+            NetworkManager.becomeServer("test_scene", "localhost", 9003)
         else
             NetworkManager.connectToServer("localhost", 9003)
     }

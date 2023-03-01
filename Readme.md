@@ -14,15 +14,16 @@ Goals:
 ========================== Networking =================================
 - [x] Make LibGDX run on a thread secondary to the main thread
 - [x] Make a headless mode
-- [ ] Network controller component
+- [x] Network controller component
   - [x] Clients automatically connect to the server
     - [x] Game server settings must be set beforehand
   - [x] Network server has control over states
   - [x] Components and scenes switch to a general start and stop function as well as a server update and client update function
   - [x] Each client as different IDs (server is 0, first client is 1, second client is 2, etc...)
-  - [ ] Server can create or destroy entities
-    - [ ] Server can assign which entities the player has authority over
-  - [ ] All transform changes should be replicated on each client
+  - [x] Server can create or destroy entities
+    - [x] Server can assign which entities the player has authority over
+  - [x] All transform changes should be replicated on each client
+  - [x] Convert IDs to UUID
 - [ ] Network-able Physics
   - [ ] Global physics solver
     - [ ] Handles all collisions in updated chunks

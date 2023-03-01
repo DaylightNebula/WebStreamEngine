@@ -7,7 +7,7 @@
     },
     {
       "type": "controller",
-      "canZoom": false,
+      "canZoom": true,
       "canRotate": true,
       "lockMouse": true,
       "moveInputStick": "movement",

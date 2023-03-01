@@ -23,6 +23,7 @@ class ModelComponent(entity: Entity, val key: String): EntityComponent(entity) {
         // update bounds
         entity.box = SimpleBox(Vector3(), Vector3(1f, 1f, 1f))
 
+        println("Created model instance with key $key")
         ModelManager.requestIfNecessary(key, true) {}
     }
 
