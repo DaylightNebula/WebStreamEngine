@@ -16,7 +16,7 @@ class ColliderComponent(
     val velocity = Vector3(0f, 0f, 0f)
     private var onGroundScore = 0
 
-    override fun serverupdate() {
+    override fun serverUpdate() {
         // if we are not moving and no gravity, we don't need to do anything
         if (!hasGravity && velocity == Vector3.Zero) return
 
@@ -91,7 +91,7 @@ class ColliderComponent(
 
     fun isOnGround(): Boolean { return onGroundScore > 0 }
 
-    override fun serverstart() {}
-    override fun serverstop() {}
-    override fun clientupdate() {}
+    override fun generalStart() {}
+    override fun generalStop() {}
+    override fun clientUpdate() {}
 }

@@ -3,12 +3,13 @@ package webstreamengine.test
 import webstreamengine.client.scenes.Scene
 
 class TestScene: Scene("test_scene") {
-    override fun start() {
+    override fun generalStart() {
     }
 
-    override fun update() {
-    }
+    override fun serverUpdate() {}
 
-    override fun stop() {
+    override fun clientUpdate() {}
+
+    override fun generalStop() {
     }
 }

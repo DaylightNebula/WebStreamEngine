@@ -25,7 +25,7 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
     private var drag = settings.lockMouse
 
     var firstclientupdate = true
-    override fun clientupdate() {
+    override fun clientUpdate() {
         if (firstclientupdate) {
             firstclientupdate = false
             Renderer.setCursorCatched(settings.lockMouse)
@@ -129,7 +129,7 @@ class PlayerControllerComponent(entity: Entity, private val settings: Controller
         Renderer.cam.update()
     }
 
-    override fun serverstart() {}
-    override fun serverstop() {}
-    override fun serverupdate() {}
+    override fun generalStart() {}
+    override fun generalStop() {}
+    override fun serverUpdate() {}
 }

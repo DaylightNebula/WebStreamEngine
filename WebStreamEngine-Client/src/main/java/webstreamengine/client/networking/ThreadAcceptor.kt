@@ -1,13 +1,13 @@
 package webstreamengine.client.networking
 
 import io.ktor.network.sockets.*
-import io.ktor.utils.io.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import webstreamengine.client.networking.Connection
+import kotlinx.coroutines.withContext
 
-class ThreadAcceptor(val serverSocket: ServerSocket): Thread() {
+class ThreadAcceptor(private val serverSocket: ServerSocket, private val introPacket: ByteArray): Thread() {
 
-    var state = ThreadAcceptorState.ACCEPT_VALID
+    private var state = ThreadAcceptorState.ACCEPT_VALID
 
     override fun run() {
         while (NetworkManager.isActive) {
@@ -18,15 +18,22 @@ class ThreadAcceptor(val serverSocket: ServerSocket): Thread() {
                 if (state == ThreadAcceptorState.ACCEPT_PREVIOUS) throw NotImplementedError()
 
                 if (state == ThreadAcceptorState.ACCEPT_VALID) {
-                    NetworkManager.connections.add(
-                        Connection(
-                            socket,
-                        )
-                    )
+                    newConnection(socket)
                 }
-                println("Got connection ${socket.localAddress}")
             }
         }
+    }
+
+    fun newConnection(socket: Socket) {
+        val conn = Connection(socket)
+        NetworkManager.connections.add(conn)
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                sleep(1000)
+                conn.dataOut.writeFully(introPacket, 0, introPacket.size)
+            }
+        }
+        println("Sent connection packet")
     }
 }
 enum class ThreadAcceptorState {

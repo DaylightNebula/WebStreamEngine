@@ -32,7 +32,7 @@ class TaskComponent(entity: Entity, private val tasks: MutableList<Task>): Entit
         tasks.remove(task)
     }
 
-    override fun serverupdate() {
+    override fun serverUpdate() {
         // remove any tasks that need to be removed
         tasks.removeIf { it.shouldTaskBeRemoved() }
 
@@ -51,9 +51,9 @@ class TaskComponent(entity: Entity, private val tasks: MutableList<Task>): Entit
         }
     }
 
-    override fun serverstop() {}
-    override fun serverstart() {}
-    override fun clientupdate() {}
+    override fun generalStop() {}
+    override fun generalStart() {}
+    override fun clientUpdate() {}
 }
 abstract class Task(val entity: Entity) {
     abstract fun start()

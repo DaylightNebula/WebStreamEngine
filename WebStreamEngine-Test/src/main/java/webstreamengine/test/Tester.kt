@@ -8,7 +8,9 @@ import webstreamengine.client.controller.ControllerSettings
 import webstreamengine.client.controller.PlayerControllerComponent
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.components.ModelComponent
+import webstreamengine.client.headless
 import webstreamengine.client.managers.SettingsElement
+import webstreamengine.client.networking.NetworkManager
 import webstreamengine.client.physics.ColliderComponent
 import webstreamengine.client.physics.SimpleBox
 import webstreamengine.client.scenes.SceneRegistry
@@ -32,9 +34,16 @@ public class Tester : Application() {
         // set ambient light
         GameInfo.setAmbientLight(Color.WHITE)
 
+        // load first scene
         UserInterface.registerInterface("test_ui") { TestUI() }
         SceneRegistry.registerScene("test_scene") { TestScene() }
-        SceneRegistry.loadScene("test_scene")
+//        SceneRegistry.loadScene("test_scene")
+
+        // do connection
+        if (headless)
+            NetworkManager.becomeServer("localhost", 9003)
+        else
+            NetworkManager.connectToServer("localhost", 9003)
     }
 
     override fun update() {}

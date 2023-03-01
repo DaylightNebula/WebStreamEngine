@@ -13,7 +13,13 @@ object SceneRegistry {
     private var currentScene: Scene? = null
 
     fun registerScene(id: String, c: () -> Scene) {
+        println("Scene registered $id")
         constructors[id] = c
+    }
+
+    fun isSceneRegistered(id: String): Boolean {
+        println("Options ${constructors.keys.map { it }}")
+        return constructors[id] != null
     }
 
     fun loadScene(masterID: String) {
@@ -28,7 +34,7 @@ object SceneRegistry {
             println("Loaded scene $masterJson")
 
             // stop the current scene
-            currentScene?.stop()
+            currentScene?.generalStop()
 
             // clear old ui and entities if necessary
             if (currentScene != null) UIManager.clearScripts()
@@ -44,7 +50,6 @@ object SceneRegistry {
                 // load basic json
                 val json = j as JSONObject
                 val id = json.getString("id")
-                println("Attempting to make entity $id")
 
                 // load arrays for vectors
                 val positionArr = json.optJSONArray("position")
@@ -68,11 +73,15 @@ object SceneRegistry {
 
             // update the tracker and start the new scene
             currentScene = scene
-            scene.start()
+            scene.generalStart()
         }
     }
 
-    fun updateScene() {
-        currentScene?.update()
+    fun serverUpdate() {
+        currentScene?.serverUpdate()
+    }
+
+    fun clientUpdate() {
+        currentScene?.clientUpdate()
     }
 }

@@ -12,14 +12,16 @@ enum class PacketType(
     )
 }
 object PacketUtils {
-    private fun packPacket(type: PacketType, json: JSONObject): ByteArray {
+    fun packPacket(type: PacketType, json: JSONObject): ByteArray {
+        val packed = type.pack(json)
         return byteArrayOf(
             *ByteUtils.convertIntToBytes(type.ordinal),
-            *ByteUtils.convertByteArrayToByteArray(type.pack(json))
+            *ByteUtils.convertIntToBytes(packed.size),
+            *packed
         )
     }
 
-    private fun unpackPacket(type: PacketType, bytes: ByteArray): JSONObject {
+    fun unpackPacket(type: PacketType, bytes: ByteArray): JSONObject {
         val reader = ByteReader(bytes)
         return type.unpack(reader)
     }

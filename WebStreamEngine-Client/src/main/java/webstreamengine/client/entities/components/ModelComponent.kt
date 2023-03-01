@@ -36,10 +36,10 @@ class ModelComponent(entity: Entity, val key: String): EntityComponent(entity) {
         }
     }
 
-    override fun serverstart() {}
-    override fun serverupdate() {}
-    override fun clientupdate() { Renderer.renderComponent(this) }
-    override fun serverstop() {}
+    override fun generalStart() {}
+    override fun serverUpdate() {}
+    override fun clientUpdate() { Renderer.renderComponent(this) }
+    override fun generalStop() {}
 
     fun hasInstance(): Boolean = this::instance.isInitialized
 }

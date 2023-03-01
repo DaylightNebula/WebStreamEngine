@@ -5,6 +5,7 @@ import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.client.networking.FuelClient
+import webstreamengine.client.networking.NetworkManager
 import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.sounds.SoundManager
 import java.io.File
@@ -70,13 +71,20 @@ object ClientMain {
 
         // update app
         JarInterface.getApp()?.update()
-        SceneRegistry.updateScene()
+
+        // update server
+        if (!NetworkManager.isActive || NetworkManager.isServer)
+            SceneRegistry.serverUpdate()
 
         // update input
         InputManager.update()
 
         // update entities
-        EntityHandler.updateEntities()
+        if (!NetworkManager.isActive || NetworkManager.isServer)
+            EntityHandler.serverUpdate()
+
+        // update the network
+        NetworkManager.update()
     }
 
     fun dispose() {

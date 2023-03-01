@@ -170,7 +170,7 @@ object EntityHandler {
 //    }
 
     fun renderEntities() {
-        entities.forEach { it.clientupdate() }
+        entities.forEach { it.clientUpdate() }
 //        globalEntities.forEach { it.clientupdate() }
 //
 //        // get all chunks that are inside the large entity render threshold
@@ -203,8 +203,8 @@ object EntityHandler {
 //        }
     }
 
-    fun updateEntities() {
-        entities.forEach { it.update() }
+    fun serverUpdate() {
+        entities.forEach { it.serverUpdate() }
 //        globalEntities.forEach { it.update() }
 //        chunks.values.filter { chunk -> Vector3(chunk.chunkPosition).scl(chunkBounds).dst2(camPosition) < updateCutoff }.forEach { chunk ->
 //            (chunk.largeEntities + chunk.smallEntities).forEach { it.update() }

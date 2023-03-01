@@ -19,6 +19,8 @@ import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.InputProcessorManager
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.managers.TextureManager
+import webstreamengine.client.networking.NetworkManager
+import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.ui.UIManager
 import java.io.File
 
@@ -66,6 +68,8 @@ object Renderer: ApplicationAdapter() {
 
         ModelManager.update()
         UIManager.update()
+        if (!NetworkManager.isActive || !NetworkManager.isServer)
+            SceneRegistry.clientUpdate()
 
         // clear screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.width, Gdx.graphics.height)

@@ -74,7 +74,7 @@ class Entity(
 
     fun addComponent(component: EntityComponent) {
         components.add(component)
-        component.serverstart()
+        component.generalStart()
     }
 
     fun getComponents(): List<EntityComponent> {
@@ -83,20 +83,20 @@ class Entity(
 
     fun removeComponent(component: EntityComponent) {
         components.remove(component)
-        component.serverstop()
+        component.generalStop()
     }
 
-    fun update() {
-        components.forEach { it.serverupdate() }
+    fun serverUpdate() {
+        components.forEach { it.serverUpdate() }
     }
 
-    fun clientupdate() {
+    fun clientUpdate() {
         // make sure we only render once per frame
-        components.forEach { it.clientupdate() }
+        components.forEach { it.clientUpdate() }
     }
 
     fun dispose() {
-        components.forEach { it.serverstop() }
+        components.forEach { it.generalStop() }
     }
 
     private fun updateInstanceTransform() {
