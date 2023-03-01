@@ -17,6 +17,7 @@ object NetworkManager {
     var isServer = false
     val connections = mutableListOf<Connection>()
     var acceptor: ThreadAcceptor? = null
+    var myID = 0
 
     val byteOrder = ByteOrder.LITTLE_ENDIAN
 
@@ -26,7 +27,7 @@ object NetworkManager {
             // connect to the server
             val socket = aSocket(SelectorManager(Dispatchers.IO)).tcp().connect(address, port)
             NetworkManager.isActive = true
-            connections.add(Connection(socket))
+            connections.add(Connection(0, socket))
 
             // get and load first scene
             println("Connected")
@@ -65,16 +66,23 @@ object NetworkManager {
                 if (isServer) return
 
                 // attempt to load the scene
-                println("Loading ${json.toString(1)}, registered? ${SceneRegistry.isSceneRegistered(json.getString("name"))}")
                 if (SceneRegistry.isSceneRegistered(json.getString("name")))
                     SceneRegistry.loadScene(json.getString("name"))
+            }
+            PacketType.SET_ID -> {
+                // this can only be run on the client as the server will always have an id of 0
+                if (isServer) return
+
+                // set id
+                println("Network ID = ${json.getInt("id")}")
+                myID = json.getInt("id")
             }
         }
     }
 }
-class Connection(var socket: Socket, var dataIn: ByteReadChannel, var dataOut: ByteWriteChannel) {
+class Connection(val id: Int, var socket: Socket, var dataIn: ByteReadChannel, var dataOut: ByteWriteChannel) {
 
-    constructor(socket: Socket): this(socket, socket.openReadChannel(), socket.openWriteChannel(autoFlush = true))
+    constructor(id: Int, socket: Socket): this(id, socket, socket.openReadChannel(), socket.openWriteChannel(autoFlush = true))
 
     fun update(callback: (type: PacketType, json: JSONObject) -> Unit) {
         // run on separate thread

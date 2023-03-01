@@ -18,7 +18,6 @@ object SceneRegistry {
     }
 
     fun isSceneRegistered(id: String): Boolean {
-        println("Options ${constructors.keys.map { it }}")
         return constructors[id] != null
     }
 

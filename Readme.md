@@ -19,7 +19,7 @@ Goals:
     - [x] Game server settings must be set beforehand
   - [x] Network server has control over states
   - [x] Components and scenes switch to a general start and stop function as well as a server update and client update function
-  - [ ] Each client as different IDs (server is 0, first client is 1, second client is 2, etc...)
+  - [x] Each client as different IDs (server is 0, first client is 1, second client is 2, etc...)
   - [ ] Server can create or destroy entities
     - [ ] Server can assign which entities the player has authority over
   - [ ] All transform changes should be replicated on each client

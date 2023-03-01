@@ -9,6 +9,10 @@ enum class PacketType(
     CHANGE_SCENE(
         { json -> ByteUtils.convertStringToByteArray(json.getString("name")) },
         { reader -> JSONObject().put("name", reader.nextString()) }
+    ),
+    SET_ID(
+        { json -> ByteUtils.convertIntToBytes(json.getInt("id")) },
+        { reader -> JSONObject().put("id", reader.nextInt()) }
     )
 }
 object PacketUtils {

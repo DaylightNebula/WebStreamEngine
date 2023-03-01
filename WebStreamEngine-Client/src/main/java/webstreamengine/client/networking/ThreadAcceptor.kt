@@ -4,6 +4,7 @@ import io.ktor.network.sockets.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class ThreadAcceptor(private val serverSocket: ServerSocket, private val introPacket: ByteArray): Thread() {
 
@@ -25,11 +26,13 @@ class ThreadAcceptor(private val serverSocket: ServerSocket, private val introPa
     }
 
     fun newConnection(socket: Socket) {
-        val conn = Connection(socket)
+        val id = NetworkManager.connections.size + 1
+        val conn = Connection(id, socket)
         NetworkManager.connections.add(conn)
         runBlocking {
             withContext(Dispatchers.IO) {
-                sleep(1000)
+                val idPacket = PacketUtils.packPacket(PacketType.SET_ID, JSONObject().put("id", id))
+                conn.dataOut.writeFully(idPacket, 0, idPacket.size)
                 conn.dataOut.writeFully(introPacket, 0, introPacket.size)
             }
         }
