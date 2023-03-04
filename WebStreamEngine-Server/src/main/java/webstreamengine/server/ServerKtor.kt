@@ -15,20 +15,15 @@ import java.security.MessageDigest
 import java.util.*
 import java.util.zip.ZipFile
 
-val fileMap = JSONObject()
 val assetsFolder = File("assets")
+val files = FilesThread()
 
 fun main(args: Array<String>) {
     println("Starting with args ${args.map { it }}")
 
     FBXToG3DJConverter.init()
     ServerPluginLoader.init()
-
-    // load assets
-    val start = System.currentTimeMillis()
-    loadAssets(assetsFolder)
-    val end = System.currentTimeMillis()
-    println("Loaded assets from $assetsFolder in ${end - start}MS")
+    files.start()
 
     // get the key store path
     val keyStoreFilePath = args.firstOrNull { it.startsWith("-keyStorePath=") }?.split("=")?.last()
@@ -81,56 +76,19 @@ fun main(args: Array<String>) {
     embeddedServer(Netty, environment).start(wait = true)
 }
 
-fun loadAssets(rootFolder: File) {
-    // load all files recursively
-    recursivelyLoadFiles(rootFolder)
-
-    // save fileMap.json
-    File(assetsFolder, "fileMap.json").writeText(fileMap.toString(1))
-}
-
-fun recursivelyLoadFiles(rootFile: File) {
-    rootFile.listFiles()?.forEach { file ->
-        if (file.isDirectory) {
-            recursivelyLoadFiles(file)
-            return@forEach
-        }
-
-        // ignore any files named "fileMap.json"
-        if (file.name.equals("fileMap.json")) return@forEach
-
-        // load file bytes, with some changes for some file types
-        val (fileBytes, fileName) = when(file.extension) {
-            "fbx" -> {
-                FBXToG3DJConverter.convertFile(file)
-                Pair(File(file.path.replace("fbx", "g3dj")).readBytes(), file.name.replace("fbx", "g3dj"))
-            }
-            else -> {
-                Pair(file.readBytes(), file.name)
-            }
-        }
-
-        // generate hash for the file
-        val hash = BigInteger(1, MessageDigest.getInstance("MD5").digest(fileBytes))
-
-        // save to file map json
-        fileMap.put(fileName, JSONObject().put("id", fileName).put("hash", hash).put("type", file.extension).put("localPath", file.path.removePrefix("assets\\")))
-    }
-}
-
 // create routing for http requests
 fun Application.module() {
     routing {
         get("/allfiles") {
             if (!ServerPluginLoader.plugins.all { it.verifyParams(call.parameters) })
                 return@get
-            call.respondText(fileMap.toString(1))
+            call.respondText(files.getJson().toString(1))
         }
         get("/file") {
             if (!ServerPluginLoader.plugins.all { it.verifyParams(call.parameters) })
                 return@get
             val fileParam = call.parameters["file"]
-            val srcJson = fileMap.getJSONObject(fileParam)
+            val srcJson = files.getJson().getJSONObject(fileParam)
 
             if (srcJson == null) {
                 println("WARNING: Client requested file $fileParam which does not exist")
