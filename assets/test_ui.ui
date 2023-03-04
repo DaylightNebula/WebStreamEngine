@@ -5,12 +5,22 @@
     "elements": [
       {
         "id": "play_button",
-        "type": "image",
-        "key": "play_button.png",
-        "size": 1.0
+        "type": "text",
+        "text": "Play",
+        "size": 30,
+        "key": "RobotoMono.ttf",
+        "color": "FFFFFF"
+      },
+      {
+        "id": "quit_button",
+        "type": "text",
+        "text": "Quit",
+        "size": 30,
+        "key": "RobotoMono.ttf",
+        "color": "FFFFFF"
       }
     ],
-    "horizontalAlignment": "left",
-    "verticalAlignment": "bottom"
+    "horizontalAlignment": "center",
+    "verticalAlignment": "center"
   }
 ]

@@ -13,12 +13,13 @@ import org.json.JSONObject
 import webstreamengine.client.managers.FontManager
 import webstreamengine.client.ui.HorizontalAlignment
 import webstreamengine.client.ui.UIElement
+import webstreamengine.client.ui.UIManager
 import webstreamengine.client.ui.VerticalAlignment
 
 class TextElement(
     id: String,
-    val info: FontInfo,
-    var text: String,
+    private val info: FontInfo,
+    private var text: String,
     verticalAlignment: VerticalAlignment = VerticalAlignment.CENTER,
     horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
 ): UIElement(id, verticalAlignment, horizontalAlignment) {
@@ -34,14 +35,15 @@ class TextElement(
         va, ha
     )
 
-    private lateinit var font: BitmapFont
-    private lateinit var bounds: Vector2
+    private var font: BitmapFont? = null
+    private var bounds: Vector2? = null
 
     init {
-        FontManager.applyFontToTarget(this, info.key)
+        FontManager.makeIDExist(info.key)
     }
 
-    fun setup(handle: FileHandle) {
+    private fun setup(handle: FileHandle) {
+        // create font
         val generator = FreeTypeFontGenerator(handle) // todo move generator to font manager
         val parameter = FreeTypeFontParameter().apply {
             this.size = info.size
@@ -49,21 +51,22 @@ class TextElement(
         }
         font = generator.generateFont(parameter)
 
+        // get bounds
         val layout = GlyphLayout()
         layout.setText(font, text)
         bounds = Vector2(layout.width, layout.height)
-        println("Text bounds $bounds")
 
+        // get rid of the generator
         generator.dispose()
     }
 
     override fun getRequestedSize(): Vector2 {
-        if (!this::bounds.isInitialized) return Vector2()
-        return Vector2(bounds.x / Gdx.graphics.width, bounds.y / Gdx.graphics.height)
+        return Vector2((bounds?.x ?: 0f) / Gdx.graphics.width, (bounds?.y ?: 0f) / Gdx.graphics.height)
     }
 
     override fun renderToBounds(batch: SpriteBatch) {
-        font.draw(batch, text, x * Gdx.graphics.width, y * Gdx.graphics.height)
+        if (font == null) FontManager.getFont(info.key)?.let { setup(it); UIManager.isDirty = true }
+        font?.draw(batch, text, x * Gdx.graphics.width - ((bounds?.x ?: 0f) / 2f), y * Gdx.graphics.height + (bounds?.y ?: 0f))
     }
 }
 data class FontInfo(val key: String, val size: Int, val color: Color)

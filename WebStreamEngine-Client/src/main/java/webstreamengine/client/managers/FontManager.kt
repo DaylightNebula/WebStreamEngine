@@ -3,66 +3,36 @@ package webstreamengine.client.managers
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import webstreamengine.client.networking.FuelClient
-import webstreamengine.client.ui.UIElement
-import webstreamengine.client.ui.microelements.TextElement
 import java.io.File
 
 object FontManager {
     private val fontMap = hashMapOf<String, FileHandle>()
     private val requestedIDs = mutableListOf<String>()
-    private val waitingForFont = hashMapOf<String, MutableList<UIElement>>()
 
-    fun loadLocal(id: String, path: String) {
-        fontMap[id] = Gdx.files.absolute(path)
+    private fun loadLocal(id: String, path: String): FileHandle? {
+        val file = Gdx.files.absolute(path)
+        fontMap[id] = file
+        return file
     }
 
-    fun applyFontToTarget(target: UIElement, id: String) {
+    fun makeIDExist(id: String) {
         // if we already have a font with the given id, just pass it along
         if (fontMap.containsKey(id)) {
-            applyLoadedFontToTarget(target, fontMap[id]!!)
             return
         }
 
         // if we have a cached file with the given id, load that
         val fontFile = File(System.getProperty("user.dir"), "cache/$id.ttf")
         if (fontFile.exists()) {
-            loadLocal(id, fontFile.absolutePath)
-            applyLoadedFontToTarget(target, fontMap[id]!!)
             return
         }
-
-        // if we made it this far, add the given target to the waiting list for the given font
-        var list = waitingForFont[id]
-        if (list == null) {
-            list = mutableListOf()
-            waitingForFont[id] = list
-        }
-        list.add(target)
 
         // if the given id is not in the requested id list, send a request to the server
         if (!requestedIDs.contains(id)) {
             requestedIDs.add(id)
-            FuelClient.requestFile(id) { handleFontDelivery(id, it) }
+            FuelClient.requestFile(id) {}
         }
     }
 
-    fun handleFontDelivery(id: String, file: File) {
-        // load file
-        loadLocal(id, file.absolutePath)
-
-        // remove requested id
-        requestedIDs.remove(id)
-
-        // update all targets waiting for this texture
-        val font = fontMap[id]!!
-        waitingForFont[id]?.forEach { applyLoadedFontToTarget(it, font) }
-        waitingForFont[id]?.clear()
-        waitingForFont.remove(id)
-    }
-
-    private fun applyLoadedFontToTarget(target: UIElement, handle: FileHandle) {
-        if (target is TextElement) {
-            target.setup(handle)
-        }
-    }
+    fun getFont(key: String): FileHandle? = fontMap[key] ?: loadLocal(key, "cache/$key")
 }

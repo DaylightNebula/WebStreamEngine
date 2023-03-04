@@ -50,6 +50,7 @@ class ColumnElement(
         // update all the elements by looping through it backwards (so they appear in the right order)
         elements.reversed().forEach { element ->
             val dimensions = element.getRequestedSize()
+            println("Dimensions $dimensions")
 
             // apply override scale if necessary
             if (overrideScale != 1f) {
