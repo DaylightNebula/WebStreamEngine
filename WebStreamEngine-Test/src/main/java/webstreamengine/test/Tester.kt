@@ -33,12 +33,13 @@ public class Tester : Application() {
         UserInterface.registerInterface("test_ui") { TestUI() }
         SceneRegistry.registerScene("test_scene") { TestScene() }
 //        SceneRegistry.loadScene("test_scene")
+        UserInterface.loadInterface("test_ui")
 
         // do connection
-        if (headless)
-            NetworkManager.becomeServer("test_scene", "localhost", 9003)
-        else
-            NetworkManager.connectToServer("localhost", 9003)
+//        if (headless)
+//            NetworkManager.becomeServer("test_scene", "localhost", 9003)
+//        else
+//            NetworkManager.connectToServer("localhost", 9003)
     }
 
     override fun update() {}

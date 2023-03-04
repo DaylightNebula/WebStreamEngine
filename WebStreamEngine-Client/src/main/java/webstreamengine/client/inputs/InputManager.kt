@@ -106,7 +106,7 @@ object InputManager: InputAdapter() {
         var stop = false
         UIManager.getScripts().forEach { script ->
             recursiveCheckClick(script.elements, xPos, yPos) {
-                script.runCallback("play_button", InteractType.UP)
+                script.runCallback(it.id, InteractType.UP)
                 stop = true
             }
         }
@@ -140,7 +140,7 @@ object InputManager: InputAdapter() {
         var stop = false
         UIManager.getScripts().forEach { script ->
             recursiveCheckClick(script.elements, xPos, yPos) {
-                script.runCallback("play_button", InteractType.DOWN)
+                script.runCallback(it.id, InteractType.DOWN)
                 stop = true
             }
         }

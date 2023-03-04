@@ -6,6 +6,7 @@ import webstreamengine.client.ui.UserInterface
 
 class TestUI: UserInterface("test_ui") {
     override fun registerCallbacks() {
-        registerCallback(TargetElement("play_button", InteractType.DOWN)) { println("TEST") }
+        registerCallback(TargetElement("play_button", InteractType.UP)) { println("PLAY") }
+        registerCallback(TargetElement("quit_button", InteractType.UP)) { println("QUIT") }
     }
 }

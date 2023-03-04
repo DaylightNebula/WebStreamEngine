@@ -66,7 +66,7 @@ class TextElement(
 
     override fun renderToBounds(batch: SpriteBatch) {
         if (font == null) FontManager.getFont(info.key)?.let { setup(it); UIManager.isDirty = true }
-        font?.draw(batch, text, x * Gdx.graphics.width - ((bounds?.x ?: 0f) / 2f), y * Gdx.graphics.height + (bounds?.y ?: 0f))
+        font?.draw(batch, text, x * Gdx.graphics.width /*- ((bounds?.x ?: 0f) / 2f)*/, y * Gdx.graphics.height + (bounds?.y ?: 0f))
     }
 }
 data class FontInfo(val key: String, val size: Int, val color: Color)
