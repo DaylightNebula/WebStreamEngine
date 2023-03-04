@@ -44,7 +44,7 @@ tasks {
         archiveBaseName.set("WebStreamEngine-Server")
         mergeServiceFiles()
         manifest {
-            attributes(mapOf("Main-Class" to "webstreamengine.server.ServerMainKt"))
+            attributes(mapOf("Main-Class" to "webstreamengine.server.ServerKtorKt"))
         }
     }
 }
