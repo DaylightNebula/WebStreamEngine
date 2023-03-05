@@ -1,97 +1,89 @@
 package webstreamengine.client.physics
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Net
 import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.Renderer
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityComponent
+import webstreamengine.client.networking.NetworkManager
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 class ColliderComponent(
     entity: Entity,
     val box: SimpleBox,
-    val hasGravity: Boolean,
+    val isStatic: Boolean,
     val rayCastOnly: Boolean = false
 ): EntityComponent(entity) {
+
+    val distanceNegative = Vector3()
+    val distancePositive = Vector3()
+
+    val min = Vector3()
+    val max = Vector3()
 
     val velocity = Vector3(0f, 0f, 0f)
     private var onGroundScore = 0
 
-    override fun serverUpdate() {
-        // if we are not moving and no gravity, we don't need to do anything
-        if (!hasGravity && velocity == Vector3.Zero) return
+    // on start, add to active colliders
+    override fun generalStart() {
+        if (!NetworkManager.isActive || NetworkManager.isServer)
+            PhysicsController.activeColliders.add(this)
+    }
 
-        // update velocities and position
-        if (hasGravity)
-            velocity.y += PhysicsController.gravity * Gdx.graphics.deltaTime
+    // on stop, remove from active colliders
+    override fun generalStop() {
+        if (!NetworkManager.isActive || NetworkManager.isServer)
+            PhysicsController.activeColliders.remove(this)
+    }
 
-        // get a copy of box, expanded by velocities magnitude
-        val velBox = SimpleBox(box.center, Vector3(box.bounds).scl(velocity.x * Gdx.graphics.deltaTime + 1f, velocity.y * Gdx.graphics.deltaTime + 1f, velocity.z * Gdx.graphics.deltaTime + 1f))
+    // update velocity and gravity
+    override fun clientUpdate() {
+        if (isStatic) return
 
-        val colliders = PhysicsController.getCollidersInBox(entity.getPosition(), velBox)
+        // apply gravity
+        velocity.add(Vector3(PhysicsController.gravity).scl(Renderer.deltaTime))
 
-        // if we have colliders, limit velocity accordingly
-        if (onGroundScore > 0) onGroundScore--
-        if (colliders.isNotEmpty()) {
-            // loop through colliders to limit velocity
-            colliders.forEach { other ->
-                // some stuff to aid in intersect tests
-                val so2 = Vector3(entity.getPosition()).add(velBox.center)
-                val oo2 = Vector3(other.entity.getPosition()).add(other.box.center)
+        // get momentary velocity
+        val momentaryVelocity = Vector3(velocity).scl(Renderer.deltaTime)
 
-                // do the same if xz intersect, except change y component
-                if (abs(entity.getPosition().x + velBox.center.x - oo2.x) < abs((box.bounds.x + other.box.bounds.x) / 2) && abs(entity.getPosition().z + velBox.center.z - oo2.z) < abs((box.bounds.z + other.box.bounds.z) / 2)) {
-                    velocity.y = 0f
-                    val yDist = oo2.y - so2.y
-                    val moveAmount = if (yDist < 0)
-                        yDist + ((box.bounds.y / 2f + box.center.y) + (other.box.bounds.y / 2f + other.box.center.y)) + 0.001f
-                    else
-                        yDist + ((box.bounds.y / 2f - box.center.y) - (other.box.bounds.y / 2f + other.box.center.y)) - 0.001f
-                    entity.move(Vector3(0f, moveAmount, 0f))
-                    onGroundScore = 3
-                }
-
-                // if xy intersect, remove the z velocity component and move the entity to the z side of other
-                if (abs(entity.getPosition().x + velBox.center.x - oo2.x) < abs((box.bounds.x + other.box.bounds.x) / 2) && abs(entity.getPosition().y + velBox.center.y - oo2.y) < abs((box.bounds.y + other.box.bounds.y) / 2)) {
-                    velocity.z = 0f
-                    val zDist = oo2.z - so2.z
-                    val moveAmount = if (zDist < 0)
-                        zDist + ((box.bounds.z / 2 + box.center.z) + (other.box.bounds.z / 2 - other.box.center.z)) + 0.001f
-                    else
-                        zDist + ((box.bounds.z / 2 - box.center.z) - (other.box.bounds.z / 2 + other.box.center.z)) - 0.001f
-                    entity.move(Vector3(0f, 0f, moveAmount))
-                }
-
-                // and finally do the same for the yz axis, except change the x component
-                if (abs(entity.getPosition().y + velBox.center.y - oo2.y) < abs((box.bounds.y + other.box.bounds.y) / 2) && abs(entity.getPosition().z + velBox.center.z - oo2.z) < abs((box.bounds.z + other.box.bounds.z) / 2)) {
-                    velocity.x = 0f
-                    val xDist = oo2.x - so2.x
-                    val moveAmount = if (xDist < 0)
-                        xDist + ((box.bounds.x / 2 + box.center.x) + (other.box.bounds.x / 2 - other.box.center.x)) + 0.001f
-                    else
-                        xDist + ((box.bounds.x / 2 - box.center.x) - (other.box.bounds.x / 2 + other.box.center.x)) - 0.001f
-                    entity.move(Vector3(moveAmount, 0f, 0f))
-                }
-            }
+        // check momentary velocity against movement bounds
+        if (momentaryVelocity.x < 0 && distanceNegative.x < momentaryVelocity.x.absoluteValue) {
+            velocity.x = 0f
+            momentaryVelocity.x = -distanceNegative.x
+        } else if (momentaryVelocity.x >= 0 && distancePositive.x < momentaryVelocity.x.absoluteValue) {
+            velocity.x = 0f
+            momentaryVelocity.x = distancePositive.x
+        }
+        if (momentaryVelocity.y < 0 && distanceNegative.y < momentaryVelocity.y.absoluteValue) {
+            velocity.y = 0f
+            momentaryVelocity.y = -distanceNegative.y
+        } else if (momentaryVelocity.y >= 0 && distancePositive.y < momentaryVelocity.y.absoluteValue) {
+            velocity.y = 0f
+            momentaryVelocity.y = distancePositive.y
+        }
+        if (momentaryVelocity.z < 0 && distanceNegative.z < momentaryVelocity.z.absoluteValue) {
+            velocity.z = 0f
+            momentaryVelocity.z = -distanceNegative.z
+        } else if (momentaryVelocity.z >= 0 && distancePositive.z < momentaryVelocity.z.absoluteValue) {
+            velocity.z = 0f
+            momentaryVelocity.z = distancePositive.z
         }
 
-        if (onGroundScore > 0)
-            velocity.sub(Vector3(velocity).scl(PhysicsController.onGroundDragMult * Gdx.graphics.deltaTime))
-
-        // finally apply what's left of the velocity
-        entity.move(Vector3(velocity).scl(Gdx.graphics.deltaTime))
+        // apply momentary velocity
+        entity.setTransformSilent(Vector3(entity.getPosition()).add(momentaryVelocity), entity.getRotation(), entity.getScale())
     }
-
 
     fun isMoveValid(move: Vector3): Boolean {
-        val scl = Vector3(move.x, (move.y), (move.z))
-        val velBox = SimpleBox(Vector3(box.center).add(Vector3(scl).scl(0.5f)), Vector3(box.bounds).scl(abs(scl.x) + 1f, abs(scl.y) + 1f, abs(scl.z) + 1f))
-        val collisions = PhysicsController.getCollidersInBox(entity.getPosition(), velBox)
-        return if (onGroundScore < 3) collisions.size < 2 else collisions.isEmpty()
+        if (move.x >= 0 && move.x.absoluteValue > distancePositive.x) return false
+        if (move.x < 0  && move.x.absoluteValue > distanceNegative.x) return false
+        if (move.y >= 0 && move.y.absoluteValue > distancePositive.y) return false
+        if (move.y < 0  && move.y.absoluteValue > distanceNegative.y) return false
+        if (move.z >= 0 && move.z.absoluteValue > distancePositive.z) return false
+        if (move.z < 0  && move.z.absoluteValue > distanceNegative.z) return false
+        return true
     }
 
-    fun isOnGround(): Boolean { return onGroundScore > 0 }
-
-    override fun generalStart() {}
-    override fun generalStop() {}
-    override fun clientUpdate() {}
+    override fun serverUpdate() {}
 }

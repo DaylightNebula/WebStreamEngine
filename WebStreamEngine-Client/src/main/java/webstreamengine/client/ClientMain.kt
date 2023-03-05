@@ -1,11 +1,18 @@
 package webstreamengine.client
 
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.Vector3
 import webstreamengine.client.application.GameInfo
+import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityHandler
+import webstreamengine.client.entities.components.ModelComponent
 import webstreamengine.client.inputs.InputManager
 import webstreamengine.client.managers.*
 import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.networking.NetworkManager
+import webstreamengine.client.physics.ColliderComponent
+import webstreamengine.client.physics.PhysicsController
+import webstreamengine.client.physics.SimpleBox
 import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.sounds.SoundManager
 import java.io.File

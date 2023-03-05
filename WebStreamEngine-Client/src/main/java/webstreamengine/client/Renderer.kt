@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.graphics.Texture
@@ -13,6 +14,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.entities.components.ModelComponent
 import webstreamengine.client.inputs.InputManager
@@ -20,6 +23,9 @@ import webstreamengine.client.managers.InputProcessorManager
 import webstreamengine.client.managers.ModelManager
 import webstreamengine.client.managers.TextureManager
 import webstreamengine.client.networking.NetworkManager
+import webstreamengine.client.physics.ColliderComponent
+import webstreamengine.client.physics.PhysicsController
+import webstreamengine.client.physics.SimpleBox
 import webstreamengine.client.scenes.SceneRegistry
 import webstreamengine.client.ui.UIManager
 import java.io.File
@@ -39,6 +45,7 @@ object Renderer: ApplicationAdapter() {
     private lateinit var spritebatch: SpriteBatch
 
     var currentSeconds = 0f
+    var deltaTime = 0f
 
     override fun create() {
         // create basic camera
@@ -64,10 +71,17 @@ object Renderer: ApplicationAdapter() {
     }
 
     override fun render() {
+        deltaTime = Gdx.graphics.deltaTime
         currentSeconds += Gdx.graphics.deltaTime
 
+        // update visual handlers
         ModelManager.update()
         UIManager.update()
+
+        // update physics
+        PhysicsController.update()
+
+        // update scene registry if needed
         if (!NetworkManager.isActive || !NetworkManager.isServer)
             SceneRegistry.clientUpdate()
 

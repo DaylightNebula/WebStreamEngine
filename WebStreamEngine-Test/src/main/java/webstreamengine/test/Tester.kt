@@ -30,10 +30,10 @@ public class Tester : Application() {
         GameInfo.setAmbientLight(Color.WHITE)
 
         // load first scene
-        UserInterface.registerInterface("test_ui") { TestUI() }
-        SceneRegistry.registerScene("test_scene") { TestScene() }
+//        UserInterface.registerInterface("test_ui") { TestUI() }
+//        SceneRegistry.registerScene("test_scene") { TestScene() }
 //        SceneRegistry.loadScene("test_scene")
-        UserInterface.loadInterface("test_ui")
+//        UserInterface.loadInterface("test_ui")
 
         // do connection
 //        if (headless)

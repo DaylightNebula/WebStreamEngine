@@ -165,7 +165,7 @@ class Entity(
         transformChangeCallbacks.forEach { it(this) }
         EntityHandler.updateEntity(this)
 
-        if (!silent) {
+        if (!silent && NetworkManager.isActive) {
             val packet = PacketUtils.packPacket(PacketType.UPDATE_ENTITY_TRANSFORM, JSONObject().put("id", id.toString()).put("position", position.toJSONArray()).put("rotation", rotation.toJSONArray()).put("scale", scale.toJSONArray()))
             NetworkManager.connections.forEach { it.sendRaw(packet) }
         }

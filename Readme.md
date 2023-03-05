@@ -61,3 +61,4 @@ Goals:
   - [ ] Shoot a ray from the entity to the target
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
+- [ ] Make server handle physics instead of client
