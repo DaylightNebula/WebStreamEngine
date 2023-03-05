@@ -32,14 +32,16 @@ class FilesThread: Thread() {
             // ignore any files named "fileMap.json"
             if (file.name.equals("fileMap.json")) return@forEach
 
-            val assetFile = convertToAssetFile(file)
+            val assetFile = convertToAssetFile(file, false)
             files.add(assetFile)
             addOrUpdateAssetFileToJson(assetFile)
         }
         dirs[root.toPath().register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY)] = files
     }
 
-    private fun convertToAssetFile(file: File): AssetFile {
+    private fun convertToAssetFile(file: File, slow: Boolean): AssetFile {
+        if (slow) sleep(10)
+
         // load file bytes, with some changes for some file types
         val (finalFile, fileBytes) = when(file.extension) {
             "fbx" -> {
@@ -126,7 +128,7 @@ class FilesThread: Thread() {
 
             toUpdate.forEach { (f, key) ->
                 val file = File("assets/" + f.path)
-                val assetFile = convertToAssetFile(file)
+                val assetFile = convertToAssetFile(file, true)
                 dirs[key]?.removeAll { it.file == file }
                 dirs[key]?.add(assetFile)
                 addOrUpdateAssetFileToJson(assetFile)
