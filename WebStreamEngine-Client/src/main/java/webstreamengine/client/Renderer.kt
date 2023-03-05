@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
@@ -128,6 +129,7 @@ object Renderer: ApplicationAdapter() {
                 )
                 this.transform.translate(component.entity.getPosition())
             }
+            component.animController = AnimationController(component.instance)
         }
         modelbatch.render(component.instance)
     }

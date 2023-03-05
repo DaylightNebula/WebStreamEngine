@@ -2,6 +2,7 @@ package webstreamengine.client.entities.components
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector3
@@ -13,7 +14,8 @@ import webstreamengine.client.physics.SimpleBox
 
 class ModelComponent(entity: Entity, val key: String): EntityComponent(entity) {
 
-    lateinit var instance: ModelInstance
+    internal lateinit var instance: ModelInstance
+    internal lateinit var animController: AnimationController
 
     init {
         // call and register update transform function
@@ -23,7 +25,7 @@ class ModelComponent(entity: Entity, val key: String): EntityComponent(entity) {
         // update bounds
         entity.box = SimpleBox(Vector3(), Vector3(1f, 1f, 1f))
 
-        println("Created model instance with key $key")
+        // tell model manager to get the key
         ModelManager.requestIfNecessary(key, true) {}
     }
 
@@ -35,6 +37,11 @@ class ModelComponent(entity: Entity, val key: String): EntityComponent(entity) {
             this.transform.rotate(Quaternion().setEulerAngles(entity.getRotation().x, entity.getRotation().y, entity.getRotation().z))
             this.transform.translate(entity.getPosition())
         }
+    }
+
+    fun getAnimController(): AnimationController? {
+        if (!this::animController.isInitialized) return null
+        return animController
     }
 
     override fun generalStart() {}
