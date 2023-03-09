@@ -24,17 +24,17 @@ Goals:
     - [x] Server can assign which entities the player has authority over
   - [x] All transform changes should be replicated on each client
   - [x] Convert IDs to UUID
-- [ ] Network-able Physics
-  - [ ] Global physics solver
-    - [ ] Handles all collisions in updated chunks
-    - [ ] Update the collider components maximum travel to a collision in all six directions ONLY for colliders marked as not static
-  - [ ] Collider component
-    - [ ] Make just a collection of 3 4-point polygons that align along each axis
-    - [ ] Update velocity based off of maximum travels that are updated by the physics solver
-    - [ ] Possible collision bounding box (since box checking is quicker than polygon checking)
-      - [ ] Only run a full collision test if the possible collision check passes
-    - [ ] Flags
-      - [ ] Static (does not move) (default false)
+- [x] Network-able Physics
+  - [x] Global physics solver
+    - [x] Handles all collisions in updated chunks
+    - [x] Update the collider components maximum travel to a collision in all six directions ONLY for colliders marked as not static
+  - [x] Collider component
+    - [x] Make just a collection of 3 4-point polygons that align along each axis
+    - [x] Update velocity based off of maximum travels that are updated by the physics solver
+    - [x] Possible collision bounding box (since box checking is quicker than polygon checking)
+      - [x] Only run a full collision test if the possible collision check passes
+    - [x] Flags
+      - [x] Static (does not move) (default false)
 - [x] Make player controller a component
 - [x] Remove the entity chunking for now
 
