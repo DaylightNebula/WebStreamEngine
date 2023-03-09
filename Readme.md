@@ -44,11 +44,10 @@ Goals:
   - [ ] Large entities are treated as global entities
 - [ ] Particles
   - [ ] Play particle effects from PFX
-- [ ] Reloading
-  - [ ] Server should reload itself when a file changes
-- [ ] Client LibGDX changes
-  - [ ] Put libgdx on a second thread
-  - [ ] Allow client to easily reload with CTRL + R
+- [x] Reloading
+  - [x] Server should reload itself when a file changes
+- [x] Client LibGDX changes
+  - [x] Put libgdx on a second thread
 - [ ] Editor plugins
   - [ ] .properties (switch from .config)
   - [ ] .json

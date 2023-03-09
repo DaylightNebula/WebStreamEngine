@@ -33,10 +33,6 @@ dependencies {
     implementation("com.github.mgsx-dev.gdx-gltf:core:2.1.0")
     implementation("com.github.mgsx-dev.gdx-gltf:gltf:2.1.0:sources")
 
-    // bullet stuffs
-    implementation("com.badlogicgames.gdx:gdx-bullet:1.11.0")
-    implementation("com.badlogicgames.gdx:gdx-bullet-platform:1.11.0:natives-desktop")
-
     implementation("org.json:json:20220924")
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation("io.ktor:ktor-network:2.2.3")

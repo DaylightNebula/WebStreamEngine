@@ -8,7 +8,6 @@ data class SoundRequest(
     val soundID: String,
     val baseVolume: Float,
     val pitch: Float,
-    val pan: Float,
 
     val position: Vector3? = null,
     val startTime: Float = Renderer.currentSeconds
