@@ -62,3 +62,5 @@ Goals:
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
 - [ ] Make server handle physics instead of client
+- [ ] Load from GLTF instead of G3DJ
+- [ ] Use sound pan to get "spatial" audio

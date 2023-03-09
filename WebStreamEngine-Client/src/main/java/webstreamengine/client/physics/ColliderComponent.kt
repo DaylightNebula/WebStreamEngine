@@ -76,6 +76,8 @@ class ColliderComponent(
     }
 
     fun isMoveValid(move: Vector3): Boolean {
+        if (isStatic) return false
+
         if (move.x >= 0 && move.x.absoluteValue > distancePositive.x) return false
         if (move.x < 0  && move.x.absoluteValue > distanceNegative.x) return false
         if (move.y >= 0 && move.y.absoluteValue > distancePositive.y) return false
