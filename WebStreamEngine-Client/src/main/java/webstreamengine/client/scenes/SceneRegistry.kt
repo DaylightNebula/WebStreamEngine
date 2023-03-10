@@ -16,6 +16,10 @@ object SceneRegistry {
     private val constructors = hashMapOf<String, () -> Scene>()
     private var currentScene: Scene? = null
 
+    fun sceneCommunicationReceived(jsonObject: JSONObject) {
+        currentScene?.netCommunicate(jsonObject)
+    }
+
     fun registerScene(id: String, c: () -> Scene) {
         println("Scene registered $id")
         constructors[id] = c

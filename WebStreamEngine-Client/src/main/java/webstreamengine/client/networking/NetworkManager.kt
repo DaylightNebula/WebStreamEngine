@@ -124,6 +124,9 @@ object NetworkManager {
                     connections.forEach { it.sendRaw(packet) }
                 }
             }
+            PacketType.SCENE_COMMUNICATE -> {
+                SceneRegistry.sceneCommunicationReceived(json)
+            }
         }
     }
 }

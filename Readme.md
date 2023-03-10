@@ -63,3 +63,4 @@ Goals:
 - [ ] Make server handle physics instead of client
 - [x] GLTF and GLB support
 - [ ] Use sound pan to get "spatial" audio
+- [x] Scene "communication" packets

@@ -81,6 +81,14 @@ enum class PacketType(
                 .put("rotation", org.json.JSONArray().put(reader.nextFloat()).put(reader.nextFloat()).put(reader.nextFloat()))
                 .put("scale", org.json.JSONArray().put(reader.nextFloat()).put(reader.nextFloat()).put(reader.nextFloat()))
         }
+    ),
+    SCENE_COMMUNICATE(
+        { json ->
+            ByteUtils.convertStringToByteArray(json.toString(0))
+        },
+        { reader ->
+            JSONObject(reader.nextString())
+        }
     )
 }
 object PacketUtils {
