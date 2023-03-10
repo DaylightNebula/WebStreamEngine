@@ -62,8 +62,10 @@ object FuelClient {
         }
     }
 
-    private fun getPreexistingFile(fileName: String): File? {
+    internal fun getPreexistingFile(fileName: String): File? {
+        println("Looking for file $fileName")
         if (!fileMap.has(fileName) || !allFiles.has(fileName)) return null
+        println("Attempting to verify file")
 
         // get all files hash
         val allFile = allFiles.getJSONObject(fileName)

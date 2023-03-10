@@ -27,7 +27,7 @@
   "localPath": "test_entity.entity",
   "id": "test_entity.entity",
   "type": "entity",
-  "hash": 295295526425376070974806778451209227030
+  "hash": 162315243845692299642993260811569267380
  },
  "test_sound.mp3": {
   "localPath": "test_sound.mp3",
@@ -45,7 +45,7 @@
   "localPath": "WebStreamEngine-Test-0.0.1.jar",
   "id": "WebStreamEngine-Test-0.0.1.jar",
   "type": "jar",
-  "hash": 231331332871791157497012859060786514980
+  "hash": 67174352013120889749946472590721739219
  },
  "input.json": {
   "localPath": "input.json",

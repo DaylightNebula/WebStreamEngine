@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController
 import com.badlogic.gdx.math.Quaternion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import webstreamengine.client.application.GameInfo
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.entities.EntityHandler
 import webstreamengine.client.entities.components.ModelComponent
@@ -117,7 +118,11 @@ object Renderer: ApplicationAdapter() {
 
     fun renderComponent(component: ModelComponent) {
         if (!component.hasInstance()) {
-            val model = ModelManager.getModelByKey(component.key) ?: return
+            val model = ModelManager.getModelByKey(component.key)
+            if (model == null) {
+                println("Model $model")
+                return
+            }
             component.instance = ModelInstance(model).apply {
                 this.transform.scl(component.entity.getScale())
                 this.transform.rotate(
@@ -131,7 +136,7 @@ object Renderer: ApplicationAdapter() {
             }
             component.animController = AnimationController(component.instance)
         }
-        modelbatch.render(component.instance)
+        modelbatch.render(component.instance, GameInfo.environment)
     }
 
     fun renderImage(texture: Texture, position: Vector2, size: Vector2) {
@@ -144,9 +149,6 @@ object Renderer: ApplicationAdapter() {
 
     fun getMousePosition(): Vector2 = Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
     fun getWindowSize(): Vector2 = Vector2(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-    fun runOnGdxThread(runnable: Runnable) {
-        Gdx.app.postRunnable(runnable)
-    }
     fun getGdxFile(absolutePath: String): FileHandle = Gdx.files.absolute(absolutePath)
     fun setCursorCatched(bool: Boolean) {
         Gdx.input.isCursorCatched = bool
