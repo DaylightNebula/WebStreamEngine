@@ -11,56 +11,51 @@ Goals:
 - Simple particle system
 - Simple pathfinding
 
-========================== Networking =================================
-- [x] Make LibGDX run on a thread secondary to the main thread
-- [x] Make a headless mode
-- [x] Network controller component
-  - [x] Clients automatically connect to the server
-    - [x] Game server settings must be set beforehand
-  - [x] Network server has control over states
-  - [x] Components and scenes switch to a general start and stop function as well as a server update and client update function
-  - [x] Each client as different IDs (server is 0, first client is 1, second client is 2, etc...)
-  - [x] Server can create or destroy entities
-    - [x] Server can assign which entities the player has authority over
-  - [x] All transform changes should be replicated on each client
-  - [x] Convert IDs to UUID
-- [x] Network-able Physics
-  - [x] Global physics solver
-    - [x] Handles all collisions in updated chunks
-    - [x] Update the collider components maximum travel to a collision in all six directions ONLY for colliders marked as not static
-  - [x] Collider component
-    - [x] Make just a collection of 3 4-point polygons that align along each axis
-    - [x] Update velocity based off of maximum travels that are updated by the physics solver
-    - [x] Possible collision bounding box (since box checking is quicker than polygon checking)
-      - [x] Only run a full collision test if the possible collision check passes
-    - [x] Flags
-      - [x] Static (does not move) (default false)
-- [x] Make player controller a component
-- [x] Remove the entity chunking for now
-
-============== Stuff that's gotta get done at some point =============
+============== Pre-Release General =============
 - [ ] Reimplement entity chunking
   - [ ] Small entities belong to ONLY ONE chunk at time
   - [ ] Large entities are treated as global entities
 - [ ] Particles
   - [ ] Play particle effects from PFX
-- [x] Reloading
-  - [x] Server should reload itself when a file changes
-- [x] Client LibGDX changes
-  - [x] Put libgdx on a second thread
-- [ ] Editor plugins
-  - [ ] .properties (switch from .config)
-  - [ ] .json
-  - [ ] .scene (switch from current scenes .json files)
-  - [ ] .entity (switch from current entity .json files)
-  - [ ] .ui (switch from current ui .json files)
-  - [ ] input.json
 - [ ] Pathfinding
   - [ ] Use an array of points to dictate where the entity should move
   - [ ] Shoot a ray from the entity to the target
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
 - [ ] Make server handle physics instead of client
-- [x] GLTF and GLB support
 - [ ] Use sound pan to get "spatial" audio
-- [x] Scene "communication" packets
+- [ ] Way for games to set the input "targets" of input values so that input modification menus can be made
+- [ ] UI Improvements
+  - [ ] Text box (single and multiline support)
+  - [ ] Solid color background
+  - [ ] Corner radius options for solid color background and images if possible
+
+=============== Editor (plugins to particle editor) ==================
+- [ ] .properties (this should be a default plugin for particle)
+  - [ ] Basic property and value list
+- [ ] .json (this should be a default plugin for particle)
+  - [ ] Basic property and value list like .properties
+  - [ ] Json object using parent system
+  - [ ] Json arrays using something similar to object system with property names
+- [ ] .scene
+  - [ ] Sidebar with scene graph and selected entities info
+  - [ ] Place entities into the world from .entity files (drag and drop if possible)
+  - [ ] Mode to see colliders
+  - [ ] Add UI scripts
+- [ ] .entity
+  - [ ] Split into left data view and right visual view
+  - [ ] Data view
+    - [ ] Display all components
+    - [ ] Add components via plus button and search function
+    - [ ] Remove components via x button
+    - [ ] All components should have their editable values visible
+  - [ ] Visual view
+    - [ ] Draw all model components
+    - [ ] Draw collider shapes if they are marked visible
+- [ ] .ui
+  - [ ] View in top right that matches the aspect ratio of the editor window
+  - [ ] Same system as entity data view but with UI components
+  - [ ] Macro UI components should be able to have child components
+- [ ] input.json
+  - [ ] Same system as entity data view but with input components
+
