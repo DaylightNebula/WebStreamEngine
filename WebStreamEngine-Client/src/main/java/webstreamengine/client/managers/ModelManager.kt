@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.JsonReader
+import net.mgsx.gltf.loaders.glb.GLBLoader
+import net.mgsx.gltf.loaders.gltf.GLTFLoader
 import webstreamengine.client.networking.FuelClient
 import webstreamengine.client.Renderer
 import webstreamengine.client.entities.Entity
@@ -24,6 +26,8 @@ object ModelManager {
     // loaders
     private val builder = ModelBuilder()
     private val loader = G3dModelLoader(JsonReader())
+    private val gltfLoader = GLTFLoader()
+    private val glbLoader = GLBLoader()
 
     private fun isIDInUse(id: String): Boolean {
         return modelMap.containsKey(id) || requestedIDs.contains(id)
@@ -64,9 +68,18 @@ object ModelManager {
     }
 
     private fun loadLocal(id: String, path: String): Model? {
+        // get file handle and make sure it exists
         val file = Renderer.getGdxFile(path)
         if (!file.exists()) return null
-        val model = loader.loadModel(file)
+
+        // load model based on its type
+        val model = when(file.extension()) {
+            "gltf" -> gltfLoader.load(file).scene.model
+            "glb" -> glbLoader.load(file).scene.model
+            else -> loader.loadModel(file)
+        }
+
+        // save and return model
         modelMap[id] = model
         return model
     }

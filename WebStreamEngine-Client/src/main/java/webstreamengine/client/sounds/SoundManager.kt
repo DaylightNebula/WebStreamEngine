@@ -46,7 +46,7 @@ object SoundManager {
 
     private fun playSoundRequest(request: SoundRequest, sound: Sound) {
         val volume = if (request.position != null) min(1f, 1f / (Renderer.cam.position.dst2(request.position))) * request.baseVolume else request.baseVolume
-        sound.play(volume, request.pitch, request.pan)
+        sound.play(volume, request.pitch, 0f/*TODO request.pan*/)
     }
 
     private fun cacheCheck(id: String, request: SoundRequest, extension: String): Boolean {
