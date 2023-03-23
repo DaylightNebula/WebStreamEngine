@@ -1,0 +1,74 @@
+{
+ "chunk_settings.json": {
+  "localPath": "chunk_settings.json",
+  "id": "chunk_settings.json",
+  "type": "json",
+  "hash": 285330590578013602484949209389663900189
+ },
+ "play_button.png": {
+  "localPath": "play_button.png",
+  "id": "play_button.png",
+  "type": "png",
+  "hash": 73764589100084757168148403174039404595
+ },
+ "barracks.g3dj": {
+  "localPath": "barracks.g3dj",
+  "id": "barracks.g3dj",
+  "type": "g3dj",
+  "hash": 170331528945922380878011963579316675482
+ },
+ "setup.properties": {
+  "localPath": "setup.properties",
+  "id": "setup.properties",
+  "type": "properties",
+  "hash": 321039420784118301516059753397438219923
+ },
+ "test_entity.entity": {
+  "localPath": "test_entity.entity",
+  "id": "test_entity.entity",
+  "type": "entity",
+  "hash": 162315243845692299642993260811569267380
+ },
+ "test_sound.mp3": {
+  "localPath": "test_sound.mp3",
+  "id": "test_sound.mp3",
+  "type": "mp3",
+  "hash": 22897678814612355569570281209209858591
+ },
+ "player.entity": {
+  "localPath": "player.entity",
+  "id": "player.entity",
+  "type": "entity",
+  "hash": 32335637122012830576239264840378641382
+ },
+ "WebStreamEngine-Test-0.0.1.jar": {
+  "localPath": "WebStreamEngine-Test-0.0.1.jar",
+  "id": "WebStreamEngine-Test-0.0.1.jar",
+  "type": "jar",
+  "hash": 308879350431632903037276171811465238637
+ },
+ "input.json": {
+  "localPath": "input.json",
+  "id": "input.json",
+  "type": "json",
+  "hash": 261970987460220936269185686863513669769
+ },
+ "test_scene.scene": {
+  "localPath": "test_scene.scene",
+  "id": "test_scene.scene",
+  "type": "scene",
+  "hash": 217555637624159859338021655378391771479
+ },
+ "RobotoMono.ttf": {
+  "localPath": "RobotoMono.ttf",
+  "id": "RobotoMono.ttf",
+  "type": "ttf",
+  "hash": 249405453582425702325587770554324058756
+ },
+ "test_ui.ui": {
+  "localPath": "test_ui.ui",
+  "id": "test_ui.ui",
+  "type": "ui",
+  "hash": 336693438580365987956988087184777986328
+ }
+}
