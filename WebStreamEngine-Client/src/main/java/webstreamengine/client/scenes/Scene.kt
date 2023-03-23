@@ -11,9 +11,9 @@ abstract class Scene(val jarpath: String) {
     abstract fun serverUpdate()
     abstract fun clientUpdate()
     abstract fun generalStop()
-    abstract fun netJoin(conn: Connection)
-    abstract fun netDisconnect(conn: Connection)
-    abstract fun netCommunicate(json: JSONObject)
+    open fun netJoin(conn: Connection) {}
+    open fun netDisconnect(conn: Connection) {}
+    open fun netCommunicate(json: JSONObject) {}
 
     fun sendCommunication(json: JSONObject) {
         if (NetworkManager.isActive) {

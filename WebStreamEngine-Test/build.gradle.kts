@@ -20,6 +20,7 @@ dependencies {
 
     implementation(project(":WebStreamEngine-Client"))
     implementation("com.badlogicgames.gdx:gdx:1.11.0")
+    implementation("org.json:json:20230227")
 }
 
 tasks.getByName<Test>("test") {

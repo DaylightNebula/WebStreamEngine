@@ -1,5 +1,6 @@
 package webstreamengine.test
 
+import org.json.JSONObject
 import webstreamengine.client.entities.Entity
 import webstreamengine.client.networking.Connection
 import webstreamengine.client.scenes.Scene
@@ -25,4 +26,6 @@ class TestScene: Scene("test_scene") {
     override fun netDisconnect(conn: Connection) {
 
     }
+
+    override fun netCommunicate(json: JSONObject) {}
 }

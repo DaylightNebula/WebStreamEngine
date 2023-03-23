@@ -23,7 +23,10 @@ Goals:
     - [ ] Add points to move around the target
   - [ ] Remove any points that make the pathfinding slower
 - [ ] Make server handle physics instead of client
-- [ ] Use sound pan to get "spatial" audio
+- [x] GLTF and GLB support
+- [ ] https://github.com/spookygames/gdx-sfx
+- [ ] Implement PBR shaders
+- [x] Scene "communication" packets
 - [ ] Way for games to set the input "targets" of input values so that input modification menus can be made
 - [ ] UI Improvements
   - [ ] Text box (single and multiline support)
